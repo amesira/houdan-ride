@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="collider_component.h" />
     <ClInclude Include="collision_processor.h" />
+    <ClInclude Include="component_pool.h" />
     <ClInclude Include="cubemesh_component.h" />
     <ClInclude Include="dynamics_processor.h" />
     <ClInclude Include="factory.h" />

@@ -244,6 +244,9 @@
     <ClInclude Include="fps.h">
       <Filter>Sources\System</Filter>
     </ClInclude>
+    <ClInclude Include="component_pool.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader_pixel_2d.hlsl">

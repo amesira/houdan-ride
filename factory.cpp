@@ -32,14 +32,10 @@ GameObject* Factory::CreateTestPlayer(DirectX::XMFLOAT3 position)
     GameObject* player = new GameObject();
 
     // component生成・登録
-    TransformComponent* transform = new TransformComponent();
-    CubemeshComponent* cubemesh = new CubemeshComponent();
-    BoxColliderComponent* collider = new BoxColliderComponent();
-    RigidbodyComponent* rigidbody = new RigidbodyComponent();
-    player->AddComponent(transform);
-    player->AddComponent(cubemesh);
-    player->AddComponent(collider);
-    player->AddComponent(rigidbody);
+    TransformComponent* transform = player->AddComponent<TransformComponent>();
+    CubemeshComponent* cubemesh = player->AddComponent<CubemeshComponent>();
+    BoxColliderComponent* collider = player->AddComponent<BoxColliderComponent>();
+    RigidbodyComponent* rigidbody = player->AddComponent<RigidbodyComponent>();
 
     // component設定
     transform->SetPosition(position);
@@ -63,12 +59,9 @@ GameObject* Factory::CreateBox(DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 col
     GameObject* cube = new GameObject();
 
     // component生成・登録
-    TransformComponent* transform = new TransformComponent();
-    CubemeshComponent* cubemesh = new CubemeshComponent();
-    BoxColliderComponent* collider = new BoxColliderComponent();
-    cube->AddComponent(transform);
-    cube->AddComponent(cubemesh);
-    cube->AddComponent(collider);
+    TransformComponent* transform = cube->AddComponent<TransformComponent>();
+    CubemeshComponent* cubemesh = cube->AddComponent<CubemeshComponent>();
+    BoxColliderComponent* collider = cube->AddComponent<BoxColliderComponent>();
 
     // component設定
     transform->SetPosition(position);
@@ -87,12 +80,9 @@ GameObject* Factory::CreateUiText(DirectX::XMFLOAT3 position, const char8_t* tex
     GameObject* uiText = new GameObject();
 
     // component生成・登録
-    RectTransformComponent* rectTransform = new RectTransformComponent();
-    TextComponent* textComponent = new TextComponent();
-    ImageComponent* imageComponent = new ImageComponent();
-    uiText->AddComponent(rectTransform);
-    uiText->AddComponent(textComponent);
-    uiText->AddComponent(imageComponent);
+    RectTransformComponent* rectTransform = uiText->AddComponent<RectTransformComponent>();
+    TextComponent* textComponent = uiText->AddComponent<TextComponent>();
+    ImageComponent* imageComponent = uiText->AddComponent<ImageComponent>();
 
     // component設定
     rectTransform->SetPosition(position);
