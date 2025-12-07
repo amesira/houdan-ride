@@ -33,8 +33,6 @@ void Game_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     //PlayAudio(g_BgmID, true);
 
     // カメラ1追加
-    GameObject* camera1Obj = Factory::CreateCamera({ 0.0f,5.0f,-5.0f }, {0.0f,0.0f,0.0f});
-	g_SceneObjects.push_back(camera1Obj);
 
     GameObject* player = Factory::CreateTestPlayer({ -2.0f,0.5f,0.0f });
     g_SceneObjects.push_back(player);
@@ -42,13 +40,6 @@ void Game_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     g_SceneObjects.push_back(fieldCube);
     GameObject* cube = Factory::CreateBox({ 0.0f,0.0f,0.0f }, { 0.2f,1.0f,1.0f,1.0f });
     g_SceneObjects.push_back(cube);
-
-    for(int i = 0;i < 3; i++)
-    {
-		float x = (float)(i - 1) * 1.5f;
-        GameObject* efreet = Factory::CreateEfreet({ x,1.0f,1.0f }, { 0.05f,0.05f,0.05f });
-        g_SceneObjects.push_back(efreet);
-	}
 
     // ui
     GameObject* uiText = Factory::CreateUiText({ 800.0f, 500.0f, 0.0f }, u8"Hello, DirectX11!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);

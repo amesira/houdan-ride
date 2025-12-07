@@ -15,9 +15,7 @@ void    ProcessorM_Finalize();
 void    ProcessorM_Update();
 void    ProcessorM_Draw();
 
-CameraComponentProcessor*   GetCameraComponentProcessor();
 Renderer3DCubeProcessor*    GetRenderer3DCubeProcessor();
-Renderer3DModelProcessor*	GetRenderer3DModelProcessor();
 PhysicsProcessor*           GetPhysicsProcessor();
 CollisionProcessor*         GetCollisionProcessor();
 DynamicsProcessor*          GetDynamicsProcessor();

@@ -122,15 +122,6 @@
     <ClCompile Include="dynamics_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_3dmodel_processor.cpp">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClCompile>
-    <ClCompile Include="modelData.cpp">
-      <Filter>Sources\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="modelAnimation.cpp">
-      <Filter>Sources\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="renderer_image_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
@@ -139,9 +130,6 @@
     </ClCompile>
     <ClCompile Include="stb_implementation.cpp">
       <Filter>リソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="camera_component_processor.cpp">
-      <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
     <ClCompile Include="fps.cpp">
       <Filter>Sources\System</Filter>
@@ -232,18 +220,6 @@
     <ClInclude Include="rigidbody_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_3dmodel_processor.h">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClInclude>
-    <ClInclude Include="modelAnimation.h">
-      <Filter>Sources\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="modelData.h">
-      <Filter>Sources\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="model_component.h">
-      <Filter>Sources\GameParts\Component</Filter>
-    </ClInclude>
     <ClInclude Include="rect_transform_component.h">
       <Filter>Sources\GameParts\Component\UiComponents</Filter>
     </ClInclude>
@@ -265,12 +241,6 @@
     <ClInclude Include="utility.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="camera_component_processor.h">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClInclude>
-    <ClInclude Include="camera_component.h">
-      <Filter>Sources\GameParts\Component</Filter>
-    </ClInclude>
     <ClInclude Include="fps.h">
       <Filter>Sources\System</Filter>
     </ClInclude>
@@ -283,18 +253,6 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="shader_pixel_font.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_3dmodel_skinning.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_3dmodel_static.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_pixel_fullscreen_quad.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_fullscreen_quad.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
