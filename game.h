@@ -1,22 +1,22 @@
 //----------------------------------------------------
-// game.h [ÉQÅ[ÉÄÉVÅ[Éìêßå‰]
+// game_scene.h [„Ç≤„Éº„É†„Ç∑„Éº„É≥Âà∂Âæ°]
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/09/05
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/09/05
 //----------------------------------------------------
 #ifndef GAME_H
 #define GAME_H
 
-// directx
-#include <d3d11.h>
-#include "direct3d.h"
-#include <DirectXMath.h>
-using namespace DirectX;
+#include "scene_interface.h"
 
-// ÉÅÉCÉìèàóù
-void Game_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-void Game_Finalize();
-void Game_Update();
-void Game_Draw();
+// „Ç≤„Éº„É†„Ç∑„Éº„É≥
+class GameScene : public IScene {
+public:
+    void    Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext) override;
+    void    Finalize() override;
+
+    void    Update() override;
+    void    Draw() override;
+};
 
 #endif

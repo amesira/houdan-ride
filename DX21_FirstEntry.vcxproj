@@ -190,6 +190,7 @@
     <ClInclude Include="renderer_font_processor.h" />
     <ClInclude Include="renderer_image_processor.h" />
     <ClInclude Include="rigidbody_component.h" />
+    <ClInclude Include="scene_interface.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="stb_truetype.h" />

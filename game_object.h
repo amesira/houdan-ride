@@ -11,6 +11,7 @@
 #define GAME_OBJECT_H
 
 #include <vector>
+#include <string>
 
 #include "component.h"
 #include "component_pool.h"
@@ -20,6 +21,8 @@
 class GameObject {
 private:
     unsigned int    m_id = 0;
+    std::string     m_name = "None";
+
     bool    m_active = true;
     bool    m_isDestroy = false;
     
@@ -27,9 +30,6 @@ private:
     std::vector<Behavior*>  m_pBehaviors = {};
 
 public:
-    void    SetID(unsigned int id) { m_id = id; }
-    unsigned int    GetID() const { return m_id; }
-
     void    Update() {
         // GameObjectの更新毎、Behavior.Update()を呼び出す。
         for (Behavior* be : m_pBehaviors) {
@@ -37,6 +37,12 @@ public:
             be->Update();
         }
     }
+
+    void    SetID(unsigned int id) { m_id = id; }
+    void    SetName(const std::string& name) { m_name = name; }
+
+    unsigned int    GetID() const { return m_id; }
+    std::string     GetName() const { return m_name; }
 
     //void    Finalize() {
     //    // Componentをdelete

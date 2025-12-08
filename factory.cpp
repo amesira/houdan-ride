@@ -27,10 +27,8 @@
 #include "renderer_font_processor.h"
 #include "renderer_image_processor.h"
 
-GameObject* Factory::CreateTestPlayer(DirectX::XMFLOAT3 position)
+void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 {
-    GameObject* player = new GameObject();
-
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
     CubemeshComponent* cubemesh = player->AddComponent<CubemeshComponent>();
@@ -50,14 +48,10 @@ GameObject* Factory::CreateTestPlayer(DirectX::XMFLOAT3 position)
     // behavior生成・登録
     PlayerBehavior* playerBe = new PlayerBehavior(player);
     player->AttachBehavior(playerBe);
-
-    return player;
 }
 
-GameObject* Factory::CreateBox(DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 scaling)
+void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 scaling)
 {
-    GameObject* cube = new GameObject();
-
     // component生成・登録
     TransformComponent* transform = cube->AddComponent<TransformComponent>();
     CubemeshComponent* cubemesh = cube->AddComponent<CubemeshComponent>();
@@ -71,14 +65,10 @@ GameObject* Factory::CreateBox(DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 col
     // processor登録
     GetRenderer3DCubeProcessor()->Entry(transform, cubemesh);
     GetCollisionProcessor()->Entry(transform, collider);
-
-    return cube;
 }
 
-GameObject* Factory::CreateUiText(DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)
+void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)
 {
-    GameObject* uiText = new GameObject();
-
     // component生成・登録
     RectTransformComponent* rectTransform = uiText->AddComponent<RectTransformComponent>();
     TextComponent* textComponent = uiText->AddComponent<TextComponent>();
@@ -99,6 +89,4 @@ GameObject* Factory::CreateUiText(DirectX::XMFLOAT3 position, const char8_t* tex
     // processor登録
     GetRendererFontProcessor()->Entry(rectTransform, textComponent);
     GetRendererImageProcessor()->Entry(rectTransform, imageComponent);
-
-    return uiText;
 }

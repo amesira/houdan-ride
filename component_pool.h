@@ -15,16 +15,23 @@ class GameObject;
 template <class T>
 class ComponentPool {
 private:
+    static constexpr size_t COMPONENTS_MAX = 1024;
+
     // Componentリスト
     std::vector<T>              m_components = {};
+
     // GameObjectのIDリスト
     // ・m_componentsとインデックスを対応させる
     std::vector<unsigned int>   m_gameObjectIDs = {};
 
 public:
-    ComponentPool() = default;
+    ComponentPool() {
+        m_components.reserve(COMPONENTS_MAX);
+        m_gameObjectIDs.reserve(COMPONENTS_MAX);
+    }
 
-    ComponentPool*   GetInstance() {
+    // ComponentPoolのインスタンスを取得
+    static ComponentPool*   GetInstance() {
         static ComponentPool<T>* instance = new ComponentPool<T>();
         return instance;
     }
@@ -32,6 +39,7 @@ public:
     // Componentを生成してComponentPoolに追加
     // ・pGameObject: Componentを所有するGameObjectへのポインタ
     T*      Create(unsigned int gameObjectID) {
+        assert(m_components.size() < COMPONENTS_MAX && "ComponentPool has reached its maximum capacity.");
         T component;
         m_components.push_back(component);
         m_gameObjectIDs.push_back(gameObjectID);
