@@ -9,11 +9,23 @@
 #define COMPONENT_POOL_H
 
 #include <vector>
+#include <assert.h>
 
 class GameObject;
 
+// ComponentPoolのインターフェース
+class IComponentPool {
+    int m_iComponentId = -1;
+
+    IComponentPool() = default;
+
+public:
+    int     GetIComponentID() const { return m_iComponentId; }
+};
+
+// ComponentPoolクラス
 template <class T>
-class ComponentPool {
+class ComponentPool : public IComponentPool {
 private:
     static constexpr size_t COMPONENTS_MAX = 1024;
 
@@ -24,16 +36,20 @@ private:
     // ・m_componentsとインデックスを対応させる
     std::vector<unsigned int>   m_gameObjectIDs = {};
 
+    static int m_componentId;
+
 public:
     ComponentPool() {
+        static int idCounter = 0;
+        m_iComponentId = idCounter++;
+        m_componentId = m_iComponentId;
+
         m_components.reserve(COMPONENTS_MAX);
         m_gameObjectIDs.reserve(COMPONENTS_MAX);
     }
 
-    // ComponentPoolのインスタンスを取得
-    static ComponentPool*   GetInstance() {
-        static ComponentPool<T>* instance = new ComponentPool<T>();
-        return instance;
+    static int GetComponentID() {
+        return m_componentId;
     }
 
     // Componentを生成してComponentPoolに追加

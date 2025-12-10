@@ -16,6 +16,7 @@ using namespace DirectX;
 
 #include <vector>
 #include "game_object.h"
+#include "component_pool.h"
 
 class IScene {
 private:
@@ -23,6 +24,8 @@ private:
     std::vector<GameObject>     m_gameObjects = {};
 
     int         m_gameObjectCount = 0;
+
+    std::vector<IComponentPool> m_componentPools = {};
 
 public:
     IScene() {
@@ -49,6 +52,22 @@ public:
         gameObject.SetID(m_gameObjectCount++);
         m_gameObjects.push_back(gameObject);
         return &m_gameObjects.back();
+    }
+
+    template<class T>
+    ComponentPool<T>* GetComponentPool() {
+        for (IComponentPool& pool : m_componentPools) {
+            if(pool.GetIComponentID() == ComponentPool<T>::GetComponentID()) {
+                return static_cast<ComponentPool<T>*>(&pool);
+            }
+        }
+        return nullptr;
+    }
+
+    template<class T>
+    ComponentPool<T>*   AddComponentPool(ComponentPool<T> pool) {
+        m_componentPools.push_back(pool);
+        return static_cast<ComponentPool<T>*>(&m_componentPools.back());
     }
 };
 

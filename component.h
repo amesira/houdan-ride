@@ -17,36 +17,12 @@
 class GameObject;
 
 class Component {
-protected:
-    // ComponentType
-    // ・ダウンキャスト時のチェックに使う。
-    enum class Type {
-        None,
-
-        Transform,
-        Cubemesh,
-        Model,
-
-        RectTransform,
-        Image,
-        Text,
-
-        Collider,
-        BoxCollider,
-        Rigidbody,
-
-        Camera,
-    };
-
 private:
     bool        m_enable = true;
     GameObject* m_pOwner = nullptr;
 
 public:
     virtual ~Component() = default;
-
-    // Componentのタイプ取得
-    virtual Type    GetType() const { return Type::None; };
 
     // Componentのオーナー取得
     GameObject* GetOwner() const{ return m_pOwner; }

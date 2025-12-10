@@ -1,8 +1,8 @@
 //===================================================
 // rigidbody_component.h
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/10/28
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/10/28
 //===================================================
 #ifndef RIGIDBODY_COMPONENT_H
 #define RIGIDBODY_COMPONENT_H
@@ -26,14 +26,6 @@ private:
     DirectX::XMFLOAT3   m_prevVelocity = { 0.0f,0.0f,0.0f };
 
 public:
-    // å^É`ÉFÉbÉNópä÷êîÅiGetComponentópÅj
-    static Type GetTypeStatic() {
-        return Type::Rigidbody;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     void    SetMass(float mass) { m_mass = mass; }
     void    SetGravityScale(float gravityScale) { m_gravityScale = gravityScale; }
     void    SetVelocity(DirectX::XMFLOAT3 velocity) { m_velocity = velocity; }

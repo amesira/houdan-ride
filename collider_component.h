@@ -1,8 +1,8 @@
 //===================================================
 // collider_component.h
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/28
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/28
 //===================================================
 #ifndef COLLIDER_COMPONENT_H
 #define COLLIDER_COMPONENT_H
@@ -20,18 +20,18 @@ public:
         Box,
     };
     struct CollisionData {
-        ColliderComponent*  m_other;    // Õ“Ë‘Šè
-        DirectX::XMFLOAT3   m_mtv;      // Å¬ˆÚ“®ƒxƒNƒgƒ‹
+        ColliderComponent*  m_other;    // è¡çªç›¸æ‰‹
+        DirectX::XMFLOAT3   m_mtv;      // æœ€å°ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«
 
-        bool    m_isCollision;          // “–‚½‚è”»’èƒtƒ‰ƒO
-        bool    m_wasCollision;         // ‘OƒtƒŒ[ƒ€‚Ì“–‚½‚è”»’èƒtƒ‰ƒO
+        bool    m_isCollision;          // å½“ãŸã‚Šåˆ¤å®šãƒ•ãƒ©ã‚°
+        bool    m_wasCollision;         // å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã®å½“ãŸã‚Šåˆ¤å®šãƒ•ãƒ©ã‚°
 
         bool    GetCollisionEnter() { return m_isCollision && !m_wasCollision; }
         bool    GetCollisionStay() { return m_isCollision; }
         bool    GetCollisionExit() { return !m_isCollision && m_wasCollision; }
     };
 
-    // Õ“Ëî•ñ‚ÌÅ‘å“o˜^”
+    // è¡çªæƒ…å ±ã®æœ€å¤§ç™»éŒ²æ•°
     static const int MAX_COLLISION_DATA = 8;
 
 protected:
@@ -43,15 +43,7 @@ private:
 public:
     ~ColliderComponent() = default;
 
-    // Œ^ƒ`ƒFƒbƒN—pŠÖ”iGetComponent—pj
-    static Type GetTypeStatic() {
-        return Type::Collider;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
-    // ƒRƒ‰ƒCƒ_[‚ÌŒ`óæ“¾
+    // ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å½¢çŠ¶å–å¾—
     Shape   GetShape()const { return m_shape; }
 
     void    UpdateCollisionData() {
@@ -65,7 +57,7 @@ public:
         }
     }
 
-    // Õ“Ëî•ñ“o˜^
+    // è¡çªæƒ…å ±ç™»éŒ²
     int     RegisterCollisionData(ColliderComponent* other, DirectX::XMFLOAT3 mtv) {
         CollisionData* slot = nullptr;
 
@@ -90,7 +82,7 @@ public:
         return 0;
     }
 
-    // Å¬ˆÚ“®ƒxƒNƒgƒ‹‚ÌÅ¬’læ“¾
+    // æœ€å°ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€å°å€¤å–å¾—
     DirectX::XMFLOAT3& GetMinMtv() {
         DirectX::XMFLOAT3 minMtv = { 0.0f,0.0f,0.0f };
         for (int i = 0; i < MAX_COLLISION_DATA; i++) {
@@ -110,7 +102,7 @@ public:
         return minMtv;
     }
 
-    // Å¬ˆÚ“®ƒxƒNƒgƒ‹‚ÌÅ‘å’læ“¾
+    // æœ€å°ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«ã®æœ€å¤§å€¤å–å¾—
     DirectX::XMFLOAT3& GetMaxMtv() {
         DirectX::XMFLOAT3 maxMtv = { 0.0f,0.0f,0.0f };
         for (int i = 0; i < MAX_COLLISION_DATA; i++) {
@@ -137,14 +129,6 @@ private:
     DirectX::XMFLOAT3   m_scale = { 1.0f,1.0f,1.0f };
 
 public:
-    // Œ^ƒ`ƒFƒbƒN—pŠÖ”iGetComponent—pj
-    static Type GetTypeStatic() {
-        return Type::BoxCollider;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     BoxColliderComponent() { m_shape = ColliderComponent::Shape::Box; }
 
     void    SetAnchor(DirectX::XMFLOAT3 anchor) { m_anchor = anchor; }

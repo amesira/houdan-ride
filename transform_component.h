@@ -23,14 +23,6 @@ private:
     DirectX::XMFLOAT3   m_prevPosition = { 0.0f,0.0f,0.0f };
 
 public:
-    // 型チェック用関数（GetComponent用）
-    static Type GetTypeStatic() {
-        return Type::Transform;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     void    SetPosition(DirectX::XMFLOAT3 position) { m_position = position; }
     void    SetRotation(DirectX::XMFLOAT3 rotation) { m_rotation = rotation; }
     void    SetScaling(DirectX::XMFLOAT3 scaling) { m_scaling = scaling; }

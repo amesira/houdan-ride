@@ -18,15 +18,18 @@
 
 #include "behavior.h"
 
+class IScene;
+
 class GameObject {
 private:
+    IScene* m_pScene = nullptr;
+
     unsigned int    m_id = 0;
     std::string     m_name = "None";
 
     bool    m_active = true;
     bool    m_isDestroy = false;
     
-    //std::vector<Component*> m_pComponents = {};
     std::vector<Behavior*>  m_pBehaviors = {};
 
 public:
@@ -44,24 +47,6 @@ public:
     unsigned int    GetID() const { return m_id; }
     std::string     GetName() const { return m_name; }
 
-    //void    Finalize() {
-    //    // Componentをdelete
-    //    int length = m_pComponents.size();
-    //    for (int i = 0; i < length; i++) {
-    //        Component* cmp = m_pComponents[length - (i + 1)];
-    //        delete cmp;
-    //    }
-    //    m_pComponents.clear();
-
-    //    // Behaviorをdelete
-    //    length = m_pBehaviors.size();
-    //    for (int i = 0; i < length; i++) {
-    //        Behavior* be = m_pBehaviors[length - (i + 1)];
-    //        delete be;
-    //    }
-    //    m_pBehaviors.clear();
-    //}
-
     void    SetActive(bool active) { m_active = active; }
     bool    GetActive() { return m_active; }
 
@@ -73,16 +58,10 @@ public:
 
     // Componentの追加（このGameObjectのためのComponentを生成する）
     template<class T>
-    T*    AddComponent() {
-        T* pComp = ComponentPool<T>::GetInstance()->Create(m_id);
-        pComp->SetOwner(this);
-        return pComp;
-    }
+    T*    AddComponent();
 
     template<class T>
-    T* GetComponent() const {
-        return ComponentPool<T>::GetInstance()->GetByGameObjectID(m_id);
-    }
+    T* GetComponent() const;
 
     // Behaviorの追加・取得
     void    AttachBehavior(Behavior* pBe) {
@@ -103,3 +82,5 @@ public:
 };
 
 #endif
+
+

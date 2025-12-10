@@ -6,6 +6,8 @@
 #include <DirectXMath.h>
 #include "direct3d.h"
 
+#include "scene_interface.h"
+
 #include "renderer_3dcube_processor.h"
 #include "physics_processor.h"
 #include "collision_processor.h"
@@ -132,7 +134,7 @@ void ProcessorM_Finalize()
     }
 }
 
-void ProcessorM_Update()
+void ProcessorM_Update(IScene* pScene)
 {
     // 物理演算制御プロセッサー処理
     g_PhysicsProcessor->Process();
@@ -140,7 +142,7 @@ void ProcessorM_Update()
     g_DynamicsProcessor->Process();
 }
 
-void ProcessorM_Draw()
+void ProcessorM_Draw(IScene* pScene)
 {
     
   //  for (int i = 0; i < g_CameraComponentProcessor->GetSize(); i++)
@@ -160,7 +162,7 @@ void ProcessorM_Draw()
 
     Direct3D_Clear();
 
-    g_Renderer3DCubeProcessor->Process();
+    g_Renderer3DCubeProcessor->Process(pScene);
     
     /*for (int i = 0; i < g_CameraComponentProcessor->GetSize(); i++)
 		g_CameraComponentProcessor->DrawFSQuad(i);*/
@@ -174,10 +176,6 @@ void ProcessorM_Draw()
     Direct3D_Present();
 }
 
-Renderer3DCubeProcessor* GetRenderer3DCubeProcessor()
-{
-    return g_Renderer3DCubeProcessor;
-}
 // 物理演算系プロセッサー取得
 PhysicsProcessor* GetPhysicsProcessor()
 {

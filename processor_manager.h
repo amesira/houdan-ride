@@ -1,5 +1,6 @@
 #pragma once
 // processor_manager.h
+class IScene;
 
 class CameraComponentProcessor;
 class Renderer3DCubeProcessor;
@@ -12,10 +13,9 @@ class RendererImageProcessor;
 
 void    ProcessorM_Initialize();
 void    ProcessorM_Finalize();
-void    ProcessorM_Update();
-void    ProcessorM_Draw();
+void    ProcessorM_Update(IScene* pScene);
+void    ProcessorM_Draw(IScene* pScene);
 
-Renderer3DCubeProcessor*    GetRenderer3DCubeProcessor();
 PhysicsProcessor*           GetPhysicsProcessor();
 CollisionProcessor*         GetCollisionProcessor();
 DynamicsProcessor*          GetDynamicsProcessor();

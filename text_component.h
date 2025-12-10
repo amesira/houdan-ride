@@ -35,14 +35,6 @@ private:
     bool                m_center = false; // 中央揃えフラグ
 
 public:
-    // 型チェック用関数（GetComponent用）
-    static Type GetTypeStatic() {
-        return Type::Text;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     void    SetText(const std::u8string& text) { m_text = text; }
     void    SetColor(DirectX::XMFLOAT4 color) { m_color = color; }
     void    SetFontType(Font fontType) { m_fontType = fontType; }
@@ -54,6 +46,7 @@ public:
     Font    GetFontType()const { return m_fontType; }
     int     GetFontSize()const { return m_fontSize; }
     bool    IsCenter()const { return m_center; }
+
 };
 
 #endif

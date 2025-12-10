@@ -40,7 +40,6 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
     // processor登録
-    GetRenderer3DCubeProcessor()->Entry(transform, cubemesh);
     GetPhysicsProcessor()->Entry(transform,rigidbody);
     GetCollisionProcessor()->Entry(transform, collider);
     GetDynamicsProcessor()->Entry(transform,collider,rigidbody);
@@ -63,7 +62,6 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
     cubemesh->SetColor(color);
 
     // processor登録
-    GetRenderer3DCubeProcessor()->Entry(transform, cubemesh);
     GetCollisionProcessor()->Entry(transform, collider);
 }
 

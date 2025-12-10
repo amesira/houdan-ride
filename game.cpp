@@ -6,7 +6,6 @@
 //===================================================
 #include "game.h"
 
-#include "field.h"
 #include "Audio.h"
 #include "polygon3d.h"
 #include "processor_manager.h"
@@ -18,7 +17,6 @@
 //===================================================
 void GameScene::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-    field_Initialize(pDevice, pContext);
     Polygon3D_Initialize(pDevice, pContext);
 
     ProcessorM_Initialize();
@@ -44,7 +42,6 @@ void GameScene::Finalize()
     ProcessorM_Finalize();
 
     Polygon3D_Finalize();
-    field_Finalize();
 }
 
 //===================================================
@@ -55,7 +52,7 @@ void GameScene::Update()
     // ゲームオブジェクト更新
     this->UpdateGameObjects();
 
-    ProcessorM_Update();
+    ProcessorM_Update(this);
 }
 
 //===================================================
@@ -63,5 +60,5 @@ void GameScene::Update()
 //===================================================
 void GameScene::Draw()
 {
-    ProcessorM_Draw();
+    ProcessorM_Draw(this);
 }
