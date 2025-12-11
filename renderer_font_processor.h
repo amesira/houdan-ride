@@ -22,12 +22,6 @@ class RectTransformComponent;
 
 class RendererFontProcessor : public Processor {
 private:
-	struct Components {
-		RectTransformComponent*   m_rectTransform = nullptr;
-		TextComponent*           m_textComponent = nullptr;
-    };
-    std::vector<Components> m_components;
-
 	const char* fontPath = "asset/Font/PixelMplus12-Regular.ttf";
 
 	ID3D11Device* g_pDevice = nullptr;
@@ -61,13 +55,7 @@ public:
     void    Initialize()override;
     void    Finalize()override;
 
-    void    Process()override;
-
-	void	Entry(
-		RectTransformComponent* pRectTransform,
-		TextComponent* pTextComponent) {
-        m_components.push_back({ pRectTransform, pTextComponent });
-	}
+    void    Process(IScene* pScene)override;
 
 private:
 	int DecodeUtf8(const char8_t** text_ptr);

@@ -137,9 +137,9 @@ void ProcessorM_Finalize()
 void ProcessorM_Update(IScene* pScene)
 {
     // 物理演算制御プロセッサー処理
-    g_PhysicsProcessor->Process();
-    g_CollisionProcessor->Process();
-    g_DynamicsProcessor->Process();
+    g_PhysicsProcessor->Process(pScene);
+    g_CollisionProcessor->Process(pScene);
+    g_DynamicsProcessor->Process(pScene);
 }
 
 void ProcessorM_Draw(IScene* pScene)
@@ -170,31 +170,8 @@ void ProcessorM_Draw(IScene* pScene)
     // ビューポートのリセット
     //Direct3D_ResetViewport();
 
-    g_RendererImageProcessor->Process();
-    g_RendererFontProcessor->Process();
+    g_RendererImageProcessor->Process(pScene);
+    g_RendererFontProcessor->Process(pScene);
 
     Direct3D_Present();
-}
-
-// 物理演算系プロセッサー取得
-PhysicsProcessor* GetPhysicsProcessor()
-{
-    return g_PhysicsProcessor;
-}
-CollisionProcessor* GetCollisionProcessor()
-{
-    return g_CollisionProcessor;
-}
-DynamicsProcessor* GetDynamicsProcessor()
-{
-    return g_DynamicsProcessor;
-}
-// 2D描画系プロセッサー取得
-RendererFontProcessor* GetRendererFontProcessor()
-{
-    return g_RendererFontProcessor;
-}
-RendererImageProcessor* GetRendererImageProcessor()
-{
-    return g_RendererImageProcessor;
 }

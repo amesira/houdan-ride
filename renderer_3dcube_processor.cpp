@@ -45,7 +45,7 @@ void Renderer3DCubeProcessor::Process(IScene* pScene)
 
     auto& cubemeshList = cubemeshPool->GetList();
 
-    for(CubemeshComponent c : cubemeshList) {
+    for(CubemeshComponent& c : cubemeshList) {
         CubemeshComponent* cubemesh = &c;
         TransformComponent* transform = transformPool->GetByGameObjectID(c.GetOwner()->GetID());
 

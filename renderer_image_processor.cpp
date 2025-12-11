@@ -10,6 +10,8 @@
 #include "sprite.h"
 #include "shader.h"
 
+#include "scene_interface.h"
+#include "game_object.h"
 #include "rect_transform_component.h"
 #include "image_component.h"
 
@@ -27,7 +29,7 @@ void RendererImageProcessor::Finalize()
 
 }
 
-void RendererImageProcessor::Process()
+void RendererImageProcessor::Process(IScene* pScene)
 {
     Shader_Begin();
 
@@ -43,9 +45,14 @@ void RendererImageProcessor::Process()
         0.0f,
         1.0f));
 
-    for(Components& comp : m_components) {
-        RectTransformComponent* pRect = comp.m_rectTransform;
-        ImageComponent* pImage = comp.m_imageComponent;
+    auto* imagePool = pScene->GetComponentPool<ImageComponent>();
+    auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
+
+    auto& imageList = imagePool->GetList();
+
+    for(ImageComponent& image : imageList) {
+        RectTransformComponent* pRect = rectTransformPool->GetByGameObjectID(image.GetOwner()->GetID());
+        ImageComponent* pImage = &image;
 
         // ★ 描画方法は仮。回転未対応。
         // 描画位置・サイズ取得

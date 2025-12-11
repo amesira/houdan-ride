@@ -1,11 +1,11 @@
 //----------------------------------------------------
-// physics_processor.h [•¨—‰‰Z§ŒäƒvƒƒZƒbƒT[]
+// physics_processor.h [ç‰©ç†æ¼”ç®—åˆ¶å¾¡ãƒ—ãƒ­ã‚»ãƒƒã‚µãƒ¼]
 // 
-// Ed—ÍA–€C‚È‚Ç‚ğvelocityi‘¬“xj‚Éİ’è‚µAˆÊ’u‚Ö‚Ì“K—p‚ğs‚¤
-// E•¨—‰‰ZŒQ‚Ì1”Ô–Ú‚É‚ ‚½‚éB
+// ãƒ»é‡åŠ›ã€æ‘©æ“¦ãªã©ã‚’velocityï¼ˆé€Ÿåº¦ï¼‰ã«è¨­å®šã—ã€ä½ç½®ã¸ã®é©ç”¨ã‚’è¡Œã†
+// ãƒ»ç‰©ç†æ¼”ç®—ç¾¤ã®1ç•ªç›®ã«ã‚ãŸã‚‹ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/28
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/28
 //----------------------------------------------------
 #ifndef PHYSICS_PROCESSOR_H
 #define PHYSICS_PROCESSOR_H
@@ -18,22 +18,13 @@ class RigidbodyComponent;
 
 class PhysicsProcessor : public Processor {
 private:
-    struct Components {
-        TransformComponent* m_transform;
-        RigidbodyComponent* m_rigidbody;
-    };
-    std::vector<Components> m_components;
 
 public:
     void    Initialize()override;
     void    Finalize()override;
 
-    void    Process()override;
+    void    Process(IScene* pScene)override;
 
-    void    Entry(TransformComponent* transform,RigidbodyComponent* rigidbody) {
-        Components cmps = { transform,rigidbody };
-        m_components.push_back(cmps);
-    }
 };
 
 

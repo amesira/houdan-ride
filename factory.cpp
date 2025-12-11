@@ -39,11 +39,6 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     transform->SetPosition(position);
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
-    // processor登録
-    GetPhysicsProcessor()->Entry(transform,rigidbody);
-    GetCollisionProcessor()->Entry(transform, collider);
-    GetDynamicsProcessor()->Entry(transform,collider,rigidbody);
-
     // behavior生成・登録
     PlayerBehavior* playerBe = new PlayerBehavior(player);
     player->AttachBehavior(playerBe);
@@ -60,9 +55,6 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
     transform->SetPosition(position);
     transform->SetScaling(scaling);
     cubemesh->SetColor(color);
-
-    // processor登録
-    GetCollisionProcessor()->Entry(transform, collider);
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)
@@ -83,8 +75,4 @@ void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const
     imageComponent->SetColor({ 1.0f,1.0f,0.0f,1.0f }); // 透明にしておく
     imageComponent->SetUvRect({ 0.0f,0.0f,1.0f,1.0f });
     imageComponent->Load(L"asset\\Texture\\test.jpg");
-
-    // processor登録
-    GetRendererFontProcessor()->Entry(rectTransform, textComponent);
-    GetRendererImageProcessor()->Entry(rectTransform, imageComponent);
 }

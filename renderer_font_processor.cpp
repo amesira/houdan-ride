@@ -18,6 +18,8 @@
 #include "shader.h"
 #include "sprite.h"
 
+#include "scene_interface.h"
+#include "game_object.h"
 #include "rect_transform_component.h"
 
 void RendererFontProcessor::Initialize()
@@ -79,7 +81,7 @@ void RendererFontProcessor::Finalize()
 	// なんて便利
 }
 
-void RendererFontProcessor::Process()
+void RendererFontProcessor::Process(IScene* pScene)
 {
 	Shader_Begin(ShaderBeginMode::TrueTypeFont);
 
@@ -97,9 +99,19 @@ void RendererFontProcessor::Process()
 
 	SetDepthState(false);
 
-	for(Components& comp : m_components) {
-		RectTransformComponent* pRect = comp.m_rectTransform;
-		TextComponent* pText = comp.m_textComponent;
+    auto* textPool = pScene->GetComponentPool<TextComponent>();
+    auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
+
+    auto& textList = textPool->GetList();
+
+	for(TextComponent& t : textList) {
+		RectTransformComponent* pRect = rectTransformPool->GetByGameObjectID(t.GetOwner()->GetID());
+		TextComponent* pText = &t;
+
+        // コンポーネントが無効ならスキップ
+        if (!pRect || !pText) continue;
+        if (!pRect->GetEnable() || !pText->GetEnable()) continue;
+
         int fontType = (int)pText->GetFontType();
 
         if (!m_pFontSRV[fontType]) continue;

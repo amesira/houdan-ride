@@ -1,29 +1,28 @@
 //===================================================
-// processor.h [ProcessorŠî’êƒNƒ‰ƒX]
+// processor.h [ProcessoråŸºåº•ã‚¯ãƒ©ã‚¹]
 // 
-// EComponentŒQ‚ğ—p‚¢‚Äˆ—‚ğs‚¤ˆ—‘•’uB
-// E“–‚½‚è”»’èA•¨—‰‰ZA•`‰æˆ—‚È‚ÇA‘½”‚ÌGameObject‚Åg‚¢‚½‚¢‚©‚ÂA
-// @ˆ—‡‚ªd—v‚É‚È‚é‚à‚Ì‚ğì¬‚·‚éB
+// ãƒ»Componentç¾¤ã‚’ç”¨ã„ã¦å‡¦ç†ã‚’è¡Œã†å‡¦ç†è£…ç½®ã€‚
+// ãƒ»å½“ãŸã‚Šåˆ¤å®šã€ç‰©ç†æ¼”ç®—ã€æç”»å‡¦ç†ãªã©ã€å¤šæ•°ã®GameObjectã§ä½¿ã„ãŸã„ã‹ã¤ã€
+// ã€€å‡¦ç†é †ãŒé‡è¦ã«ãªã‚‹ã‚‚ã®ã‚’ä½œæˆã™ã‚‹ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/27
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/27
 //===================================================
 #ifndef PROCESSOR_H
 #define PROCESSOR_H
 
 #include "component.h"
 
-class Processor {
-private:
-    
+class IScene;
 
+class Processor {
 public:
     virtual ~Processor() = default;
 
     virtual void    Initialize() {}
     virtual void    Finalize() {}
 
-    virtual void    Process() {}
+    virtual void    Process(IScene* pScene) {}
 
 };
 

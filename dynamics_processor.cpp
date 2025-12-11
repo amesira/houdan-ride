@@ -6,6 +6,9 @@
 //===================================================
 #include "dynamics_processor.h"
 
+#include "game_object.h"
+#include "scene_interface.h"
+
 #include "transform_component.h"
 #include "collider_component.h"
 #include "rigidbody_component.h"
@@ -22,14 +25,20 @@ void DynamicsProcessor::Finalize()
 
 }
 
-void DynamicsProcessor::Process()
+void DynamicsProcessor::Process(IScene* pScene)
 {
     float deltaTime = FPS_GetDeltaTime();
 
-    for (int i = 0; i < m_components.size(); i++) {
-        TransformComponent* transform = m_components[i].m_transform;
-        ColliderComponent*  collider = m_components[i].m_collider;
-        RigidbodyComponent* rigidbody = m_components[i].m_rigidbody;
+    auto* rigidbodyPool = pScene->GetComponentPool<RigidbodyComponent>();
+    auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
+    auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+
+    auto& rigidbodyList = rigidbodyPool->GetList();
+
+    for (RigidbodyComponent& r : rigidbodyList) {
+        TransformComponent* transform = transformPool->GetByGameObjectID(r.GetOwner()->GetID());
+        BoxColliderComponent* collider = boxColliderPool->GetByGameObjectID(r.GetOwner()->GetID());
+        RigidbodyComponent* rigidbody = &r;
 
         bool isGrounded = false;
 

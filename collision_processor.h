@@ -1,11 +1,11 @@
 //----------------------------------------------------
-// collision_processor.h [“–‚½‚è”»’èƒvƒƒZƒbƒT[]
+// collision_processor.h [å½“ãŸã‚Šåˆ¤å®šãƒ—ãƒ­ã‚»ãƒƒã‚µãƒ¼]
 // 
-// E“–‚½‚è”»’è‚ğæ‚éB
-// E•¨—ˆ—ŒQ‚Ì‚Q”Ô–ÚB
+// ãƒ»å½“ãŸã‚Šåˆ¤å®šã‚’å–ã‚‹ã€‚
+// ãƒ»ç‰©ç†å‡¦ç†ç¾¤ã®ï¼’ç•ªç›®ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/28
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/28
 //----------------------------------------------------
 #ifndef COLLISION_PROCESSOR_H
 #define COLLISION_PROCESSOR_H
@@ -28,33 +28,22 @@ public:
     };
 
 private:
-    struct Components {
-        TransformComponent* m_transform = nullptr;
-        ColliderComponent* m_collider = nullptr;
-    };
-    std::vector<Components> m_components;
-
     CheckType   m_checkType;
 
 public:
     void    Initialize()override;
     void    Finalize()override;
 
-    void    Process()override;
-
-    void    Entry(TransformComponent* transform, ColliderComponent* collider) {
-        Components cmps = { transform,collider };
-        m_components.push_back(cmps);
-    }
+    void    Process(IScene* pScene)override;
 
 private:
-    // AABB‹«ŠEî•ñ
+    // AABBå¢ƒç•Œæƒ…å ±
     struct Bounds {
         float   minX, maxX;
         float   minY, maxY;
         float   minZ, maxZ;
     };
-    // Õ“Ë”»’èŒ‹‰Ê
+    // è¡çªåˆ¤å®šçµæœ
     struct CollisionResult {
         bool                isCollision;
         DirectX::XMFLOAT3   mtv;
