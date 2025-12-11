@@ -162,6 +162,7 @@
     <ClInclude Include="collider_component.h" />
     <ClInclude Include="collision_processor.h" />
     <ClInclude Include="component_pool.h" />
+    <ClInclude Include="component_pool_interface.h" />
     <ClInclude Include="cubemesh_component.h" />
     <ClInclude Include="dynamics_processor.h" />
     <ClInclude Include="factory.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="text_component.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="transform_component.h" />
+    <ClInclude Include="type_id.h" />
     <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>

@@ -15,10 +15,8 @@
 //===================================================
 // ゲームシーン初期化処理
 //===================================================
-void GameScene::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+void GameScene::Initialize()
 {
-    Polygon3D_Initialize(pDevice, pContext);
-
     ProcessorM_Initialize();
 
     GameObject* player = this->CreateGameObject();
@@ -51,7 +49,6 @@ void GameScene::Update()
 {
     std::vector<GameObject>& gameObjects = this->GetGameObjects();
     for (GameObject& obj : gameObjects) {
-        if (!obj.GetActive())continue;
         obj.Update();
     }
 

@@ -250,6 +250,12 @@
     <ClInclude Include="scene_base.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="component_pool_interface.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="type_id.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader_pixel_2d.hlsl">

@@ -71,5 +71,5 @@ void SetScene(SCENE scene)
 
     // 次のシーンの初期化
     if (g_SceneInstance[g_Scene] == nullptr)return;
-    g_SceneInstance[g_Scene]->Initialize(g_pDevice, g_pContext);
+    g_SceneInstance[g_Scene]->Initialize();
 }

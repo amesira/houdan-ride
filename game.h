@@ -12,7 +12,7 @@
 // ゲームシーン
 class GameScene : public SceneBase {
 public:
-    void    Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext) override;
+    void    Initialize() override;
     void    Finalize() override;
 
     void    Update() override;

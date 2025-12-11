@@ -30,6 +30,7 @@ static ID3D11ShaderResourceView* g_DefTexture = NULL;
 void Renderer3DCubeProcessor::Initialize()
 {
     LoadTexture(&g_DefTexture, L"asset\\Texture\\sample.png");
+    Polygon3D_Initialize(Direct3D_GetDevice(), Direct3D_GetDeviceContext());
 }
 
 void Renderer3DCubeProcessor::Finalize()

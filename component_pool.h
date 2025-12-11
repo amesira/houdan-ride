@@ -1,5 +1,6 @@
 //---------------------------------------------------
 // component_pool.h
+// 
 // ・型ごとにComponentを管理するプール。
 // 
 // Author：Miu Kitamura
@@ -11,22 +12,11 @@
 #include <vector>
 #include <assert.h>
 
+#include "type_id.h"
+#include "component_pool_interface.h"
+
 class GameObject;
 
-// ComponentPoolのインターフェース
-class IComponentPool {
-public:
-    int m_iComponentId = -1;
-
-    IComponentPool() {
-        static int idCounter = 0;
-        m_iComponentId = idCounter++;
-    }
-
-    int     GetIComponentID() const { return m_iComponentId; }
-};
-
-// ComponentPoolクラス
 template <class T>
 class ComponentPool : public IComponentPool {
 private:
@@ -39,28 +29,20 @@ private:
     // ・m_componentsとインデックスを対応させる
     std::vector<unsigned int>   m_gameObjectIDs = {};
 
-    static int m_componentId;
-
 public:
-    ComponentPool() {
-        m_componentId = this->GetIComponentID();
-
+    ComponentPool() : IComponentPool(TypeID::getTypeID<T>()) {
         m_components.reserve(COMPONENTS_MAX);
         m_gameObjectIDs.reserve(COMPONENTS_MAX);
-    }
-
-    static int GetComponentID() {
-        return m_componentId;
     }
 
     // Componentを生成してComponentPoolに追加
     // ・pGameObject: Componentを所有するGameObjectへのポインタ
     T*      Create(unsigned int gameObjectID) {
         assert(m_components.size() < COMPONENTS_MAX && "ComponentPool has reached its maximum capacity.");
-        T component;
-        m_components.push_back(component);
-        m_gameObjectIDs.push_back(gameObjectID);
         
+        m_components.emplace_back();    // Tのデフォルトコンストラクタを呼び出して追加
+        m_gameObjectIDs.push_back(gameObjectID);
+
         return &m_components.back();
     }
 
@@ -94,9 +76,5 @@ public:
     // ComponentPool内のComponentリストを取得
     std::vector<T>&     GetList() { return m_components; }
 };
-
-template<class T>
-int ComponentPool<T>::m_componentId = -1;
-
 
 #endif

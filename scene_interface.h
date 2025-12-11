@@ -1,52 +1,54 @@
 //---------------------------------------------------
 // scene_interface.h
 // 
+// ・シーンのインターフェース。
+// ・データは保持せず、アクセス用のメソッドのみを持つ。
+// 
 // Author：Miu Kitamura
 // Date  ：2025/12/08
 //---------------------------------------------------
 #ifndef SCENE_INTERFACE_H
 #define SCENE_INTERFACE_H
 
-
-// directx
-#include <d3d11.h>
-#include "direct3d.h"
-#include <DirectXMath.h>
-using namespace DirectX;
-
 #include <vector>
 #include "component_pool.h"
+#include "type_id.h"
 
 class IScene {
-private:
-    
-    std::vector<IComponentPool*> m_componentPools = {};
+protected:
+    virtual std::vector<IComponentPool*>& ComponentPools() = 0;
 
 public:
-    IScene() {
-        
-    }
     virtual ~IScene() = default;
 
-    virtual void    Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext) = 0;
+    virtual void    Initialize() = 0;
     virtual void    Finalize() = 0;
 
     virtual void    Update() = 0;
     virtual void    Draw() = 0;
 
+    // 型TのComponentPoolを取得
     template<class T>
     ComponentPool<T>* GetComponentPool() {
+        auto& m_componentPools = ComponentPools();
         for (IComponentPool* pool : m_componentPools) {
-            if(pool->GetIComponentID() == ComponentPool<T>::GetComponentID()) {
+            if(pool->GetTypeID() == TypeID::getTypeID<T>()) {
                 return static_cast<ComponentPool<T>*>(pool);
             }
         }
         return nullptr;
     }
 
+    // 型TのComponentPoolを追加
     template<class T>
-    ComponentPool<T>*   AddComponentPool(ComponentPool<T>* pool) {
-        m_componentPools.push_back(pool);
+    ComponentPool<T>*   AddComponentPool() {
+        // すでに存在する場合はそれを返す
+        auto* pool = GetComponentPool<T>();
+        if (pool) return pool;
+
+        // 新規に生成
+        auto& m_componentPools = ComponentPools();
+        m_componentPools.push_back(new ComponentPool<T>());
         return static_cast<ComponentPool<T>*>(m_componentPools.back());
     }
 };

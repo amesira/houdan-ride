@@ -17,39 +17,47 @@
 #include "component_pool.h"
 
 #include "behavior.h"
-#include "scene_interface.h"
 
-class IScene;
+#include "scene_interface.h"
 
 class GameObject {
 private:
-    IScene* m_pScene = nullptr;
+    IScene*         m_pScene = nullptr; // 所属するシーンへのポインタ
+    unsigned int    m_id = 0;           // GameObjectのID
 
-    unsigned int    m_id = 0;
-    std::string     m_name = "None";
-
-    bool    m_active = true;
-    bool    m_isDestroy = false;
+    std::string     m_name = "None";    // GameObjectの名前
+    bool            m_active = true;    // アクティブフラグ
+    bool            m_isDestroy = false;// 破棄予約フラグ
     
+    // Behaviorリスト
     std::vector<Behavior*>  m_pBehaviors = {};
 
 public:
+    // GameObjectの更新処理
+    // ・更新毎、Behavior.Update()を呼び出す。
     void    Update() {
-        // GameObjectの更新毎、Behavior.Update()を呼び出す。
+        if (!m_active || m_isDestroy)return;
         for (Behavior* be : m_pBehaviors) {
             if (!be->GetEnable())continue;
             be->Update();
         }
     }
 
+private:
+    // SceneBaseからSetScene, SetIDを呼び出せるようにする。
+    friend class SceneBase;
+    void    SetScene(IScene* pScene) { m_pScene = pScene; }
     void    SetID(unsigned int id) { m_id = id; }
-    void    SetName(const std::string& name) { m_name = name; }
 
+public:
+    IScene*         GetScene() const { return m_pScene; }
     unsigned int    GetID() const { return m_id; }
-    std::string     GetName() const { return m_name; }
 
+    void    SetName(const std::string& name) { m_name = name; }
     void    SetActive(bool active) { m_active = active; }
-    bool    GetActive() { return m_active; }
+
+    std::string     GetName() const { return m_name; }
+    bool            GetActive() { return m_active; }
 
     // GameObjectの破棄予約
     void    Destroy() {
@@ -57,24 +65,16 @@ public:
         m_isDestroy = true;
     }
 
-    // Componentの追加（このGameObjectのためのComponentを生成する）
+    // Componentの追加
     template<class T>
-    T* AddComponent()
-    {
-        T* component = nullptr;
-
+    T* AddComponent() {
         auto* compPool = m_pScene->GetComponentPool<T>();
-
-        if (compPool) {
-            component = compPool->Create(m_id);
-        }
-        else {
-            compPool = new ComponentPool<T>();
-            compPool = m_pScene->AddComponentPool(compPool);
-            component = compPool->Create(m_id);
+        if (!compPool) {
+            compPool = m_pScene->AddComponentPool<T>();
         }
 
-        // コンポーネントが生成できたらオーナーを設定して返す
+        // Componentを生成してComponentPoolに追加
+        T* component = compPool->Create(m_id);
         if (component) {
             component->SetOwner(this);
             return component;
@@ -83,40 +83,33 @@ public:
         return nullptr;
     }
 
-
+    // Componentの取得
     template<class T>
-    T* GetComponent()
-    {
-        T* component = nullptr;
-
+    T* GetComponent(){
         auto* compPool = m_pScene->GetComponentPool<T>();
 
         if (compPool) {
             return compPool->GetByGameObjectID(m_id);
         }
-
         return nullptr;
     }
 
-
-    // Behaviorの追加・取得
+    // Behaviorの追加
     void    AttachBehavior(Behavior* pBe) {
         pBe->SetOwner(this);
         m_pBehaviors.push_back(pBe);
     }
+
+    // Behaviorの取得
     template<class T>
     T* GetBehavior() const {
         for (Behavior* pBe : m_pBehaviors) {
-            // 取得したいComponentかどうかをタイプチェック
             if (pBe->GetType() == T::GetTypeStatic()) {
-                T* t = static_cast<T*>(pBe);
-                if (t)return t;
+                return static_cast<T*>(pBe);
             }
         }
         return nullptr;
     }
-
-    void   SetScene(IScene* pScene) { m_pScene = pScene; }  
 };
 
 #endif

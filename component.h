@@ -13,7 +13,6 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-// 自らのオーナーとして保持するため、前方宣言を行う。
 class GameObject;
 
 class Component {
