@@ -49,8 +49,11 @@ void GameScene::Finalize()
 //===================================================
 void GameScene::Update()
 {
-    // ゲームオブジェクト更新
-    this->UpdateGameObjects();
+    std::vector<GameObject>& gameObjects = this->GetGameObjects();
+    for (GameObject& obj : gameObjects) {
+        if (!obj.GetActive())continue;
+        obj.Update();
+    }
 
     ProcessorM_Update(this);
 }

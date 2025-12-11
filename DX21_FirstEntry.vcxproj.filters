@@ -134,9 +134,6 @@
     <ClCompile Include="fade.cpp">
       <Filter>Sources\Content</Filter>
     </ClCompile>
-    <ClCompile Include="game_object.cpp">
-      <Filter>Sources\Core</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -249,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="fade.h">
       <Filter>Sources\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_base.h">
+      <Filter>Sources\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

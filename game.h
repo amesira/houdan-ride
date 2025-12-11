@@ -7,10 +7,10 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "scene_interface.h"
+#include "scene_base.h"
 
 // ゲームシーン
-class GameScene : public IScene {
+class GameScene : public SceneBase {
 public:
     void    Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext) override;
     void    Finalize() override;

@@ -17,6 +17,7 @@
 #include "component_pool.h"
 
 #include "behavior.h"
+#include "scene_interface.h"
 
 class IScene;
 
@@ -58,10 +59,45 @@ public:
 
     // Componentの追加（このGameObjectのためのComponentを生成する）
     template<class T>
-    T*    AddComponent();
+    T* AddComponent()
+    {
+        T* component = nullptr;
+
+        auto* compPool = m_pScene->GetComponentPool<T>();
+
+        if (compPool) {
+            component = compPool->Create(m_id);
+        }
+        else {
+            compPool = new ComponentPool<T>();
+            compPool = m_pScene->AddComponentPool(compPool);
+            component = compPool->Create(m_id);
+        }
+
+        // コンポーネントが生成できたらオーナーを設定して返す
+        if (component) {
+            component->SetOwner(this);
+            return component;
+        }
+
+        return nullptr;
+    }
+
 
     template<class T>
-    T* GetComponent() const;
+    T* GetComponent()
+    {
+        T* component = nullptr;
+
+        auto* compPool = m_pScene->GetComponentPool<T>();
+
+        if (compPool) {
+            return compPool->GetByGameObjectID(m_id);
+        }
+
+        return nullptr;
+    }
+
 
     // Behaviorの追加・取得
     void    AttachBehavior(Behavior* pBe) {
@@ -79,6 +115,8 @@ public:
         }
         return nullptr;
     }
+
+    void   SetScene(IScene* pScene) { m_pScene = pScene; }  
 };
 
 #endif

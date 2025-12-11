@@ -15,11 +15,14 @@ class GameObject;
 
 // ComponentPoolのインターフェース
 class IComponentPool {
+public:
     int m_iComponentId = -1;
 
-    IComponentPool() = default;
+    IComponentPool() {
+        static int idCounter = 0;
+        m_iComponentId = idCounter++;
+    }
 
-public:
     int     GetIComponentID() const { return m_iComponentId; }
 };
 
@@ -40,9 +43,7 @@ private:
 
 public:
     ComponentPool() {
-        static int idCounter = 0;
-        m_iComponentId = idCounter++;
-        m_componentId = m_iComponentId;
+        m_componentId = this->GetIComponentID();
 
         m_components.reserve(COMPONENTS_MAX);
         m_gameObjectIDs.reserve(COMPONENTS_MAX);
@@ -94,6 +95,8 @@ public:
     std::vector<T>&     GetList() { return m_components; }
 };
 
+template<class T>
+int ComponentPool<T>::m_componentId = -1;
 
 
 #endif

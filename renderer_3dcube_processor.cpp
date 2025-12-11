@@ -19,6 +19,7 @@ using namespace DirectX;
 #include "polygon3d.h"
 
 #include "scene_interface.h"
+#include "game_object.h"
 
 // component
 #include "transform_component.h"
