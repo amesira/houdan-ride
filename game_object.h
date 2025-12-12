@@ -1,84 +1,126 @@
 //===================================================
-// game_object.h [ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg]
+// game_object.h [ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ]
 // 
-// EComponent, Behavior ‚ÌƒŠƒXƒg‚ğ•Û‚·‚é” B
-// EPlayer, Enemy ‚È‚Ç‚Í‚·‚×‚Ä‚±‚Ì” ‚É‰½‚ğ“ü‚ê‚é‚©‚Å\¬‚³‚ê‚éB
+// ãƒ»Component, Behavior ã®ãƒªã‚¹ãƒˆã‚’ä¿æŒã™ã‚‹ç®±ã€‚
+// ãƒ»Player, Enemy ãªã©ã¯ã™ã¹ã¦ã“ã®ç®±ã«ä½•ã‚’å…¥ã‚Œã‚‹ã‹ã§æ§‹æˆã•ã‚Œã‚‹ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/27
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/27
 //===================================================
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
+#include <iostream>
 #include <vector>
+#include <string>
+
 #include "component.h"
+#include "component_pool.h"
+
 #include "behavior.h"
+
+#include "scene_interface.h"
 
 class GameObject {
 private:
-    bool    m_active = true;
+    IScene*         m_pScene = nullptr; // æ‰€å±ã™ã‚‹ã‚·ãƒ¼ãƒ³ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+    unsigned int    m_id = -1;           // GameObjectã®ID
+
+    std::string     m_name = "None";    // GameObjectã®åå‰
+    bool            m_active = true;    // ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãƒ•ãƒ©ã‚°
+    bool            m_isDestroy = false;// ç ´æ£„äºˆç´„ãƒ•ãƒ©ã‚°
     
-    std::vector<Component*> m_pComponents = {};
-    std::vector<Behavior*>  m_pBehaviors = {};
+    // Behaviorãƒªã‚¹ãƒˆ
+    std::vector<std::unique_ptr<Behavior>>  m_pBehaviors = {};
 
 public:
+    // GameObjectã®æ›´æ–°å‡¦ç†
+    // ãƒ»æ›´æ–°æ¯ã€Behavior.Update()ã‚’å‘¼ã³å‡ºã™ã€‚
     void    Update() {
-        // GameObject‚ÌXV–ˆABehavior.Update()‚ğŒÄ‚Ño‚·B
-        for (Behavior* be : m_pBehaviors) {
-            if (!be->GetEnable())continue;
-            be->Update();
+        if (!m_active || m_isDestroy)return;
+        for (auto& be : m_pBehaviors) {
+            if (!be.get()->GetEnable())continue;
+            be.get()->Update();
         }
     }
-    void    Finalize() {
-        // Component‚ğdelete
-        int length = m_pComponents.size();
-        for (int i = 0; i < length; i++) {
-            Component* cmp = m_pComponents[length - (i + 1)];
-            delete cmp;
-        }
-        m_pComponents.clear();
 
-        // Behavior‚ğdelete
-        length = m_pBehaviors.size();
-        for (int i = 0; i < length; i++) {
-            Behavior* be = m_pBehaviors[length - (i + 1)];
-            delete be;
-        }
+private:
+    // SceneBaseã‹ã‚‰SetScene, SetIDã‚’å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ã™ã‚‹ã€‚
+    friend class SceneBase;
+    void    SetScene(IScene* pScene) { m_pScene = pScene; }
+    void    SetID(unsigned int id) { m_id = id; }
+
+    // å†…éƒ¨çµ‚äº†å‡¦ç†
+    void    FinalizeInternal() {
+        m_id = -1;
+
+        m_name = "None";
+        m_active = false;
+        m_isDestroy = false;
+
         m_pBehaviors.clear();
     }
 
-    void    SetActive(bool active) { m_active = active; }
-    bool    GetActive() { return m_active; }
+public:
+    IScene*         GetScene() const { return m_pScene; }
+    unsigned int    GetID() const { return m_id; }
 
-    // Component‚Ì’Ç‰ÁEæ“¾
-    void    AddComponent(Component* pCmp) {
-        pCmp->SetOwner(this);
-        m_pComponents.push_back(pCmp);
+    void    SetName(const std::string& name) { m_name = name; }
+    void    SetActive(bool active) { m_active = active; }
+
+    std::string     GetName() const { return m_name; }
+    bool            GetActive() { return m_active; }
+
+    // GameObjectã®ç ´æ£„äºˆç´„
+    void    Destroy() {
+        if(m_isDestroy)return;
+        m_isDestroy = true;
     }
+
+    // Componentã®è¿½åŠ 
     template<class T>
-    T* GetComponent() const {
-        for (Component* pCmp : m_pComponents) {
-            // æ“¾‚µ‚½‚¢Component‚©‚Ç‚¤‚©‚ğƒ^ƒCƒvƒ`ƒFƒbƒN
-            if (pCmp->GetType() == T::GetTypeStatic()) {
-                T* t = static_cast<T*>(pCmp);
-                if (t)return t;
-            }
+    T* AddComponent() {
+        auto* compPool = m_pScene->GetComponentPool<T>();
+        if (!compPool) {
+            compPool = m_pScene->AddComponentPool<T>();
+        }
+
+        // Componentã‚’ç”Ÿæˆã—ã¦ComponentPoolã«è¿½åŠ 
+        T* component = compPool->Create(m_id);
+        if (component) {
+            component->SetOwner(this);
+            return component;
+        }
+
+        return nullptr;
+    }
+
+    // Componentã®å–å¾—
+    template<class T>
+    T* GetComponent(){
+        auto* compPool = m_pScene->GetComponentPool<T>();
+        if (compPool) {
+            return compPool->GetByGameObjectID(m_id);
         }
         return nullptr;
     }
 
-    // Behavior‚Ì’Ç‰ÁEæ“¾
-    void    AttachBehavior(Behavior* pBe) {
+    // Behaviorã®è¿½åŠ 
+    template<class T>
+    T*  AddBehavior() {
+        // å¼•æ•°ownerã¯GameObjectã®ãƒã‚¤ãƒ³ã‚¿ã‚’æ¸¡ã™ã€‚
+        m_pBehaviors.push_back(std::make_unique<T>(this));
+        auto* pBe = static_cast<T*>(m_pBehaviors.back().get());
         pBe->SetOwner(this);
-        m_pBehaviors.push_back(pBe);
+        return pBe;
     }
+
+    // Behaviorã®å–å¾—
     template<class T>
     T* GetBehavior() const {
         for (Behavior* pBe : m_pBehaviors) {
-            // æ“¾‚µ‚½‚¢Component‚©‚Ç‚¤‚©‚ğƒ^ƒCƒvƒ`ƒFƒbƒN
-            if (pBe->GetType() == T::GetTypeStatic()) {
-                T* t = static_cast<T*>(pBe);
-                if (t)return t;
+            if (pBe->GetType() == BehaviorTypeID::getTypeID<T>()) {
+                return static_cast<T*>(pBe);
             }
         }
         return nullptr;
@@ -86,3 +128,5 @@ public:
 };
 
 #endif
+
+

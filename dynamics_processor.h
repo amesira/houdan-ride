@@ -1,13 +1,13 @@
 //----------------------------------------------------
-// dynamics_processor.h [•¨—‰‰Z•â³ƒvƒƒZƒbƒT[]
+// dynamics_processor.h [ç‰©ç†æ¼”ç®—è£œæ­£ãƒ—ãƒ­ã‚»ãƒƒã‚µãƒ¼]
 // 
-// EÕ“Ëî•ñ‚©‚çˆÊ’u•â³‚ğs‚¤B
-// EPhysicsProcessor ¨ CollisionProcessor ‚ÌŒã‚És‚¤B
-// E‚R”Ô–ÚB
-// E•¨‘Ì‚Ì“®‚«AÕ“Ë”»’èA•â³ ©‚±‚±‚É“–‚½‚éB
+// ãƒ»è¡çªæƒ…å ±ã‹ã‚‰ä½ç½®è£œæ­£ã‚’è¡Œã†ã€‚
+// ãƒ»PhysicsProcessor â†’ CollisionProcessor ã®å¾Œã«è¡Œã†ã€‚
+// ãƒ»ï¼“ç•ªç›®ã€‚
+// ãƒ»ç‰©ä½“ã®å‹•ãã€è¡çªåˆ¤å®šã€è£œæ­£ â†ã“ã“ã«å½“ãŸã‚‹ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/28
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/28
 //----------------------------------------------------
 #ifndef DYNAMICS_PROCESSOR_H
 #define DYNAMICS_PROCESSOR_H
@@ -21,23 +21,13 @@ class RigidbodyComponent;
 
 class DynamicsProcessor : public Processor {
 private:
-    struct Components {
-        TransformComponent* m_transform;
-        ColliderComponent*  m_collider;
-        RigidbodyComponent* m_rigidbody;
-    };
-    std::vector<Components> m_components;
 
 public:
     void    Initialize()override;
     void    Finalize()override;
 
-    void    Process()override;
+    void    Process(IScene* pScene)override;
 
-    void    Entry(TransformComponent* transform, ColliderComponent* collider, RigidbodyComponent* rigidbody) {
-        Components cmps = { transform,collider,rigidbody };
-        m_components.push_back(cmps);
-    }
 };
 
 

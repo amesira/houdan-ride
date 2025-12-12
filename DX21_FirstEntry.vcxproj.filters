@@ -36,9 +36,6 @@
     <Filter Include="Sources\Manager">
       <UniqueIdentifier>{165ee71e-206a-40f2-a8f0-1d3e631e084d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Manager\Scene">
-      <UniqueIdentifier>{676e5e28-0d84-468f-a5c4-2f19893eb81f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\GameParts\Processor\PhysicsProcessors">
       <UniqueIdentifier>{84427433-fdec-4808-a2ba-d6e60cfd904d}</UniqueIdentifier>
     </Filter>
@@ -50,6 +47,12 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{924b9c01-9732-4e85-bab6-314bd96aef50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Content">
+      <UniqueIdentifier>{77ae1cda-7aba-464b-8c8c-19c8db9353c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Scene">
+      <UniqueIdentifier>{676e5e28-0d84-468f-a5c4-2f19893eb81f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +74,6 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Sources\System\Device</Filter>
     </ClCompile>
-    <ClCompile Include="fade.cpp">
-      <Filter>Sources\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="game_object.h">
       <Filter>Sources\Core</Filter>
     </ClCompile>
@@ -88,9 +88,6 @@
     </ClCompile>
     <ClCompile Include="player_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
-    </ClCompile>
-    <ClCompile Include="field.cpp">
-      <Filter>Sources\Manager</Filter>
     </ClCompile>
     <ClCompile Include="polygon.cpp">
       <Filter>Sources\System\Graphic</Filter>
@@ -108,10 +105,10 @@
       <Filter>Sources\System</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
-      <Filter>Sources\Manager\Scene</Filter>
+      <Filter>Sources\Scene</Filter>
     </ClCompile>
     <ClCompile Include="title.cpp">
-      <Filter>Sources\Manager\Scene</Filter>
+      <Filter>Sources\Scene</Filter>
     </ClCompile>
     <ClCompile Include="physics_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
@@ -122,15 +119,6 @@
     <ClCompile Include="dynamics_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_3dmodel_processor.cpp">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClCompile>
-    <ClCompile Include="modelData.cpp">
-      <Filter>Sources\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="modelAnimation.cpp">
-      <Filter>Sources\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="renderer_image_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
@@ -140,11 +128,11 @@
     <ClCompile Include="stb_implementation.cpp">
       <Filter>リソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="camera_component_processor.cpp">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClCompile>
     <ClCompile Include="fps.cpp">
       <Filter>Sources\System</Filter>
+    </ClCompile>
+    <ClCompile Include="fade.cpp">
+      <Filter>Sources\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +150,6 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Sources\System\Device</Filter>
-    </ClInclude>
-    <ClInclude Include="fade.h">
-      <Filter>Sources\Manager</Filter>
     </ClInclude>
     <ClInclude Include="component.h">
       <Filter>Sources\Core</Filter>
@@ -193,9 +178,6 @@
     <ClInclude Include="player_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="field.h">
-      <Filter>Sources\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="polygon.h">
       <Filter>Sources\System\Graphic</Filter>
     </ClInclude>
@@ -212,10 +194,10 @@
       <Filter>Sources\System</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
-      <Filter>Sources\Manager\Scene</Filter>
+      <Filter>Sources\Scene</Filter>
     </ClInclude>
     <ClInclude Include="title.h">
-      <Filter>Sources\Manager\Scene</Filter>
+      <Filter>Sources\Scene</Filter>
     </ClInclude>
     <ClInclude Include="collider_component.h">
       <Filter>Sources\GameParts\Component</Filter>
@@ -230,18 +212,6 @@
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClInclude>
     <ClInclude Include="rigidbody_component.h">
-      <Filter>Sources\GameParts\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer_3dmodel_processor.h">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClInclude>
-    <ClInclude Include="modelAnimation.h">
-      <Filter>Sources\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="modelData.h">
-      <Filter>Sources\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="model_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
     <ClInclude Include="rect_transform_component.h">
@@ -265,14 +235,26 @@
     <ClInclude Include="utility.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="camera_component_processor.h">
-      <Filter>Sources\GameParts\Processor</Filter>
-    </ClInclude>
-    <ClInclude Include="camera_component.h">
-      <Filter>Sources\GameParts\Component</Filter>
-    </ClInclude>
     <ClInclude Include="fps.h">
       <Filter>Sources\System</Filter>
+    </ClInclude>
+    <ClInclude Include="component_pool.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_interface.h">
+      <Filter>Sources\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="fade.h">
+      <Filter>Sources\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_base.h">
+      <Filter>Sources\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="component_pool_interface.h">
+      <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="type_id.h">
+      <Filter>Sources\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,18 +265,6 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="shader_pixel_font.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_3dmodel_skinning.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_3dmodel_static.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_pixel_fullscreen_quad.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_fullscreen_quad.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

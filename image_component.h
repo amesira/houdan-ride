@@ -1,8 +1,8 @@
 //===================================================
 // image_component.h
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/11/18
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/11/18
 //===================================================
 #ifndef IMAGE_COMPONENT_H
 #define IMAGE_COMPONENT_H
@@ -23,14 +23,6 @@ private:
     DirectX::XMFLOAT4           m_color = { 1.0f,1.0f,1.0f,1.0f };
 
 public:
-    // å^É`ÉFÉbÉNópä÷êîÅiGetComponentópÅj
-    static Type GetTypeStatic() {
-        return Type::Image;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     void    SetTexture(ID3D11ShaderResourceView* pTexture) { m_pTexture = pTexture; }
     void    Load(const wchar_t* fileName) {
         LoadTexture(&m_pTexture, fileName);

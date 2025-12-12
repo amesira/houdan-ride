@@ -1,11 +1,13 @@
 //===================================================
-// collision_processor.cpp [“–‚½‚è”»’èƒvƒƒZƒbƒT[]
+// collision_processor.cpp [å½“ãŸã‚Šåˆ¤å®šãƒ—ãƒ­ã‚»ãƒƒã‚µãƒ¼]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/28
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/28
 //===================================================
 #include "collision_processor.h"
 
+#include "game_object.h"
+#include "scene_interface.h"
 #include "transform_component.h"
 #include "collider_component.h"
 
@@ -19,66 +21,58 @@ void CollisionProcessor::Finalize()
 
 }
 
-void CollisionProcessor::Process()
+void CollisionProcessor::Process(IScene* pScene)
 {
-    //----------------------------------------------------
-    // Õ“Ëî•ñ‚ÌXV
-    // E‘OƒtƒŒ[ƒ€‚ÌÕ“Ëî•ñ‚ğ•Û‘¶‚µA¡ƒtƒŒ[ƒ€‚ÌÕ“Ëî•ñ‚ğƒŠƒZƒbƒg
-    // EÕ“Ë‚µ‚Ä‚¢‚È‚¢ó‘Ô‚ªŒp‘±‚µ‚½ê‡AÕ“Ë‘Šè‚ğƒNƒŠƒA‚·‚é
-	//----------------------------------------------------
-    for (int i = 0; i < m_components.size(); i++) {
-        m_components[i].m_collider->UpdateCollisionData();
+    auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
+    auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+
+    auto& boxColliderList = boxColliderPool->GetList();
+
+    // è¡çªæƒ…å ±ã®æ›´æ–°
+    for (BoxColliderComponent& c : boxColliderList) {
+        c.UpdateCollisionData();
     }
 
-    //----------------------------------------------------
-    // “–‚½‚è”»’èˆ—
-    //----------------------------------------------------
-    for (int i = 0; i < m_components.size(); i++) {
-        for (int j = 0; j < m_components.size() - (i + 1); j++) {
-            Components& cmpsA = m_components[i];
-            Components& cmpsB = m_components[i + (j + 1)];
+    // å½“ãŸã‚Šåˆ¤å®šå‡¦ç†
+    for (int i = 0; i < boxColliderList.size(); i++) {
+        for (int j = 0; j < boxColliderList.size() - (i + 1); j++) {
+            BoxColliderComponent* colliderA = &boxColliderList[i];
+            BoxColliderComponent* colliderB = &boxColliderList[i + (j + 1)];
+            TransformComponent* transformA = transformPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+            TransformComponent* transformB = transformPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
 
             CollisionResult result = {};
             result.isCollision = false;
 
-            // BoxCollider“¯m‚Ìê‡
-            if (cmpsA.m_collider->GetShape() == ColliderComponent::Shape::Box && 
-                cmpsB.m_collider->GetShape() == ColliderComponent::Shape::Box) {
-                BoxColliderComponent* boxA
-                    = static_cast<BoxColliderComponent*>(cmpsA.m_collider);
-                BoxColliderComponent* boxB
-                    = static_cast<BoxColliderComponent*>(cmpsB.m_collider);
+            // åˆ¤å®šæ–¹æ³•ãŒAABBã§ã‚ã‚‹
+            if (m_checkType == CheckType::AABB) {
+                Bounds a = ConvertToBounds(transformA, colliderA);
+                Bounds b = ConvertToBounds(transformB, colliderB);
+                result = CheckAABB(a, b);
+            }
 
-                // ”»’è•û–@‚ªAABB‚Å‚ ‚é
-                if (m_checkType == CheckType::AABB) {
-                    Bounds a = ConvertToBounds(cmpsA.m_transform, boxA);
-                    Bounds b = ConvertToBounds(cmpsB.m_transform, boxB);
-                    result = CheckAABB(a, b);
-                }
-
-                // Õ“Ë‚µ‚Ä‚¢‚éê‡
-                // EÕ“Ëî•ñ‚ğ“o˜^
-                if (result.isCollision) {
-                    boxA->RegisterCollisionData(boxB, result.mtv);
-                    boxB->RegisterCollisionData(boxA, {
-                        -result.mtv.x,
-                        -result.mtv.y,
-                        -result.mtv.z });
-                }
+            // è¡çªã—ã¦ã„ã‚‹å ´åˆ
+            // ãƒ»è¡çªæƒ…å ±ã‚’ç™»éŒ²
+            if (result.isCollision) {
+                colliderA->RegisterCollisionData(colliderB, result.mtv);
+                colliderB->RegisterCollisionData(colliderA, {
+                    -result.mtv.x,
+                    -result.mtv.y,
+                    -result.mtv.z });
             }
         }
     }
 }
 
 //===================================================
-// AABB‹«ŠEî•ñ‚ÌŒvZ
+// AABBå¢ƒç•Œæƒ…å ±ã®è¨ˆç®—
 //===================================================
 CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
     TransformComponent* transform, BoxColliderComponent* collider)
 {
     Bounds bounds = {};
 
-    // ƒ[ƒ‹ƒhÀ•WŒn‚Å‚Ì’†SÀ•WEƒTƒCƒY‚ğŒvZ
+    // ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã§ã®ä¸­å¿ƒåº§æ¨™ãƒ»ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
     DirectX::XMFLOAT3 pos = {
     transform->GetPosition().x + collider->GetAnchor().x,
     transform->GetPosition().y + collider->GetAnchor().y,
@@ -89,7 +83,7 @@ CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
     transform->GetScaling().y * collider->GetScale().y,
     transform->GetScaling().z * collider->GetScale().z };
 
-    // ’¸“_‚Ì“àAÅ‚à¬‚³‚¢‚à‚Ì‘å‚«‚¢‚à‚Ì‚ğŒvZ
+    // é ‚ç‚¹ã®å†…ã€æœ€ã‚‚å°ã•ã„ã‚‚ã®å¤§ãã„ã‚‚ã®ã‚’è¨ˆç®—
     bounds.minX = pos.x - size.x / 2.0f;
     bounds.maxX = pos.x + size.x / 2.0f;
     bounds.minY = pos.y - size.y / 2.0f;
@@ -101,13 +95,13 @@ CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
 }
 
 //===================================================
-// AABB“¯m‚ÌÕ“Ë”»’è
+// AABBåŒå£«ã®è¡çªåˆ¤å®š
 //===================================================
 CollisionProcessor::CollisionResult CollisionProcessor::CheckAABB(Bounds a, Bounds b)
 {
     CollisionResult result = {};
 
-    // Õ“Ë”»’è
+    // è¡çªåˆ¤å®š
     result.isCollision= (
         a.minX <= b.maxX &&
         a.maxX >= b.minX &&
@@ -117,15 +111,15 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckAABB(Bounds a, Boun
         a.maxZ >= b.minZ
         );
 
-    // A‚ÌÅ¬ˆÚ“®ƒxƒNƒgƒ‹
-    // EB‚ÆA‚ªd‚È‚Á‚Ä‚¢‚éê‡AA‚ğB‚ÌŠO‚Éo‚·‚½‚ß‚ÉA‚ªˆÚ“®‚·‚×‚«Å¬‚ÌƒxƒNƒgƒ‹
+    // Aã®æœ€å°ç§»å‹•ãƒ™ã‚¯ãƒˆãƒ«
+    // ãƒ»Bã¨AãŒé‡ãªã£ã¦ã„ã‚‹å ´åˆã€Aã‚’Bã®å¤–ã«å‡ºã™ãŸã‚ã«AãŒç§»å‹•ã™ã¹ãæœ€å°ã®ãƒ™ã‚¯ãƒˆãƒ«
     result.mtv = { 0.0f,0.0f,0.0f };
     if(result.isCollision){
         float dx = (a.minX < b.minX) ? (b.minX - a.maxX) : (b.maxX - a.minX);
         float dy = (a.minY < b.minY) ? (b.minY - a.maxY) : (b.maxY - a.minY);
         float dz = (a.minZ < b.minZ) ? (b.minZ - a.maxZ) : (b.maxZ - a.minZ);
 
-        // XYZ‚Ì’†‚Å•K—v‚È‰Ÿ‚µo‚µ—Ê‚ªÅ‚à¬‚³‚¢²‚ğÌ—p
+        // XYZã®ä¸­ã§å¿…è¦ãªæŠ¼ã—å‡ºã—é‡ãŒæœ€ã‚‚å°ã•ã„è»¸ã‚’æ¡ç”¨
         if (abs(dx) < abs(dy) && abs(dx) < abs(dz)) {
             result.mtv.x = dx;
         }

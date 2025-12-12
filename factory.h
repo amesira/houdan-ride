@@ -15,12 +15,10 @@
 #include "game_object.h"
 
 namespace Factory {
-    GameObject* CreateTestPlayer(DirectX::XMFLOAT3 position);
-    GameObject* CreateBox(DirectX::XMFLOAT3 position,DirectX::XMFLOAT4 color,DirectX::XMFLOAT3 scaling={1.0f,1.0f,1.0f});
-    GameObject* CreateEfreet(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scaling = { 1.0f,1.0f,1.0f });
-    GameObject* CreateMap(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 scaling = { 1.0f,1.0f,1.0f });
-    GameObject* CreateCamera(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 lookAt);
-    GameObject* CreateUiText(DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
+    void CreateTestPlayer   (GameObject*, DirectX::XMFLOAT3 position);
+    void CreateBox          (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 scaling = {1.0f,1.0f,1.0f});
+   
+    void CreateUiText       (GameObject*, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
 }
 
 #endif

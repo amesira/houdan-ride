@@ -1,8 +1,8 @@
 //===================================================
-// manager.cpp [ƒ}ƒl[ƒWƒƒ[]
+// manager.cpp [ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/09/05
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/09/05
 //===================================================
 #include "manager.h"
 
@@ -11,26 +11,29 @@
 
 #include "fade.h"
 
-// ’ˆÓI‰Šú‰»‚ÅŠO•”‚©‚çÝ’è‚³‚ê‚é‚à‚ÌBRelease•s—vB
+// æ³¨æ„ï¼åˆæœŸåŒ–ã§å¤–éƒ¨ã‹ã‚‰è¨­å®šã•ã‚Œã‚‹ã‚‚ã®ã€‚Releaseä¸è¦ã€‚
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
+static IScene* g_SceneInstance[3];
 static SCENE g_Scene = SCENE::SCENE_NONE;
 
 //===================================================
-// ƒXƒRƒA‰Šú‰»ˆ—
+// ã‚¹ã‚³ã‚¢åˆæœŸåŒ–å‡¦ç†
 //===================================================
 void Manager_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     if (!g_pDevice)g_pDevice = pDevice;
     if (!g_pContext)g_pContext = pContext;
 
+    g_SceneInstance[SCENE::SCENE_GAME] = new GameScene();
+
     Fade_Initialize(pDevice, pContext);
     SetScene(SCENE::SCENE_GAME);
 }
 
 //===================================================
-// ƒXƒRƒAI—¹ˆ—
+// ã‚¹ã‚³ã‚¢çµ‚äº†å‡¦ç†
 //===================================================
 void Manager_Finalize()
 {
@@ -39,75 +42,34 @@ void Manager_Finalize()
 }
 
 //===================================================
-// ƒXƒRƒAXVˆ—
+// ã‚¹ã‚³ã‚¢æ›´æ–°å‡¦ç†
 //===================================================
 void Manager_Update()
 {
-    switch (g_Scene) {
-    case SCENE::SCENE_TITLE:
-        Title_Update();
-        break;
-    case SCENE::SCENE_GAME:
-        Game_Update();
-        break;
-    case SCENE::SCENE_RESULT:
-
-        break;
-    default:break;
-  }
+    g_SceneInstance[g_Scene]->Update();
     Fade_Update();
 }
 
 //===================================================
-// ƒXƒRƒA•`‰æˆ—
+// ã‚¹ã‚³ã‚¢æç”»å‡¦ç†
 //===================================================
 void Manager_Draw()
 {
-    switch (g_Scene) {
-    case SCENE::SCENE_TITLE:
-        Title_Draw();
-        break;
-    case SCENE::SCENE_GAME:
-        Game_Draw();
-        break;
-    case SCENE::SCENE_RESULT:
-
-        break;
-    default:break;
-    }
+    g_SceneInstance[g_Scene]->Draw();
     Fade_Draw();
 }
 
 void SetScene(SCENE scene)
 {
-    // Œ»Ý‚ÌƒV[ƒ“‚ÌI—¹ˆ—
-    switch (g_Scene) {
-    case SCENE::SCENE_TITLE:
-        Title_Finalize();
-        break;
-    case SCENE::SCENE_GAME:
-        Game_Finalize();
-        break;
-    case SCENE::SCENE_RESULT:
-
-        break;
-    default:break;
+    // ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®çµ‚äº†å‡¦ç†
+    if (g_Scene != SCENE::SCENE_NONE){
+        g_SceneInstance[g_Scene]->Finalize();
     }
 
-    // ƒV[ƒ“Ø‚è‘Ö‚¦
+    // ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆ
     g_Scene = scene;
 
-    // ŽŸ‚ÌƒV[ƒ“‚Ì‰Šú‰»
-    switch (g_Scene) {
-    case SCENE::SCENE_TITLE:
-        Title_Initialize(g_pDevice, g_pContext);
-        break;
-    case SCENE::SCENE_GAME:
-        Game_Initialize(g_pDevice,g_pContext);
-        break;
-    case SCENE::SCENE_RESULT:
-
-        break;
-    default:break;
-    }
+    // æ¬¡ã®ã‚·ãƒ¼ãƒ³ã®åˆæœŸåŒ–
+    if (g_SceneInstance[g_Scene] == nullptr)return;
+    g_SceneInstance[g_Scene]->Initialize();
 }

@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // player_behavior.h
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/10/27
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/10/27
 //----------------------------------------------------
 #ifndef PLAYER_BEHAVIOR_H
 #define PLAYER_BEHAVIOR_H
@@ -22,14 +22,6 @@ private:
     RigidbodyComponent* m_rigidbody = nullptr;
 
 public:
-    // scriptÉ^ÉCÉvéÊìæ
-    static Type GetTypeStatic() {
-        return Type::Player;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    };
-
     PlayerBehavior(GameObject* owner);
     ~PlayerBehavior();
 

@@ -1,54 +1,48 @@
 //===================================================
-// behavior.h [BehaviorŠî’êƒNƒ‰ƒX]
+// behavior.h [BehavioråŸºåº•ã‚¯ãƒ©ã‚¹]
 // 
-// Eƒf[ƒ^‚Æˆ—‚Ì—¼•û‚ğŠÜ‚İA‚±‚êˆê‚Â‚Åˆ—‚ªŠ®Œ‹‚·‚é‚à‚ÌB
-// @iUnity‚ÅŒ¾‚¤MonoBehaviorƒNƒ‰ƒX‚Å‚ ‚éj
-// E“à•”‚Åİ’è‚µ‚½‚¢Component‚ğ‚¢‚­‚Â‚©æ“¾‚µ‚Ä‚¨‚«A‚»‚ê‚ğ‘€ì‚·‚é‚±‚Æ‚Å
-// @U‚é•‘‚¢‚ğ•\‚·BiSetPosition()‚È‚Çj
+// ãƒ»ãƒ‡ãƒ¼ã‚¿ã¨å‡¦ç†ã®ä¸¡æ–¹ã‚’å«ã¿ã€ã“ã‚Œä¸€ã¤ã§å‡¦ç†ãŒå®Œçµã™ã‚‹ã‚‚ã®ã€‚
+// ã€€ï¼ˆUnityã§è¨€ã†MonoBehaviorã‚¯ãƒ©ã‚¹ã§ã‚ã‚‹ï¼‰
+// ãƒ»å†…éƒ¨ã§è¨­å®šã—ãŸã„Componentã‚’ã„ãã¤ã‹å–å¾—ã—ã¦ãŠãã€ãã‚Œã‚’æ“ä½œã™ã‚‹ã“ã¨ã§
+// ã€€æŒ¯ã‚‹èˆã„ã‚’è¡¨ã™ã€‚ï¼ˆSetPosition()ãªã©ï¼‰
 // 
-// EComponent‚ğì‚é‚©ABehavior‚ğì‚é‚©‚ÍA
-// @ˆ—‚Ì‡”Ô‚Ìd—v‚³AŒÄ‚Ño‚µ‚Ì•p”É‚³AUnity‚Å‚Í‚Ç‚¤‚È‚Á‚Ä‚¢‚é‚©‚È‚Ç‚Å”»’f‚·‚éB
+// ãƒ»Componentã‚’ä½œã‚‹ã‹ã€Behaviorã‚’ä½œã‚‹ã‹ã¯ã€
+// ã€€å‡¦ç†ã®é †ç•ªã®é‡è¦ã•ã€å‘¼ã³å‡ºã—ã®é »ç¹ã•ã€Unityã§ã¯ã©ã†ãªã£ã¦ã„ã‚‹ã‹ãªã©ã§åˆ¤æ–­ã™ã‚‹ã€‚
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/10/27
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/10/27
 //===================================================
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
-// ©‚ç‚ÌƒI[ƒi[‚Æ‚µ‚Ä•Û‚·‚é‚½‚ßA‘O•ûéŒ¾‚ğs‚¤B
+// è‡ªã‚‰ã®ã‚ªãƒ¼ãƒŠãƒ¼ã¨ã—ã¦ä¿æŒã™ã‚‹ãŸã‚ã€å‰æ–¹å®£è¨€ã‚’è¡Œã†ã€‚
 class GameObject;
 
 class Behavior {
-protected:
-    // BehaviorType
-    // Eƒ_ƒEƒ“ƒLƒƒƒXƒg‚Ìƒ`ƒFƒbƒN‚Ég‚¤B
-    enum class Type {
-        None,
-
-        Player,
-    };
-
 private:
+    int         m_typeID = -1;
+
     bool        m_enable = true;
     GameObject* m_pOwner = nullptr;
 
 public:
+    Behavior(int typeID) : m_typeID(typeID) {}
     virtual ~Behavior() = default;
 
     virtual void    Update() {}
 
-    // Behavior‚Ìƒ^ƒCƒvæ“¾
-    virtual Type    GetType() const { return Type::None; }
+    // Behaviorã®ã‚¿ã‚¤ãƒ—å–å¾—
+    int     GetType() const { return m_typeID; }
 
-    // Behavior‚ÌƒI[ƒi[æ“¾
+    // Behaviorã®ã‚ªãƒ¼ãƒŠãƒ¼å–å¾—
     GameObject* GetOwner() const { return m_pOwner; }
 
-    // enable‚Ìİ’èEæ“¾ 
+    // enableã®è¨­å®šãƒ»å–å¾— 
     void    SetEnable(bool enable) { m_enable = enable; }
     bool    GetEnable() const { return m_enable; }
 
 private:
-    // ƒI[ƒi[İ’è
+    // ã‚ªãƒ¼ãƒŠãƒ¼è¨­å®š
     friend GameObject;
     void    SetOwner(GameObject* pGameObject) { m_pOwner = pGameObject; }
 };

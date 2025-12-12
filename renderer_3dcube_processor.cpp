@@ -18,6 +18,9 @@ using namespace DirectX;
 #include "keyboard.h"
 #include "polygon3d.h"
 
+#include "scene_interface.h"
+#include "game_object.h"
+
 // component
 #include "transform_component.h"
 #include "cubemesh_component.h"
@@ -27,6 +30,7 @@ static ID3D11ShaderResourceView* g_DefTexture = NULL;
 void Renderer3DCubeProcessor::Initialize()
 {
     LoadTexture(&g_DefTexture, L"asset\\Texture\\sample.png");
+    Polygon3D_Initialize(Direct3D_GetDevice(), Direct3D_GetDeviceContext());
 }
 
 void Renderer3DCubeProcessor::Finalize()
@@ -34,18 +38,31 @@ void Renderer3DCubeProcessor::Finalize()
 
 }
 
-void Renderer3DCubeProcessor::Process()
+void Renderer3DCubeProcessor::Process(IScene* pScene)
 {
-    for (Components& cmps : m_components) {
-        ID3D11ShaderResourceView* tex = cmps.m_cubemesh->GetTexture();
+    auto* cubemeshPool = pScene->GetComponentPool<CubemeshComponent>();
+    auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+
+    auto& cubemeshList = cubemeshPool->GetList();
+
+    for(CubemeshComponent& c : cubemeshList) {
+        CubemeshComponent* cubemesh = &c;
+        TransformComponent* transform = transformPool->GetByGameObjectID(c.GetOwner()->GetID());
+
+        // コンポーネントが無効ならスキップ
+        if (!transform || !&cubemesh)continue;
+        if (!transform->GetEnable() || !cubemesh->GetEnable())continue;
+
+        // 3Dキューブ描画
+        ID3D11ShaderResourceView* tex = cubemesh->GetTexture();
         if (!tex)tex = g_DefTexture;
 
         Polygon3D_CubeRender(
-            cmps.m_transform->GetPosition(),
-            cmps.m_transform->GetRotation(),
-            cmps.m_transform->GetScaling(),
+            transform->GetPosition(),
+            transform->GetRotation(),
+            transform->GetScaling(),
             tex,
-            cmps.m_cubemesh->GetColor()
+            cubemesh->GetColor()
         );
     }
 }

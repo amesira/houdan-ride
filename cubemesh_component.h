@@ -1,8 +1,8 @@
 //===================================================
 // cubemesh_component.h
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/10/27
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/10/27
 //===================================================
 #ifndef CUBEMESH_COMPONENT_H
 #define CUBEMESH_COMPONENT_H
@@ -20,14 +20,6 @@ private:
     DirectX::XMFLOAT4   m_color = { 1.0f,1.0f,1.0f ,1.0f };
 
 public:
-    // å^É`ÉFÉbÉNópä÷êîÅiGetComponentópÅj
-    static Type GetTypeStatic() {
-        return Type::Cubemesh;
-    }
-    Type GetType() const override {
-        return GetTypeStatic();
-    }
-
     void    SetTexture(ID3D11ShaderResourceView* tex) { m_pTexture = tex; }
     void    SetColor(DirectX::XMFLOAT4 color) { m_color = color; }
 
