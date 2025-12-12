@@ -53,6 +53,9 @@ void GameScene::Update()
     }
 
     ProcessorM_Update(this);
+
+    // 破棄予約されたGameObjectの収集
+    this->CollectDestroyedGameObjects();
 }
 
 //===================================================

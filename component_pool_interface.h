@@ -23,6 +23,9 @@ public:
 
     // コンポーネントIDの取得
     int     GetTypeID() const { return m_typeId; }
+
+    // コンポーネントの削除
+    virtual void    Remove(unsigned int gameObjectID) = 0;
 };
 
 #endif

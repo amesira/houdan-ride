@@ -21,6 +21,7 @@ private:
     GameObject* m_pOwner = nullptr;
 
 public:
+    Component() = default;
     virtual ~Component() = default;
 
     // Componentのオーナー取得

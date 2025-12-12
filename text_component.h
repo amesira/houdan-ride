@@ -26,7 +26,7 @@ public:
     };
 
 private:
-    std::u8string&      m_text = *(new std::u8string());
+    std::u8string       m_text = u8"";
     DirectX::XMFLOAT4   m_color = { 1.0f,1.0f,1.0f,1.0f };
 
     Font                m_fontType = Font::Default;

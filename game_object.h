@@ -24,7 +24,7 @@
 class GameObject {
 private:
     IScene*         m_pScene = nullptr; // 所属するシーンへのポインタ
-    unsigned int    m_id = 0;           // GameObjectのID
+    unsigned int    m_id = -1;           // GameObjectのID
 
     std::string     m_name = "None";    // GameObjectの名前
     bool            m_active = true;    // アクティブフラグ
@@ -50,10 +50,14 @@ private:
     void    SetScene(IScene* pScene) { m_pScene = pScene; }
     void    SetID(unsigned int id) { m_id = id; }
 
-    void    Finalize() {
-        // Componentの解放
-        
-        // Behaviorの解放（スマートポインタなので自動的に解放される）
+    // 内部終了処理
+    void    FinalizeInternal() {
+        m_id = -1;
+
+        m_name = "None";
+        m_active = false;
+        m_isDestroy = false;
+
         m_pBehaviors.clear();
     }
 

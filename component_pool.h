@@ -42,19 +42,20 @@ public:
     // Componentを生成してComponentPoolに追加
     // ・pGameObject: Componentを所有するGameObjectへのポインタ
     T*      Create(unsigned int gameObjectID) {
-        // 空きスロットがあればそこに追加
-       /* if (m_freeIndices.size() > 0) {
+        assert(m_components.size() < COMPONENTS_MAX && "ComponentPool has reached its maximum capacity.");
+        
+        // 空きスロットがあればそこを利用
+        // memo: Componentのメンバ変数に参照型やポインタがある場合、
+        //          T()でエラーが出る可能性があるため注意
+        if (!m_freeIndices.empty()) {
             size_t index = m_freeIndices.back();
             m_freeIndices.pop_back();
             m_components[index] = T();
             m_gameObjectIDs[index] = gameObjectID;
-
             return &m_components[index];
-        }*/
+        }
 
-        assert(m_components.size() < COMPONENTS_MAX && "ComponentPool has reached its maximum capacity.");
-        
-        m_components.emplace_back();    // Tのデフォルトコンストラクタを呼び出して追加
+        m_components.emplace_back();
         m_gameObjectIDs.push_back(gameObjectID);
 
         return &m_components.back();
@@ -62,19 +63,16 @@ public:
 
     // ComponentPoolからComponentを削除
     // ・gameObjectID: 削除するComponentを所有するGameObjectのID
-    void    Remove(unsigned int gameObjectID) {
+    void    Remove(unsigned int gameObjectID) override {
         for (int i = 0; i < m_components.size(); i++) {
             unsigned int id = m_gameObjectIDs[i];
             // 指定されたGameObjectIDと一致したら削除
             if (id == gameObjectID) {
-                m_components.erase(m_components.begin() + i);
-                m_gameObjectIDs.erase(m_gameObjectIDs.begin() + i);
-                
                 // 空きスロットとして管理リストに追加
                 m_freeIndices.push_back(i);
 
-                //Component* comp = &m_components[i];
-                //comp->SetEnable(false); // 無効化しておく
+                m_components[i].SetEnable(false); // 無効化しておく
+                m_gameObjectIDs[i] = -1; // 無効なIDにしておく
 
                 return;
             }

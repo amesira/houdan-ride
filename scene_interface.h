@@ -17,6 +17,7 @@
 
 class IScene {
 protected:
+    friend class GameObject;
     virtual std::vector<std::unique_ptr<IComponentPool>>& ComponentPools() = 0;
 
 public:

@@ -62,7 +62,10 @@ void PlayerBehavior::Update()
 
     m_rigidbody->SetVelocity(velocity);
 
-    /*if (m_collider->GetCollisionStay()) {
-        int a = 0;
-    }*/
+
+    static float time = 0.0f;
+    time += 0.1f;
+    if (time > 10.0f) {
+        this->GetOwner()->Destroy();
+    }
 }
