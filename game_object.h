@@ -10,6 +10,7 @@
 #ifndef GAME_OBJECT_H
 #define GAME_OBJECT_H
 
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -30,16 +31,16 @@ private:
     bool            m_isDestroy = false;// 破棄予約フラグ
     
     // Behaviorリスト
-    std::vector<Behavior*>  m_pBehaviors = {};
+    std::vector<std::unique_ptr<Behavior>>  m_pBehaviors = {};
 
 public:
     // GameObjectの更新処理
     // ・更新毎、Behavior.Update()を呼び出す。
     void    Update() {
         if (!m_active || m_isDestroy)return;
-        for (Behavior* be : m_pBehaviors) {
-            if (!be->GetEnable())continue;
-            be->Update();
+        for (auto& be : m_pBehaviors) {
+            if (!be.get()->GetEnable())continue;
+            be.get()->Update();
         }
     }
 
@@ -48,6 +49,13 @@ private:
     friend class SceneBase;
     void    SetScene(IScene* pScene) { m_pScene = pScene; }
     void    SetID(unsigned int id) { m_id = id; }
+
+    void    Finalize() {
+        // Componentの解放
+        
+        // Behaviorの解放（スマートポインタなので自動的に解放される）
+        m_pBehaviors.clear();
+    }
 
 public:
     IScene*         GetScene() const { return m_pScene; }
@@ -87,7 +95,6 @@ public:
     template<class T>
     T* GetComponent(){
         auto* compPool = m_pScene->GetComponentPool<T>();
-
         if (compPool) {
             return compPool->GetByGameObjectID(m_id);
         }
@@ -95,16 +102,20 @@ public:
     }
 
     // Behaviorの追加
-    void    AttachBehavior(Behavior* pBe) {
+    template<class T>
+    T*  AddBehavior() {
+        // 引数ownerはGameObjectのポインタを渡す。
+        m_pBehaviors.push_back(std::make_unique<T>(this));
+        auto* pBe = static_cast<T*>(m_pBehaviors.back().get());
         pBe->SetOwner(this);
-        m_pBehaviors.push_back(pBe);
+        return pBe;
     }
 
     // Behaviorの取得
     template<class T>
     T* GetBehavior() const {
         for (Behavior* pBe : m_pBehaviors) {
-            if (pBe->GetType() == T::GetTypeStatic()) {
+            if (pBe->GetType() == BehaviorTypeID::getTypeID<T>()) {
                 return static_cast<T*>(pBe);
             }
         }

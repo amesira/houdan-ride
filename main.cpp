@@ -24,8 +24,8 @@
 //===================================================
 // マクロ定義
 //===================================================
-#define CLASS_NAME "DX21 Window"
-#define WINDOW_CAPTION "AT12D187_16_北村美羽　テクスチャ描画"
+#define CLASS_NAME "MyWindowClass"
+#define WINDOW_CAPTION "ゴルフゲーム"
 
 #define SCREEN_WIDTH  (1280)
 #define SCREEN_HEIGHT (720)

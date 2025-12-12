@@ -10,6 +10,8 @@
 #ifndef SCENE_BASE_H
 #define SCENE_BASE_H
 
+#include <iostream>
+#include <vector>
 #include "scene_interface.h"
 #include "game_object.h"
 
@@ -22,10 +24,10 @@ private:
     std::vector<GameObject>     m_gameObjects = {};
 
     // ComponentPoolリスト
-    std::vector<IComponentPool*> m_componentPools;
+    std::vector<std::unique_ptr<IComponentPool>> m_componentPools;
 
 protected: // IScene implementation
-    std::vector<IComponentPool*>& ComponentPools() override {
+    std::vector<std::unique_ptr<IComponentPool>>& ComponentPools() override {
         return m_componentPools;
     }
 

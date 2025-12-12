@@ -1,11 +1,12 @@
 //===================================================
 // player_behavior.cpp
 // 
-// AuthorÅFMiu Kitamura
-// Date  ÅF2025/10/27
+// AuthorÔºöMiu Kitamura
+// Date  Ôºö2025/10/27
 //===================================================
 #include "player_behavior.h"
 
+#include "type_id.h"
 #include "game_object.h"
 #include "transform_component.h"
 #include "cubemesh_component.h"
@@ -14,7 +15,8 @@
 
 #include "keyboard.h"
 
-PlayerBehavior::PlayerBehavior(GameObject* owner)
+PlayerBehavior::PlayerBehavior(GameObject* owner) 
+    : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
 {
     m_transform = owner->GetComponent<TransformComponent>();
     m_cubemesh = owner->GetComponent<CubemeshComponent>();
@@ -29,7 +31,7 @@ PlayerBehavior::~PlayerBehavior()
 
 void PlayerBehavior::Update()
 {
-    // à⁄ìÆ
+    // ÁßªÂãï
     DirectX::XMFLOAT3 position = m_transform->GetPosition();
     DirectX::XMFLOAT3 velocity = m_rigidbody->GetVelocity();
     velocity.x = 0.0f;

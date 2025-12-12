@@ -10,13 +10,14 @@
 #ifndef SCENE_INTERFACE_H
 #define SCENE_INTERFACE_H
 
+#include <iostream>
 #include <vector>
 #include "component_pool.h"
 #include "type_id.h"
 
 class IScene {
 protected:
-    virtual std::vector<IComponentPool*>& ComponentPools() = 0;
+    virtual std::vector<std::unique_ptr<IComponentPool>>& ComponentPools() = 0;
 
 public:
     virtual ~IScene() = default;
@@ -31,8 +32,9 @@ public:
     template<class T>
     ComponentPool<T>* GetComponentPool() {
         auto& m_componentPools = ComponentPools();
-        for (IComponentPool* pool : m_componentPools) {
-            if(pool->GetTypeID() == TypeID::getTypeID<T>()) {
+        for (auto& p : m_componentPools) {
+            auto* pool = p.get();
+            if(pool->GetTypeID() == ComponentTypeID::getTypeID<T>()) {
                 return static_cast<ComponentPool<T>*>(pool);
             }
         }
@@ -43,13 +45,13 @@ public:
     template<class T>
     ComponentPool<T>*   AddComponentPool() {
         // すでに存在する場合はそれを返す
-        auto* pool = GetComponentPool<T>();
+        auto* pool = this->GetComponentPool<T>();
         if (pool) return pool;
 
         // 新規に生成
         auto& m_componentPools = ComponentPools();
-        m_componentPools.push_back(new ComponentPool<T>());
-        return static_cast<ComponentPool<T>*>(m_componentPools.back());
+        m_componentPools.push_back(std::make_unique<ComponentPool<T>>());
+        return static_cast<ComponentPool<T>*>(m_componentPools.back().get());
     }
 };
 

@@ -29,7 +29,7 @@ void GameScene::Initialize()
 
     // ui
     GameObject* uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"Hello, DirectX11!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+    Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
 }
 
 //===================================================

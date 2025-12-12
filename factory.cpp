@@ -40,8 +40,7 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
     // behavior生成・登録
-    PlayerBehavior* playerBe = new PlayerBehavior(player);
-    player->AttachBehavior(playerBe);
+    PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 scaling)
