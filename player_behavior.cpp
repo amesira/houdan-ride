@@ -23,6 +23,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_collider = owner->GetComponent<BoxColliderComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
 
+    //m_rigidbody->SetEnable(false);
 }
 
 PlayerBehavior::~PlayerBehavior()
@@ -33,40 +34,49 @@ PlayerBehavior::~PlayerBehavior()
 void PlayerBehavior::Update()
 {
     // 移動
-    DirectX::XMFLOAT3 position = m_transform->GetPosition();
     DirectX::XMFLOAT3 velocity = m_rigidbody->GetVelocity();
     velocity.x = 0.0f;
     velocity.z = 0.0f;
+
     if (Keyboard_IsKeyDown(KK_W)) {
-        //position.z += 0.03f;
         velocity.z = 5.0f;
         
     }
     if (Keyboard_IsKeyDown(KK_S)) {
-        //position.z -= 0.03f;
         velocity.z = -5.0f;
     }
     if (Keyboard_IsKeyDown(KK_D)) {
-        //position.x += 0.03f;
         velocity.x = 5.0f;
     }
     if (Keyboard_IsKeyDown(KK_A)) {
-        //position.x -= 0.03f;
         velocity.x = -5.0f;
     }
-    //m_transform->SetPosition(position);
+
+    XMFLOAT3 angle = m_transform->GetRotation();
+    if (Keyboard_IsKeyDown(KK_Q)) {
+        angle.z -= 0.05f;
+    }
+    if (Keyboard_IsKeyDown(KK_E)) {
+        angle.z += 0.05f;
+    }
+    m_transform->SetRotation(angle);
+
+    if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
+        velocity.y += 3.0f;
+    }
+    if (Keyboard_IsKeyDownTrigger(KK_LEFTSHIFT)) {
+        velocity.y -= 3.0f;
+    }
 
     m_cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
     
     for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
         BoxColliderComponent::CollisionData data = m_collider->GetCollisionData(i);
+        if (!data.m_other)continue;
+
         if (data.GetCollisionStay()) {
             m_cubemesh->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
         }
-    }
-
-    if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
-        velocity.y = 5.0f;
     }
 
     m_rigidbody->SetVelocity(velocity);

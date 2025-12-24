@@ -193,12 +193,12 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
     posB.y += tB->GetPosition().y;
     posB.z += tB->GetPosition().z;
     
+    // 中心点間のベクトル
     XMFLOAT3 diff = {
         posB.x - posA.x,
         posB.y - posA.y,
         posB.z - posA.z
     };
-    diff = MiMath::Normalize(diff);
 
     // 分離軸の情報
     XMFLOAT3 ea1 = {cA->GetScale().x * 0.5f, 0.0f, 0.0f};
@@ -243,24 +243,22 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
     // 衝突判定処理
 	//----------------------------------------------------
     for(int i = 0; i < 15; i++){
-        XMFLOAT3 l = MiMath::Normalize(L[i]);
+        if (MiMath::Length(L[i]) < 0.001f) continue;
 
-        if(MiMath::Length(l) < 0.001f){
-            continue;
-        }
+        XMFLOAT3 l = MiMath::Normalize(L[i]);
         
         // 中心点間の距離を投影
         float interval = abs(MiMath::Dot(diff, l));
 
         // 半径を投影
         float rA = 
-            abs(MiMath::Dot(ea1, l)) +
-            abs(MiMath::Dot(ea2, l)) +
-            abs(MiMath::Dot(ea3, l));
+            fabsf(MiMath::Dot(ea1, l)) +
+            fabsf(MiMath::Dot(ea2, l)) +
+            fabsf(MiMath::Dot(ea3, l));
         float rB =
-            abs(MiMath::Dot(eb1, l)) +
-            abs(MiMath::Dot(eb2, l)) +
-            abs(MiMath::Dot(eb3, l));
+            fabsf(MiMath::Dot(eb1, l)) +
+            fabsf(MiMath::Dot(eb2, l)) +
+            fabsf(MiMath::Dot(eb3, l));
         
         // 衝突判定
         if (interval > (rA + rB)) {
@@ -276,9 +274,13 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
         }
     }
 
-    // mtvの設定
+    //----------------------------------------------------
+    // resultの設定
+	//----------------------------------------------------
     result.isCollision = true;
-    if (MiMath::Dot(diff, mtvAxis) < 0.0f) { // 方向を反転
+
+    // mtvの設定
+    if (MiMath::Dot(diff, mtvAxis) > 0.0f) { // 方向を反転
         mtvAxis = {
             -mtvAxis.x,
             -mtvAxis.y,

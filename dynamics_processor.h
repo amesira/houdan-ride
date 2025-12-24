@@ -28,6 +28,13 @@ public:
 
     void    Process(IScene* pScene)override;
 
+private:
+    void    ApplyDynamics(
+        TransformComponent* transform,
+        ColliderComponent* collider,
+        RigidbodyComponent* rigidbody,
+        float deltaTime);
+
 };
 
 
