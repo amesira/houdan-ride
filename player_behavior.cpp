@@ -22,6 +22,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_cubemesh = owner->GetComponent<CubemeshComponent>();
     m_collider = owner->GetComponent<BoxColliderComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
+
 }
 
 PlayerBehavior::~PlayerBehavior()
@@ -54,18 +55,19 @@ void PlayerBehavior::Update()
         velocity.x = -5.0f;
     }
     //m_transform->SetPosition(position);
+
+    m_cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
     
+    for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
+        BoxColliderComponent::CollisionData data = m_collider->GetCollisionData(i);
+        if (data.GetCollisionStay()) {
+            m_cubemesh->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });
+        }
+    }
 
     if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
         velocity.y = 5.0f;
     }
 
     m_rigidbody->SetVelocity(velocity);
-
-
-    static float time = 0.0f;
-    time += 0.1f;
-    if (time > 10.0f) {
-        this->GetOwner()->Destroy();
-    }
 }

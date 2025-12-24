@@ -255,10 +255,10 @@ void Polygon3D_CubeRender(
 
     // 回転行列の作成
     XMMATRIX    rotationMatrix = XMMatrixRotationRollPitchYaw
-    (   // 度数法 → ラジアン角 変換
-        XMConvertToRadians(rotation.x),
-        XMConvertToRadians(rotation.y),
-        XMConvertToRadians(rotation.z)
+    (   
+        rotation.x,
+        rotation.y,
+        rotation.z
     );
 
     // ワールド行列（乗算の順番に注意）

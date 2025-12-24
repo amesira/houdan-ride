@@ -54,6 +54,7 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
     transform->SetPosition(position);
     transform->SetScaling(scaling);
     cubemesh->SetColor(color);
+    collider->SetScale(scaling);
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)

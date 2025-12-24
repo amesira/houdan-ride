@@ -256,6 +256,9 @@
     <ClInclude Include="type_id.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
+    <ClInclude Include="mi_math.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader_pixel_2d.hlsl">
