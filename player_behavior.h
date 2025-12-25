@@ -11,14 +11,14 @@
 
 class TransformComponent;
 class CubemeshComponent;
-class BoxColliderComponent;
+class ColliderComponent;
 class RigidbodyComponent;
 
 class PlayerBehavior :public Behavior {
 private:
     TransformComponent* m_transform = nullptr;
     CubemeshComponent* m_cubemesh = nullptr;
-    BoxColliderComponent* m_collider = nullptr;
+    ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
 
 public:

@@ -150,7 +150,7 @@ public:
 
 class SphereColliderComponent :public ColliderComponent {
 private:
-    float   m_radius = 1.0f;
+    float   m_radius = 0.5f;
 
 public:
     SphereColliderComponent() { m_shape = ColliderComponent::Shape::Sphere; }

@@ -20,7 +20,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
 {
     m_transform = owner->GetComponent<TransformComponent>();
     m_cubemesh = owner->GetComponent<CubemeshComponent>();
-    m_collider = owner->GetComponent<BoxColliderComponent>();
+    m_collider = owner->GetComponent<SphereColliderComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
 
     //m_rigidbody->SetEnable(false);
@@ -68,11 +68,16 @@ void PlayerBehavior::Update()
         velocity.y -= 3.0f;
     }
 
+   /* XMFLOAT3 position = m_transform->GetPosition();
+    position.x += velocity.x * 0.016f;
+    position.y += velocity.y * 0.016f;
+    position.z += velocity.z * 0.016f;
+    m_transform->SetPosition(position);*/
     m_cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
     
     for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
-        BoxColliderComponent::CollisionData data = m_collider->GetCollisionData(i);
-        if (!data.m_other)continue;
+        ColliderComponent::CollisionData data = m_collider->GetCollisionData(i);
+        if (data.m_other == nullptr) continue;
 
         if (data.GetCollisionStay()) {
             m_cubemesh->SetColor({ 1.0f, 0.0f, 0.0f, 1.0f });

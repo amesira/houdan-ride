@@ -32,7 +32,8 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
     CubemeshComponent* cubemesh = player->AddComponent<CubemeshComponent>();
-    BoxColliderComponent* collider = player->AddComponent<BoxColliderComponent>();
+    //BoxColliderComponent* collider = player->AddComponent<BoxColliderComponent>();
+    SphereColliderComponent* collider = player->AddComponent<SphereColliderComponent>();
     RigidbodyComponent* rigidbody = player->AddComponent<RigidbodyComponent>();
 
     // component設定
@@ -43,7 +44,7 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
 }
 
-void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 scaling)
+void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)
 {
     // component生成・登録
     TransformComponent* transform = cube->AddComponent<TransformComponent>();
@@ -52,7 +53,9 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 
     // component設定
     transform->SetPosition(position);
+    transform->SetRotation(rotation);
     transform->SetScaling(scaling);
+
     cubemesh->SetColor(color);
     collider->SetScale(scaling);
 }

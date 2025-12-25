@@ -43,6 +43,8 @@ void DynamicsProcessor::Process(IScene* pScene)
     auto* sphereColliderPool = pScene->GetComponentPool<SphereColliderComponent>();
 
     auto& boxColliderList = boxColliderPool->GetList();
+    auto& sphereColliderList = sphereColliderPool->GetList();
+
     for (BoxColliderComponent& c : boxColliderList) {
         BoxColliderComponent* collider = &c;
         RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
@@ -56,19 +58,18 @@ void DynamicsProcessor::Process(IScene* pScene)
         ApplyDynamics(transform, collider, rigidbody, deltaTime);
     }
 
-    //auto& sphereColliderList = sphereColliderPool->GetList();
-    //for (SphereColliderComponent& c : sphereColliderList) {
-    //    SphereColliderComponent* collider = &c;
-    //    RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
-    //    TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
+    for(SphereColliderComponent& c : sphereColliderList) {
+        SphereColliderComponent* collider = &c;
+        RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
+        TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
 
-    //    // コンポーネントが無効ならスキップ
-    //    if (!transform || !collider || !rigidbody)continue;
-    //    if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
+        // コンポーネントが無効ならスキップ
+        if (!transform || !collider || !rigidbody)continue;
+        if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
 
-    //    // 物理演算補正適用
-    //    ApplyDynamics(transform, collider, rigidbody, deltaTime);
-    //}
+        // 物理演算補正適用
+        ApplyDynamics(transform, collider, rigidbody, deltaTime);
+    }
 }
 
 void DynamicsProcessor::ApplyDynamics(TransformComponent* transform, ColliderComponent* collider, RigidbodyComponent* rigidbody, float deltaTime)

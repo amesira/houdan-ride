@@ -27,37 +27,107 @@ void CollisionProcessor::Finalize()
 
 void CollisionProcessor::Process(IScene* pScene)
 {
-    auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
+    auto* sphereColliderPool = pScene->GetComponentPool<SphereColliderComponent>();
 
     auto& boxColliderList = boxColliderPool->GetList();
+    auto& sphereColliderList = sphereColliderPool->GetList();
 
     // 衝突情報の更新
     for (BoxColliderComponent& c : boxColliderList) {
         c.UpdateCollisionData();
     }
+    for (SphereColliderComponent& c : sphereColliderList) {
+        c.UpdateCollisionData();
+    }
 
+    //----------------------------------------------------
     // 当たり判定処理
+	//----------------------------------------------------
+
+    // BoxCollider同士の当たり判定
     for (int i = 0; i < boxColliderList.size(); i++) {
+        BoxColliderComponent* colliderA = &boxColliderList[i];
+        TransformComponent* transformA = transformPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+
+        if (colliderA == nullptr || transformA == nullptr) continue;
+        if (!colliderA->GetEnable() || !transformA->GetEnable()) continue;
+
         for (int j = 0; j < boxColliderList.size() - (i + 1); j++) {
-            BoxColliderComponent* colliderA = &boxColliderList[i];
             BoxColliderComponent* colliderB = &boxColliderList[i + (j + 1)];
-            TransformComponent* transformA = transformPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
             TransformComponent* transformB = transformPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
 
-            CollisionResult result = {};
+            if (colliderB == nullptr || transformB == nullptr) continue;
+            if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
 
-            // 判定方法がAABBである
-            /*Bounds a = ConvertToBounds(transformA, colliderA);
-            Bounds b = ConvertToBounds(transformB, colliderB);
-            result = CheckAABB(a, b);*/
-
-            result = CheckBoxToBox(
+            // 詳細な衝突判定
+            CollisionResult result = CheckBoxToBox(
                 transformA, colliderA,
                 transformB, colliderB);
 
             // 衝突している場合
-            // ・衝突情報を登録
+            if (result.isCollision) {
+                colliderA->RegisterCollisionData(colliderB, result.mtv);
+                colliderB->RegisterCollisionData(colliderA, {
+                    -result.mtv.x,
+                    -result.mtv.y,
+                    -result.mtv.z });
+            }
+        }
+    }
+
+    // BoxColliderとSphereColliderの当たり判定
+    for (int i = 0; i < boxColliderList.size(); i++) {
+        BoxColliderComponent* colliderA = &boxColliderList[i];
+        TransformComponent* transformA = transformPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+
+        if (colliderA == nullptr || transformA == nullptr) continue;
+        if (!colliderA->GetEnable() || !transformA->GetEnable()) continue;
+
+        for (int j = 0; j < sphereColliderList.size(); j++) {
+            SphereColliderComponent* colliderB = &sphereColliderList[j];
+            TransformComponent* transformB = transformPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
+
+            if (colliderB == nullptr || transformB == nullptr) continue;
+            if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
+
+            CollisionResult result = CheckBoxToSphere(
+                transformA, colliderA,
+                transformB, colliderB);
+
+            // 衝突している場合
+            if (result.isCollision) {
+                colliderA->RegisterCollisionData(colliderB, result.mtv);
+                colliderB->RegisterCollisionData(colliderA, {
+                    -result.mtv.x,
+                    -result.mtv.y,
+                    -result.mtv.z });
+            }
+        }
+    }
+
+    // SphereCollider同士の当たり判定
+    for(int i = 0; i < sphereColliderList.size(); i++) {
+        SphereColliderComponent* colliderA = &sphereColliderList[i];
+        TransformComponent* transformA = transformPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+
+        if (colliderA == nullptr || transformA == nullptr) continue;
+        if (!colliderA->GetEnable() || !transformA->GetEnable()) continue;
+
+        for (int j = 0; j < sphereColliderList.size() - (i + 1); j++) {
+            SphereColliderComponent* colliderB = &sphereColliderList[i + (j + 1)];
+            TransformComponent* transformB = transformPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
+
+            if (colliderB == nullptr || transformB == nullptr) continue;
+            if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
+
+            // 詳細な衝突判定
+            CollisionResult result = CheckSphereToSphere(
+                transformA, colliderA,
+                transformB, colliderB);
+
+            // 衝突している場合
             if (result.isCollision) {
                 colliderA->RegisterCollisionData(colliderB, result.mtv);
                 colliderB->RegisterCollisionData(colliderA, {
@@ -299,7 +369,84 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
 // BoxとSphereの衝突判定
 CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToSphere(TransformComponent* tA, BoxColliderComponent* cA, TransformComponent* tB, SphereColliderComponent* cB)
 {
-    return CollisionResult();
+    CollisionResult result = { false,{0.0f,0.0f,0.0f} };
+
+    // ワールド座標系での中心座標を計算
+    XMFLOAT3 boxPos = MiMath::RotateVectorByEuler(tA->GetRotation(), cA->GetCenter());
+    boxPos.x += tA->GetPosition().x;
+    boxPos.y += tA->GetPosition().y;
+    boxPos.z += tA->GetPosition().z;
+    XMFLOAT3 spherePos = MiMath::RotateVectorByEuler(tB->GetRotation(), cB->GetCenter());
+    spherePos.x += tB->GetPosition().x;
+    spherePos.y += tB->GetPosition().y;
+    spherePos.z += tB->GetPosition().z;
+
+    // BoxColliderから見たSphereColliderのローカル座標を計算
+    // ・BoxColliderをAABBとして扱うため
+    XMFLOAT3 localSpherePos = MiMath::RotateVectorByEuler(
+        {
+            -tA->GetRotation().x,
+            -tA->GetRotation().y,
+            -tA->GetRotation().z
+        },
+        {
+            spherePos.x - boxPos.x,
+            spherePos.y - boxPos.y,
+            spherePos.z - boxPos.z
+        });
+
+    // AABBの各軸に沿った最近接点を計算
+    XMFLOAT3 halfExtents = {
+        cA->GetScale().x * 0.5f,
+        cA->GetScale().y * 0.5f,
+        cA->GetScale().z * 0.5f
+    };
+    XMFLOAT3 closestPoint = {
+        MiMath::Clamp(localSpherePos.x, -halfExtents.x, halfExtents.x),
+        MiMath::Clamp(localSpherePos.y, -halfExtents.y, halfExtents.y),
+        MiMath::Clamp(localSpherePos.z, -halfExtents.z, halfExtents.z)
+    };
+
+    // 円の方程式による衝突判定
+    XMFLOAT3 difference = {
+        closestPoint.x - localSpherePos.x,
+        closestPoint.y - localSpherePos.y,
+        closestPoint.z - localSpherePos.z
+    };
+    float distanceSquared = {
+        MiMath::Pow(difference.x, 2) +
+        MiMath::Pow(difference.y, 2) +
+        MiMath::Pow(difference.z, 2)
+    };
+
+    float radius = cB->GetRadius();
+
+    if (distanceSquared < MiMath::Pow(radius, 2)) {
+        // 衝突している
+        result.isCollision = true;
+
+        // 最小移動ベクトルの計算
+        float distance = sqrtf(distanceSquared);
+        float overlap = radius - distance;
+
+        // ローカル座標系での最小移動ベクトル
+        XMFLOAT3 localMtv = MiMath::Normalize(difference);
+        localMtv = {
+            localMtv.x * overlap,
+            localMtv.y * overlap,
+            localMtv.z * overlap
+        };
+
+        // ワールド座標系に変換
+        XMFLOAT3 worldMtv = MiMath::RotateVectorByEuler(
+            tA->GetRotation(),
+            localMtv
+        );
+
+        result.mtv = worldMtv;
+    }
+
+    return result;
 }
 
 // Sphere同士の衝突判定
