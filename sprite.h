@@ -1,13 +1,13 @@
 //===================================================
-// sprite.h [ƒXƒvƒ‰ƒCƒg]
+// sprite.h [ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/06/17
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/06/17
 //===================================================
 #pragma once
 
 //----------------------------------------------------
-// ƒCƒ“ƒNƒ‹[ƒh
+// ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰
 //----------------------------------------------------
 #include <d3d11.h>
 #include "direct3d.h"
@@ -15,50 +15,51 @@
 using namespace DirectX;
 
 //----------------------------------------------------
-// \‘¢‘Ì
+// æ§‹é€ ä½“
 //----------------------------------------------------
 
-/// @brief ’¸“_\‘¢‘Ì
+/// @brief é ‚ç‚¹æ§‹é€ ä½“
 struct Vertex
 {
 	XMFLOAT3 position;
-	XMFLOAT4 color;		// ’¸“_ƒJƒ‰[iR,G,B,Aj
-	XMFLOAT2 texCoord;	// ƒeƒNƒXƒ`ƒƒÀ•W
+    XMFLOAT3 normal;
+	XMFLOAT4 color;		// é ‚ç‚¹ã‚«ãƒ©ãƒ¼ï¼ˆR,G,B,Aï¼‰
+	XMFLOAT2 texCoord;	// ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™
 };
 
 //----------------------------------------------------
-// ƒXƒvƒ‰ƒCƒg ‰Šú‰»EI—¹ˆ—
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ åˆæœŸåŒ–ãƒ»çµ‚äº†å‡¦ç†
 //----------------------------------------------------
 
-/// @brief ƒXƒvƒ‰ƒCƒg‚ğ‰Šú‰»‚·‚é
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’åˆæœŸåŒ–ã™ã‚‹
 void InitializeSprite();
 
 void LoadTexture(ID3D11ShaderResourceView** texture, const wchar_t* fileName);
 
-/// @brief ƒXƒvƒ‰ƒCƒg‚ğI—¹E’¸“_ƒoƒbƒtƒ@‚Ì‰ğ•ú
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’çµ‚äº†ãƒ»é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®è§£æ”¾
 void FinalizeSprite();
 
 //----------------------------------------------------
-// ƒXƒvƒ‰ƒCƒg•`‰æˆ—
+// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»å‡¦ç†
 //----------------------------------------------------
 
-/// @brief ƒXƒvƒ‰ƒCƒg•`‰æŠÖ”
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»é–¢æ•°
 void DrawSprite(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color = {1.0f,1.0f,1.0f,1.0f});
 
-/// @brief ƒXƒvƒ‰ƒCƒg•`‰æŠÖ”EXFƒXƒvƒ‰ƒCƒg•ªŠ„
-/// @param bno •ªŠ„”Ô†
-/// @param wc •ªŠ„”i‰¡j
-/// @param hc •ªŠ„”icj
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»é–¢æ•°EXï¼šã‚¹ãƒ—ãƒ©ã‚¤ãƒˆåˆ†å‰²
+/// @param bno åˆ†å‰²ç•ªå·
+/// @param wc åˆ†å‰²æ•°ï¼ˆæ¨ªï¼‰
+/// @param hc åˆ†å‰²æ•°ï¼ˆç¸¦ï¼‰
 void DrawSpriteEx(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
     int bno, int wc, int hc);
 
-/// @brief ƒXƒNƒ[ƒ‹—pƒXƒvƒ‰ƒCƒg•`‰æ
+/// @brief ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ç”¨ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 void DrawSpriteScroll(XMFLOAT2 pos, XMFLOAT2 size, 
 	XMFLOAT4 color,XMFLOAT2 texcoord);
 
-/// @brief ƒXƒvƒ‰ƒCƒg•`‰æEXFƒXƒvƒ‰ƒCƒg•ªŠ„ + ‰ñ“]
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»EXï¼šã‚¹ãƒ—ãƒ©ã‚¤ãƒˆåˆ†å‰² + å›è»¢
 void DrawSpriteExRotation(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
 	int bno, int wc, int hc,float rad);
 
-/// @brief ƒXƒvƒ‰ƒCƒg•`‰æis—ñg—pverj
+/// @brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»ï¼ˆè¡Œåˆ—ä½¿ç”¨verï¼‰
 void DrawSprite(XMFLOAT2 size,XMFLOAT4 color,int bno, int wc,int hc);

@@ -24,6 +24,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
 
     //m_rigidbody->SetEnable(false);
+    m_cubemesh->SetEnable(false);
 }
 
 PlayerBehavior::~PlayerBehavior()

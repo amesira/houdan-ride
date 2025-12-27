@@ -26,21 +26,25 @@ static Vertex vData[NUM_VERTEX] = {
     // -Z面
     {   // 頂点0（Left-Top）
         XMFLOAT3(-0.5f,0.5f,-0.5f),      // 位置座標
+        XMFLOAT3(0.0f,0.0f,-1.0f),    // 法線ベクトル
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),   // 色
         XMFLOAT2(0.0f,0.0f),             // テクスチャ座標
     },
     {   // 頂点1（Right-Top）
         XMFLOAT3(0.5f,0.5f,-0.5f),
+        XMFLOAT3(0.0f,0.0f,-1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点2（Left-Bottom）
         XMFLOAT3(-0.5f,-0.5f,-0.5f),
+        XMFLOAT3(0.0f,0.0f,-1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点5（Right-Bottom）
         XMFLOAT3(0.5f,-0.5f,-0.5f),
+        XMFLOAT3(0.0f,0.0f,-1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },
@@ -48,21 +52,25 @@ static Vertex vData[NUM_VERTEX] = {
     // +X面
     {   // 頂点6（Left-Top）= 1
         XMFLOAT3(0.5f,0.5f,-0.5f),
+        XMFLOAT3(1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,0.0f),
     },
     {   // 頂点7（Right-Top）
         XMFLOAT3(0.5f,0.5f,0.5f),
+        XMFLOAT3(1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点8（Left-Bottom）= 5
         XMFLOAT3(0.5f,-0.5f,-0.5f),
+        XMFLOAT3(1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点11（Right-Bottom）
         XMFLOAT3(0.5f,-0.5f,0.5f),
+        XMFLOAT3(1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },
@@ -70,21 +78,25 @@ static Vertex vData[NUM_VERTEX] = {
     // +Z面
     {   // 頂点12（Left-Top）= 1 +z
         XMFLOAT3(0.5f,0.5f,0.5f),
+        XMFLOAT3(0.0f,0.0f,1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,0.0f),
     },
     {   // 頂点13（Right-Top）= 0 +z
         XMFLOAT3(-0.5f,0.5f,0.5f),
+        XMFLOAT3(0.0f,0.0f,1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点14（Left-Bottom）= 5 +z
         XMFLOAT3(0.5f,-0.5f,0.5f),
+        XMFLOAT3(0.0f,0.0f,1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点17（Right-Bottom）= 2 +z
         XMFLOAT3(-0.5f,-0.5f,0.5f),
+        XMFLOAT3(0.0f,0.0f,1.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },
@@ -92,21 +104,25 @@ static Vertex vData[NUM_VERTEX] = {
     // -X面
     {   // 頂点18（Left-Top）= 13
         XMFLOAT3(-0.5f,0.5f,0.5f),
+        XMFLOAT3(-1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,0.0f),
     },
     {   // 頂点19（Right-Top）= 0
         XMFLOAT3(-0.5f,0.5f,-0.5f),
+        XMFLOAT3(-1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点20（Left-Bottom）= 17
         XMFLOAT3(-0.5f,-0.5f,0.5f),
+        XMFLOAT3(-1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点23（Right-Bottom）= 2
         XMFLOAT3(-0.5f,-0.5f,-0.5f),
+        XMFLOAT3(-1.0f,0.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },
@@ -114,21 +130,25 @@ static Vertex vData[NUM_VERTEX] = {
     // +Y面
     {   // 頂点24（Left-Top）= 13,18
         XMFLOAT3(-0.5f,0.5f,0.5f),
+        XMFLOAT3(0.0f,1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,0.0f),
     },
     {   // 頂点25（Right-Top）= 10,12
         XMFLOAT3(0.5f,0.5f,0.5f),
+        XMFLOAT3(0.0f,1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点26（Left-Bottom）= 0,19
         XMFLOAT3(-0.5f,0.5f,-0.5f),
+        XMFLOAT3(0.0f,1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点29（Right-Bottom）= 1
         XMFLOAT3(0.5f,0.5f,-0.5f),
+        XMFLOAT3(0.0f,1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },
@@ -136,21 +156,25 @@ static Vertex vData[NUM_VERTEX] = {
     // -Y面
     {   // 頂点30（Left-Top）= 2
         XMFLOAT3(-0.5f,-0.5f,-0.5f),
+        XMFLOAT3(0.0f,-1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,0.0f),
     },
     {   // 頂点31（Right-Top）= 5
         XMFLOAT3(0.5f,-0.5f,-0.5f),
+        XMFLOAT3(0.0f,-1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,0.0f),
     },
     {   // 頂点32（Left-Bottom）= 20
         XMFLOAT3(-0.5f,-0.5f,0.5f),
+        XMFLOAT3(0.0f,-1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(0.0f,1.0f),
     },
     {   // 頂点35（Right-Bottom）= 14
         XMFLOAT3(0.5f,-0.5f,0.5f),
+        XMFLOAT3(0.0f,-1.0f,0.0f),
         XMFLOAT4(1.0f,1.0f,1.0f,1.0f),
         XMFLOAT2(1.0f,1.0f),
     },

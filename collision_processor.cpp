@@ -13,6 +13,8 @@
 #include "transform_component.h"
 #include "collider_component.h"
 
+#include "debug_renderer.h"
+
 using namespace DirectX;
 
 void CollisionProcessor::Initialize()
@@ -45,7 +47,7 @@ void CollisionProcessor::Process(IScene* pScene)
     //----------------------------------------------------
     // 当たり判定処理
 	//----------------------------------------------------
-
+#pragma region CollisionDetection
     // BoxCollider同士の当たり判定
     for (int i = 0; i < boxColliderList.size(); i++) {
         BoxColliderComponent* colliderA = &boxColliderList[i];
@@ -134,6 +136,121 @@ void CollisionProcessor::Process(IScene* pScene)
                     -result.mtv.x,
                     -result.mtv.y,
                     -result.mtv.z });
+            }
+        }
+    }
+#pragma endregion
+
+    // デバッグ用コライダー描画
+    DrawDebugCollider(pScene);
+}
+
+// デバッグ用コライダー描画
+void CollisionProcessor::DrawDebugCollider(IScene* pScene)
+{
+    auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
+    auto* sphereColliderPool = pScene->GetComponentPool<SphereColliderComponent>();
+
+    auto& boxColliderList = boxColliderPool->GetList();
+    auto& sphereColliderList = sphereColliderPool->GetList();
+
+    const DirectX::XMFLOAT4 debugColor = { 0.0f,1.0f,0.0f,1.0f };
+
+    // BoxColliderのデバッグ描画
+    for(BoxColliderComponent& c : boxColliderList) {
+        TransformComponent* t = transformPool->GetByGameObjectID(c.GetOwner()->GetID());
+
+        // Nullチェック・Enableチェック
+        if (t == nullptr) continue;
+        if (!c.GetEnable() || !t->GetEnable()) continue;
+
+        // 頂点座標を算出
+        XMFLOAT3 verts[8] = {
+            { -c.GetScale().x * 0.5f, -c.GetScale().y * 0.5f, -c.GetScale().z * 0.5f },
+            {  c.GetScale().x * 0.5f, -c.GetScale().y * 0.5f, -c.GetScale().z * 0.5f },
+            {  c.GetScale().x * 0.5f,  c.GetScale().y * 0.5f, -c.GetScale().z * 0.5f },
+            { -c.GetScale().x * 0.5f,  c.GetScale().y * 0.5f, -c.GetScale().z * 0.5f },
+            { -c.GetScale().x * 0.5f, -c.GetScale().y * 0.5f,  c.GetScale().z * 0.5f },
+            {  c.GetScale().x * 0.5f, -c.GetScale().y * 0.5f,  c.GetScale().z * 0.5f },
+            {  c.GetScale().x * 0.5f,  c.GetScale().y * 0.5f,  c.GetScale().z * 0.5f },
+            { -c.GetScale().x * 0.5f,  c.GetScale().y * 0.5f,  c.GetScale().z * 0.5f },
+        };
+
+        // 回転させる
+        for(int i = 0; i < 8; i++) {
+            verts[i] = MiMath::RotateVectorByEuler(t->GetRotation(), verts[i]);
+            verts[i].x += t->GetPosition().x;
+            verts[i].y += t->GetPosition().y;
+            verts[i].z += t->GetPosition().z;
+        }
+
+        DrawLine(verts[0], verts[1], debugColor);
+        DrawLine(verts[1], verts[2], debugColor);
+        DrawLine(verts[2], verts[3], debugColor);
+        DrawLine(verts[3], verts[0], debugColor);
+        DrawLine(verts[4], verts[5], debugColor);
+        DrawLine(verts[5], verts[6], debugColor);
+        DrawLine(verts[6], verts[7], debugColor);
+        DrawLine(verts[7], verts[4], debugColor);
+        DrawLine(verts[0], verts[4], debugColor);
+        DrawLine(verts[1], verts[5], debugColor);
+        DrawLine(verts[2], verts[6], debugColor);
+        DrawLine(verts[3], verts[7], debugColor);
+    }
+
+    //-----------------------------------------
+    // SphereColliderのデバッグ描画
+    //-----------------------------------------
+    for(SphereColliderComponent& c : sphereColliderList) {
+        TransformComponent* t = transformPool->GetByGameObjectID(c.GetOwner()->GetID());
+
+        // Nullチェック・Enableチェック
+        if (t == nullptr) continue;
+        if (!c.GetEnable() || !t->GetEnable()) continue;
+
+        // 円の分割数
+        const int circleSegment = 16;
+        const float step = DirectX::XM_2PI / circleSegment;
+
+        const float radius = c.GetRadius();
+        const XMFLOAT3 center = {
+            t->GetPosition().x + c.GetCenter().x,
+            t->GetPosition().y + c.GetCenter().y,
+            t->GetPosition().z + c.GetCenter().z
+        };
+        const XMFLOAT3 rotation = t->GetRotation();
+
+        // 円の描画
+        for (int i = 0; i < circleSegment; i++) {
+            float theta1 = (float)i * step;
+            float theta2 = (float)(i + 1) * step;
+
+            XMFLOAT3 p1[3];
+            XMFLOAT3 p2[3];
+
+            // XY平面
+            p1[0] = { radius * cosf(theta1), radius * sinf(theta1), 0.0f };
+            p2[0] = { radius * cosf(theta2), radius * sinf(theta2), 0.0f };
+
+            // YZ平面
+            p1[1] = { 0.0f, radius * cosf(theta1), radius * sinf(theta1) };
+            p2[1] = { 0.0f, radius * cosf(theta2), radius * sinf(theta2) };
+
+            // ZX平面
+            p1[2] = { radius * sinf(theta1), 0.0f, radius * cosf(theta1) };
+            p2[2] = { radius * sinf(theta2), 0.0f, radius * cosf(theta2) };
+
+            // 各平面ごとに描画
+            for (int j = 0; j < 3; j++) {
+                // 回転・平行移動を適用
+                p1[j] = MiMath::RotateVectorByEuler(rotation, p1[j]);
+                p1[j] = { p1[j].x + center.x, p1[j].y + center.y, p1[j].z + center.z };
+                p2[j] = MiMath::RotateVectorByEuler(rotation, p2[j]);
+                p2[j] = { p2[j].x + center.x, p2[j].y + center.y, p2[j].z + center.z };
+
+                // 描画
+                DrawLine(p1[j], p2[j], debugColor);
             }
         }
     }

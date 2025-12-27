@@ -30,6 +30,8 @@ public:
     void    Process(IScene* pScene)override;
 
 private:
+    void    DrawDebugCollider(IScene* pScene);
+
     // 衝突判定結果
     struct CollisionResult {
         bool                isCollision;
