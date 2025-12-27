@@ -145,6 +145,7 @@
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="physics_processor.cpp" />
     <ClCompile Include="player_behavior.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="polygon3d.cpp" />
     <ClCompile Include="processor_manager.cpp" />
     <ClCompile Include="renderer_3dcube_processor.cpp" />
+    <ClCompile Include="renderer_3dmodel_processor.cpp" />
     <ClCompile Include="renderer_font_processor.cpp" />
     <ClCompile Include="renderer_image_processor.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -171,6 +173,8 @@
     <ClInclude Include="fps.h" />
     <ClInclude Include="image_component.h" />
     <ClInclude Include="mi_math.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="model_component.h" />
     <ClInclude Include="physics_processor.h" />
     <ClInclude Include="player_behavior.h" />
     <ClInclude Include="processor_manager.h" />
@@ -189,6 +193,7 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="polygon3d.h" />
     <ClInclude Include="processor.h" />
+    <ClInclude Include="renderer_3dmodel_processor.h" />
     <ClInclude Include="renderer_font_processor.h" />
     <ClInclude Include="renderer_image_processor.h" />
     <ClInclude Include="rigidbody_component.h" />

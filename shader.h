@@ -12,6 +12,15 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+/// @brief 頂点構造体
+struct Vertex
+{
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 normal;
+	DirectX::XMFLOAT4 color;		// 頂点カラー（R,G,B,A）
+	DirectX::XMFLOAT2 texCoord;	// テクスチャ座標
+};
+
 enum ShaderBeginMode {
     Default = 0,
 	TrueTypeFont,
