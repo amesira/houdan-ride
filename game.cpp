@@ -12,6 +12,7 @@
 
 #include "factory.h"
 
+
 //===================================================
 // ゲームシーン初期化処理
 //===================================================
@@ -23,9 +24,10 @@ void GameScene::Initialize()
     Factory::CreateTestPlayer(player, { -2.0f,0.5f,0.0f });
 
     GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f }, { 0.2f,0.2f,0.2f,1.0f }, { 4.0f,1.0f,5.0f });
+    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.2f} ,{ 4.0f,1.0f,5.0f },{ 0.2f,0.2f,0.2f,1.0f });
     GameObject* cube = this->CreateGameObject();
-    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, { 0.2f,1.0f,1.0f,1.0f });
+    cube->SetName("TestCube");
+    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,1.0f});
 
     // ui
     GameObject* uiText = this->CreateGameObject();

@@ -19,6 +19,7 @@ class ColliderComponent :public Component {
 public:
     enum class Shape {
         Box,
+        Sphere,
     };
     struct CollisionData {
         ColliderComponent*  m_other;    // 衝突相手
@@ -37,6 +38,7 @@ public:
 
 protected:
     Shape m_shape;
+    DirectX::XMFLOAT3 m_center = { 0.0f,0.0f,0.0f };
 
 private:
     CollisionData m_collisionData[MAX_COLLISION_DATA];
@@ -46,6 +48,16 @@ public:
 
     // コライダーの形状取得
     Shape   GetShape()const { return m_shape; }
+
+    void    SetCenter(DirectX::XMFLOAT3 center) { m_center = center; }
+    DirectX::XMFLOAT3   GetCenter()const { return m_center; }
+
+    CollisionData GetCollisionData(int index) const {
+        if (index < 0 || index >= MAX_COLLISION_DATA) {
+            return CollisionData{};
+        }
+        return m_collisionData[index];
+    }
 
     void    UpdateCollisionData() {
         for (int i = 0; i < MAX_COLLISION_DATA; i++) {
@@ -126,19 +138,26 @@ public:
 
 class BoxColliderComponent :public ColliderComponent {
 private:
-    DirectX::XMFLOAT3   m_anchor = { 0.0f,0.0f,0.0f };
     DirectX::XMFLOAT3   m_scale = { 1.0f,1.0f,1.0f };
 
 public:
     BoxColliderComponent() { m_shape = ColliderComponent::Shape::Box; }
 
-    void    SetAnchor(DirectX::XMFLOAT3 anchor) { m_anchor = anchor; }
     void    SetScale(DirectX::XMFLOAT3 scale) { m_scale = scale; }
-
-    DirectX::XMFLOAT3   GetAnchor() { return m_anchor; }
     DirectX::XMFLOAT3   GetScale() { return m_scale; }
 
 };
 
+class SphereColliderComponent :public ColliderComponent {
+private:
+    float   m_radius = 0.5f;
+
+public:
+    SphereColliderComponent() { m_shape = ColliderComponent::Shape::Sphere; }
+
+    void    SetRadius(float radius) { m_radius = radius; }
+    float   GetRadius() { return m_radius; }
+
+};
 
 #endif

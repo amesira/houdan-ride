@@ -6,7 +6,14 @@
 ==============================================================================*/
 
 // 定数バッファ
-float4x4 mtx;	// c言語から渡されたデータが入っている（変数というより固定値）
+cbuffer Buffer0 : register(b0)
+{
+    float4x4 mtx;
+}
+cbuffer Buffer1:register(b1)
+{
+    float4x4 World;
+}
 
 // 頂点データ受け渡しのための構造体作るよ
 // ※入出力の構造体は、メンバ変数の順番を一致させること
@@ -14,6 +21,7 @@ float4x4 mtx;	// c言語から渡されたデータが入っている（変数�
 struct VS_INPUT
 {
     float4 posL : POSITION0; // 頂点座標
+    float4 normal : NORMAL0; // 頂点法線
     float4 color : COLOR0; // 頂点カラー（R,G,B,A）
     float2 texcoord : TEXCOORD0;
 };

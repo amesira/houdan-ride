@@ -37,6 +37,10 @@ void PhysicsProcessor::Process(IScene* pScene)
         TransformComponent* transform = transformPool->GetByGameObjectID(r.GetOwner()->GetID());
         RigidbodyComponent* rigidbody = &r;
 
+        // コンポーネントが無効ならスキップ
+        if (!transform || !rigidbody)continue;
+        if (!transform->GetEnable() || !rigidbody->GetEnable())continue;
+
         transform->SetPrevPosition(transform->GetPosition());
         rigidbody->SetPrevVelocity(rigidbody->GetPrevVelocity());
 

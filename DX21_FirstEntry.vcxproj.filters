@@ -134,6 +134,9 @@
     <ClCompile Include="fade.cpp">
       <Filter>Sources\Content</Filter>
     </ClCompile>
+    <ClCompile Include="debug_renderer.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -255,6 +258,12 @@
     </ClInclude>
     <ClInclude Include="type_id.h">
       <Filter>Sources\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="mi_math.h">
+      <Filter>リソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="debug_renderer.h">
+      <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

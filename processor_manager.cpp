@@ -8,6 +8,8 @@
 
 #include "scene_interface.h"
 
+#include "debug_renderer.h"
+
 #include "renderer_3dcube_processor.h"
 #include "physics_processor.h"
 #include "collision_processor.h"
@@ -50,6 +52,8 @@ static CAMERA cameraObj = {
 
 void ProcessorM_Initialize()
 {
+    DebugRenderer_Initialize();
+
     // Processorインスタンス化
     g_Renderer3DCubeProcessor = new Renderer3DCubeProcessor();
     g_PhysicsProcessor = new PhysicsProcessor();
@@ -103,6 +107,8 @@ void ProcessorM_Initialize()
 
 void ProcessorM_Finalize()
 {
+    DebugRenderer_Finalize();
+    
     // 終了処理
     g_Renderer3DCubeProcessor->Finalize();
     {
@@ -169,6 +175,8 @@ void ProcessorM_Draw(IScene* pScene)
 
     // ビューポートのリセット
     //Direct3D_ResetViewport();
+
+    DebugRenderer_DrawFlush();
 
     g_RendererImageProcessor->Process(pScene);
     g_RendererFontProcessor->Process(pScene);
