@@ -6,6 +6,20 @@
 #include "model.h"
 #include "shader.h"
 
+static ID3D11Device* g_pDevice = nullptr;
+static ID3D11DeviceContext* g_pContext = nullptr;
+
+void Model_Initialize()
+{
+    g_pDevice = Direct3D_GetDevice();
+    g_pContext = Direct3D_GetDeviceContext();
+}
+
+void Model_Finalize()
+{
+
+}
+
 MODEL* ModelLoad( const char *FileName )
 {
 	MODEL* model = new MODEL;
@@ -32,7 +46,12 @@ MODEL* ModelLoad( const char *FileName )
 			{
 				vertex[v].position = XMFLOAT3(mesh->mVertices[v].x, -mesh->mVertices[v].z, mesh->mVertices[v].y);
 				vertex[v].texCoord = XMFLOAT2( mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y);
-				vertex[v].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+				if(mesh->GetNumColorChannels() > 0){
+					vertex[v].color = XMFLOAT4(mesh->mColors[0][v].r, mesh->mColors[0][v].g, mesh->mColors[0][v].b, mesh->mColors[0][v].a);
+				}
+                else{ 
+					vertex[v].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+				}
 				vertex[v].normal = XMFLOAT3(mesh->mNormals[v].x, -mesh->mNormals[v].z, mesh->mNormals[v].y);
 			}
 
@@ -47,7 +66,7 @@ MODEL* ModelLoad( const char *FileName )
 			ZeroMemory(&sd, sizeof(sd));
 			sd.pSysMem = vertex;
 
-			Direct3D_GetDevice()->CreateBuffer(&bd, &sd, &model->VertexBuffer[m]);
+			g_pDevice->CreateBuffer(&bd, &sd, &model->VertexBuffer[m]);
 
 			delete[] vertex;
 		}
@@ -79,7 +98,7 @@ MODEL* ModelLoad( const char *FileName )
 			ZeroMemory(&sd, sizeof(sd));
 			sd.pSysMem = index;
 
-			Direct3D_GetDevice()->CreateBuffer(&bd, &sd, &model->IndexBuffer[m]);
+			g_pDevice->CreateBuffer(&bd, &sd, &model->IndexBuffer[m]);
 
 			delete[] index;
 		}
@@ -97,7 +116,7 @@ MODEL* ModelLoad( const char *FileName )
 		TexMetadata metadata;
 		ScratchImage image;
 		LoadFromWICMemory(aitexture->pcData, aitexture->mWidth, WIC_FLAGS_NONE, &metadata, image);
-		CreateShaderResourceView(Direct3D_GetDevice(), image.GetImages(), image.GetImageCount(), metadata, &texture);
+		CreateShaderResourceView(g_pDevice, image.GetImages(), image.GetImageCount(), metadata, &texture);
 		assert(texture);
 
 		model->Texture[aitexture->mFilename.data] = texture;
@@ -107,9 +126,6 @@ MODEL* ModelLoad( const char *FileName )
 
 	return model;
 }
-
-
-
 
 void ModelRelease(MODEL* model)
 {
@@ -139,7 +155,7 @@ void ModelRelease(MODEL* model)
 void ModelDraw(MODEL* model)
 {
 	// プリミティブトポロジ設定
-	Direct3D_GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	g_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 
 	for (unsigned int m = 0; m < model->AiScene->mNumMeshes; m++)
@@ -152,18 +168,18 @@ void ModelDraw(MODEL* model)
 		aimaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture);
 
 		if (texture != aiString(""))
-			Direct3D_GetDeviceContext()->PSSetShaderResources(0, 1, &model->Texture[texture.data]);
+			g_pContext->PSSetShaderResources(0, 1, &model->Texture[texture.data]);
 
 		// 頂点バッファ設定
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
-		Direct3D_GetDeviceContext()->IASetVertexBuffers(0, 1, &model->VertexBuffer[m], &stride, &offset);
+		g_pContext->IASetVertexBuffers(0, 1, &model->VertexBuffer[m], &stride, &offset);
 
 		// インデックスバッファ設定
-		Direct3D_GetDeviceContext()->IASetIndexBuffer(model->IndexBuffer[m], DXGI_FORMAT_R32_UINT, 0);
+		g_pContext->IASetIndexBuffer(model->IndexBuffer[m], DXGI_FORMAT_R32_UINT, 0);
 
 		// ポリゴン描画
-		Direct3D_GetDeviceContext()->DrawIndexed(mesh->mNumFaces * 3, 0, 0);
+		g_pContext->DrawIndexed(mesh->mNumFaces * 3, 0, 0);
 	}
 }
 

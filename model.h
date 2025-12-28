@@ -27,6 +27,8 @@ struct MODEL
 	std::unordered_map<std::string, ID3D11ShaderResourceView*> Texture;
 };
 
+void Model_Initialize();
+void Model_Finalize();
 
 MODEL* ModelLoad(const char* FileName);
 void ModelRelease(MODEL* model);

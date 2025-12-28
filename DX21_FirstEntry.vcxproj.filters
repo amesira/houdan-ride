@@ -137,6 +137,12 @@
     <ClCompile Include="debug_renderer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Sources\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer_3dmodel_processor.cpp">
+      <Filter>Sources\GameParts\Processor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -264,6 +270,15 @@
     </ClInclude>
     <ClInclude Include="debug_renderer.h">
       <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer_3dmodel_processor.h">
+      <Filter>Sources\GameParts\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="model_component.h">
+      <Filter>Sources\GameParts\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Sources\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,20 +20,64 @@ using namespace DirectX;
 #include "keyboard.h"
 #include "polygon3d.h"
 
+#include "model.h"
+
 // component
 #include "transform_component.h"
+#include "model_component.h"
 
 void Renderer3DModelProcessor::Initialize()
 {
-
+    Model_Initialize();
 }
 
 void Renderer3DModelProcessor::Finalize()
 {
-
+    Model_Finalize();
 }
 
 void Renderer3DModelProcessor::Process(IScene* pScene)
 {
+    DirectX::XMMATRIX viewMatrix = Direct3D_GetViewMatrix();
+    DirectX::XMMATRIX projectionMatrix = Direct3D_GetProjectionMatrix();
 
+    // コンポーネントプール取得
+    auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    auto* modelPool = pScene->GetComponentPool<ModelComponent>();
+
+    auto& modelPoolList = modelPool->GetList(); 
+
+    for(ModelComponent& m : modelPoolList) {
+        TransformComponent* t = transformPool->GetByGameObjectID(m.GetOwner()->GetID());
+
+        // component無効チェック
+        if (!t)continue;
+        if (!m.GetEnable() || !t->GetEnable())continue;
+
+        // モデルデータ取得
+        MODEL* model = m.GetModel();
+        if (!model)continue;
+
+        // ワールド行列計算
+        DirectX::XMMATRIX scaling = DirectX::XMMatrixScaling(
+            t->GetScaling().x,
+            t->GetScaling().y,
+            t->GetScaling().z);
+        DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(
+            t->GetRotation().x,
+            t->GetRotation().y,
+            t->GetRotation().z);
+        DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(
+            t->GetPosition().x,
+            t->GetPosition().y,
+            t->GetPosition().z);
+
+        DirectX::XMMATRIX worldMatrix = scaling * rotation * translation;
+
+        // 行列セット
+        Shader_SetMatrix(worldMatrix * viewMatrix * projectionMatrix);
+
+        // モデル描画
+        ModelDraw(model);
+    }
 }
