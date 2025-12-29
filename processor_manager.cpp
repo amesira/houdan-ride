@@ -11,6 +11,7 @@
 #include "debug_renderer.h"
 
 #include "renderer_3dcube_processor.h"
+#include "renderer_3dmodel_processor.h"
 #include "physics_processor.h"
 #include "collision_processor.h"
 #include "dynamics_processor.h"
@@ -18,6 +19,7 @@
 #include "renderer_image_processor.h"
 
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
+static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
 
 static PhysicsProcessor* g_PhysicsProcessor = nullptr;
 static CollisionProcessor* g_CollisionProcessor = nullptr;
@@ -56,14 +58,20 @@ void ProcessorM_Initialize()
 
     // Processorインスタンス化
     g_Renderer3DCubeProcessor = new Renderer3DCubeProcessor();
+    g_Renderer3DModelProcessor = new Renderer3DModelProcessor();
+
     g_PhysicsProcessor = new PhysicsProcessor();
     g_CollisionProcessor = new CollisionProcessor();
     g_DynamicsProcessor = new DynamicsProcessor();
+
     g_RendererFontProcessor = new RendererFontProcessor();
     g_RendererImageProcessor = new RendererImageProcessor();
 
     // Processor初期化
-    g_Renderer3DCubeProcessor->Initialize();
+    {   // 3D描画系プロセッサー初期化
+        g_Renderer3DCubeProcessor->Initialize();
+        g_Renderer3DModelProcessor->Initialize();
+    }
     {   // 物理演算系プロセッサー初期化
         g_PhysicsProcessor->Initialize();
         g_CollisionProcessor->Initialize();
@@ -110,7 +118,10 @@ void ProcessorM_Finalize()
     DebugRenderer_Finalize();
     
     // 終了処理
-    g_Renderer3DCubeProcessor->Finalize();
+    {
+        g_Renderer3DCubeProcessor->Finalize();
+        g_Renderer3DModelProcessor->Finalize();
+    }
     {
         g_PhysicsProcessor->Finalize();
         g_CollisionProcessor->Finalize();
@@ -122,8 +133,12 @@ void ProcessorM_Finalize()
     }
     
     // delete
-    delete g_Renderer3DCubeProcessor;
-    g_Renderer3DCubeProcessor = nullptr;
+    {
+        delete g_Renderer3DCubeProcessor;
+        g_Renderer3DCubeProcessor = nullptr;
+        delete g_Renderer3DModelProcessor;
+        g_Renderer3DModelProcessor = nullptr;
+    }
     {
         delete g_PhysicsProcessor;
         g_PhysicsProcessor = nullptr;
@@ -168,6 +183,7 @@ void ProcessorM_Draw(IScene* pScene)
 
     Direct3D_Clear();
 
+    g_Renderer3DModelProcessor->Process(pScene);
     g_Renderer3DCubeProcessor->Process(pScene);
     
     /*for (int i = 0; i < g_CameraComponentProcessor->GetSize(); i++)

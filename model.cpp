@@ -105,8 +105,6 @@ MODEL* ModelLoad( const char *FileName )
 
 	}
 
-
-
 	//テクスチャ読み込み
 	for(int i = 0; i < model->AiScene->mNumTextures; i++)
 	{
@@ -167,8 +165,13 @@ void ModelDraw(MODEL* model)
 		aiMaterial* aimaterial = model->AiScene->mMaterials[mesh->mMaterialIndex];
 		aimaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture);
 
-		if (texture != aiString(""))
+		if (texture != aiString("")){
 			g_pContext->PSSetShaderResources(0, 1, &model->Texture[texture.data]);
+		}
+		else {
+			ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+			g_pContext->PSSetShaderResources(0, 1, nullSRV);
+        }
 
 		// 頂点バッファ設定
 		UINT stride = sizeof(Vertex);

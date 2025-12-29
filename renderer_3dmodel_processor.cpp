@@ -44,6 +44,7 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
     // コンポーネントプール取得
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
     auto* modelPool = pScene->GetComponentPool<ModelComponent>();
+    if (!transformPool || !modelPool)return;
 
     auto& modelPoolList = modelPool->GetList(); 
 
