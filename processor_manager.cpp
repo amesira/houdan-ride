@@ -17,6 +17,7 @@
 #include "dynamics_processor.h"
 #include "renderer_font_processor.h"
 #include "renderer_image_processor.h"
+#include "camera_processor.h"
 
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
@@ -27,6 +28,8 @@ static DynamicsProcessor* g_DynamicsProcessor = nullptr;
 
 static RendererFontProcessor* g_RendererFontProcessor = nullptr;
 static RendererImageProcessor* g_RendererImageProcessor = nullptr;
+
+static CameraProcessor* g_CameraProcessor = nullptr;
 
 class CAMERA {
 public:
@@ -67,6 +70,8 @@ void ProcessorM_Initialize()
     g_RendererFontProcessor = new RendererFontProcessor();
     g_RendererImageProcessor = new RendererImageProcessor();
 
+    g_CameraProcessor = new CameraProcessor();
+
     // Processor初期化
     {   // 3D描画系プロセッサー初期化
         g_Renderer3DCubeProcessor->Initialize();
@@ -80,6 +85,9 @@ void ProcessorM_Initialize()
     {   // 2D描画系プロセッサー初期化
         g_RendererFontProcessor->Initialize();
         g_RendererImageProcessor->Initialize();
+    }
+    {
+        g_CameraProcessor->Initialize();
     }
 
     // カメラ設定
@@ -121,25 +129,17 @@ void ProcessorM_Finalize()
     {
         g_Renderer3DCubeProcessor->Finalize();
         g_Renderer3DModelProcessor->Finalize();
-    }
-    {
-        g_PhysicsProcessor->Finalize();
-        g_CollisionProcessor->Finalize();
-        g_DynamicsProcessor->Finalize();
-    }
-    {
-        g_RendererFontProcessor->Finalize();
-        g_RendererImageProcessor->Finalize();
-    }
-    
-    // delete
-    {
+
         delete g_Renderer3DCubeProcessor;
         g_Renderer3DCubeProcessor = nullptr;
         delete g_Renderer3DModelProcessor;
         g_Renderer3DModelProcessor = nullptr;
     }
     {
+        g_PhysicsProcessor->Finalize();
+        g_CollisionProcessor->Finalize();
+        g_DynamicsProcessor->Finalize();
+
         delete g_PhysicsProcessor;
         g_PhysicsProcessor = nullptr;
         delete g_CollisionProcessor;
@@ -148,10 +148,19 @@ void ProcessorM_Finalize()
         g_DynamicsProcessor = nullptr;
     }
     {
+        g_RendererFontProcessor->Finalize();
+        g_RendererImageProcessor->Finalize();
+
         delete g_RendererFontProcessor;
         g_RendererFontProcessor = nullptr;
         delete g_RendererImageProcessor;
         g_RendererImageProcessor = nullptr;
+    }
+    {
+        g_CameraProcessor->Finalize();
+
+        delete g_CameraProcessor;
+        g_CameraProcessor = nullptr;
     }
 }
 
@@ -165,35 +174,31 @@ void ProcessorM_Update(IScene* pScene)
 
 void ProcessorM_Draw(IScene* pScene)
 {
+    // カメラ設定
+    g_CameraProcessor->Process(pScene);
+
+    for(int i = 0; i < g_CameraProcessor->GetCameraCount(); i++) {
+
+        // バッファのクリアとシーン描画用RTVのセット
+        Direct3D_BeginScene();
+        g_CameraProcessor->BindMatrix(i);
+
+        // 各3D描画プロセッサーの実行
+        g_Renderer3DModelProcessor->Process(pScene);
+        g_Renderer3DCubeProcessor->Process(pScene);
+
+        DebugRenderer_DrawFlush();
+
+        // スナップショット撮影
+        g_CameraProcessor->SnapShotCamera(i);
+    }
     
-  //  for (int i = 0; i < g_CameraComponentProcessor->GetSize(); i++)
-  //  {
-		//// バッファのクリアとシーン描画用RTVのセット
-  //      Direct3D_BeginScene();
-
-		//// 各カメラのビュー・投影変換行列をパイプラインに紐づける
-		//g_CameraComponentProcessor->BindMatrix(i);
-
-  //      // 各描画プロセッサーの実行
-  //      g_Renderer3DCubeProcessor->Process();
-
-		//// スナップショット
-		//g_CameraComponentProcessor->SnapShotSceneSRV(i);
-  //  }
-
     Direct3D_Clear();
 
-    g_Renderer3DModelProcessor->Process(pScene);
-    g_Renderer3DCubeProcessor->Process(pScene);
-    
-    /*for (int i = 0; i < g_CameraComponentProcessor->GetSize(); i++)
-		g_CameraComponentProcessor->DrawFSQuad(i);*/
+    // カメラからのスナップショットをフルスクリーンに描画
+    g_CameraProcessor->DrawSnapshot(0, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight());
 
-    // ビューポートのリセット
-    //Direct3D_ResetViewport();
-
-    DebugRenderer_DrawFlush();
-
+    // 各2D描画プロセッサーの実行
     g_RendererImageProcessor->Process(pScene);
     g_RendererFontProcessor->Process(pScene);
 

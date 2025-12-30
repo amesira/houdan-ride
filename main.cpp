@@ -20,6 +20,7 @@
 #include "manager.h"
 
 #include "fps.h"
+#include "model.h"
 
 //===================================================
 // マクロ定義
@@ -115,6 +116,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
 
     InitAudio();
 
+    Model_Initialize();
+
     Manager_Initialize(pDevice, pContext);
 
     // メッセージループ
@@ -139,9 +142,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
                 Manager_Update();
 
                 // 描画処理
-                //Direct3D_Clear();
                 Manager_Draw();
-                //Direct3D_Present();
 
                 keycopy();
 
@@ -157,6 +158,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
     Manager_Finalize();
 
     UninitAudio();
+
+    Model_Finalize();
 
     FinalizeSprite();
     Shader_Finalize();

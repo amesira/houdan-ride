@@ -12,8 +12,11 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "component_pool.h"
 #include "type_id.h"
+
+class GameObject;
 
 class IScene {
 protected:
@@ -54,6 +57,9 @@ public:
         m_componentPools.push_back(std::make_unique<ComponentPool<T>>());
         return static_cast<ComponentPool<T>*>(m_componentPools.back().get());
     }
+
+    virtual GameObject* GetGameObjectByID(unsigned int id) = 0;
+    virtual GameObject* GetGameObjectByName(const std::string& name) = 0;
 };
 
 #endif

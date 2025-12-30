@@ -143,6 +143,9 @@
     <ClCompile Include="renderer_3dmodel_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
+    <ClCompile Include="camera_processor.cpp">
+      <Filter>Sources\GameParts\Processor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -279,6 +282,12 @@
     </ClInclude>
     <ClInclude Include="model.h">
       <Filter>Sources\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="camera_component.h">
+      <Filter>Sources\GameParts\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="camera_processor.h">
+      <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

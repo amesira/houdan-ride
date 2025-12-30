@@ -28,12 +28,12 @@ using namespace DirectX;
 
 void Renderer3DModelProcessor::Initialize()
 {
-    Model_Initialize();
+    
 }
 
 void Renderer3DModelProcessor::Finalize()
 {
-    Model_Finalize();
+    
 }
 
 void Renderer3DModelProcessor::Process(IScene* pScene)
