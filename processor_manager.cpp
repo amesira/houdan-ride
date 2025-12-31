@@ -31,30 +31,6 @@ static RendererImageProcessor* g_RendererImageProcessor = nullptr;
 
 static CameraProcessor* g_CameraProcessor = nullptr;
 
-class CAMERA {
-public:
-    DirectX::XMFLOAT3    Position;   // 座標
-    DirectX::XMFLOAT3    AtPosition; // 注視点
-    DirectX::XMFLOAT3    UpVector;   // 上方ベクトル
-
-    float       Fov;        // 視野角（画角）
-    float       Aspect;     // 画面のアスペクト比
-    float       NearClip;   // 近面クリップ距離
-    float       FarClip;    // 遠面クリップ距離
-
-    DirectX::XMMATRIX    View;       //ビュー行列
-    DirectX::XMMATRIX    Projection; // プロジェクション行列
-};
-static CAMERA cameraObj = {
-    { 0.0f, 0.0f, -5.0f },    // Position
-    { 0.0f, 0.0f, 0.0f },     // AtPosition
-    { 0.0f, 1.0f, 0.0f },     // UpVector
-    60.0f,                     // Fov
-    16.0f / 9.0f,              // Aspect
-    0.1f,                      // NearClip
-    100.0f,                    // FarClip
-};
-
 void ProcessorM_Initialize()
 {
     DebugRenderer_Initialize();
@@ -89,36 +65,6 @@ void ProcessorM_Initialize()
     {
         g_CameraProcessor->Initialize();
     }
-
-    // カメラ設定
-
-    // プロジェクション行列作成
-    cameraObj.Projection = DirectX::XMMatrixPerspectiveFovLH(
-        DirectX::XMConvertToRadians(cameraObj.Fov),
-        cameraObj.Aspect,
-        cameraObj.NearClip,
-        cameraObj.FarClip
-    );
-
-    // ビュー行列作成
-    DirectX::XMVECTOR    vPos = DirectX::XMVectorSet(
-        cameraObj.Position.x,
-        cameraObj.Position.y,
-        cameraObj.Position.z,
-        0.0f);
-    DirectX::XMVECTOR    vAt = DirectX::XMVectorSet(
-        cameraObj.AtPosition.x,
-        cameraObj.AtPosition.y,
-        cameraObj.AtPosition.z,
-        0.0f);
-    DirectX::XMVECTOR    vUp = DirectX::XMVectorSet(
-        cameraObj.UpVector.x,
-        cameraObj.UpVector.y,
-        cameraObj.UpVector.z,
-        0.0f);
-    cameraObj.View = DirectX::XMMatrixLookAtLH(vPos, vAt, vUp);
-    Direct3D_SetViewMatrix(cameraObj.View);
-    Direct3D_SetProjectionMatrix(cameraObj.Projection);
 }
 
 void ProcessorM_Finalize()
@@ -196,7 +142,11 @@ void ProcessorM_Draw(IScene* pScene)
     Direct3D_Clear();
 
     // カメラからのスナップショットをフルスクリーンに描画
-    g_CameraProcessor->DrawSnapshot(0, 0.0f, 0.0f, (float)Direct3D_GetBackBufferWidth(), (float)Direct3D_GetBackBufferHeight());
+    const float w = (float)Direct3D_GetBackBufferWidth();
+    const float h = (float)Direct3D_GetBackBufferHeight();
+    g_CameraProcessor->DrawSnapshot(0, w / 2.0f, h / 2.0f, w, h);
+
+    SetBlendState(BLENDSTATE_ALFA);
 
     // 各2D描画プロセッサーの実行
     g_RendererImageProcessor->Process(pScene);

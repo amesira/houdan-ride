@@ -15,10 +15,13 @@
 #include "game_object.h"
 
 namespace Factory {
+    void CreateCamera       (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
+
     void CreateTestPlayer   (GameObject*, DirectX::XMFLOAT3 position);
     void CreateBox          (GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color);
    
     void CreateUiText       (GameObject*, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
+
 }
 
 #endif

@@ -15,6 +15,7 @@
 #include "text_component.h"
 #include "image_component.h"
 #include "model_component.h"
+#include "camera_component.h"
 
 // behavior
 #include "player_behavior.h"
@@ -27,6 +28,22 @@
 #include "dynamics_processor.h"
 #include "renderer_font_processor.h"
 #include "renderer_image_processor.h"
+
+void Factory::CreateCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
+{
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    CameraComponent* camera = obj->AddComponent<CameraComponent>();
+    
+    // component設定
+    transform->SetPosition(position);
+
+    camera->SetAtPosition(atPosition);
+    camera->SetFov(60.0f);
+    camera->SetAspect(16.0f / 9.0f);
+    camera->SetNearClip(0.1f);
+    camera->SetFarClip(100.0f);
+}
 
 void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 {

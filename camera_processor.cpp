@@ -34,8 +34,8 @@ void CameraProcessor::Finalize()
 
 void CameraProcessor::Process(IScene* pScene)
 {
-    int idCounter = 0;
-    for (int i = 0; i < 8; ++i) {
+    m_cameraCounter = 0;
+    for (int i = 0; i < MAX_CAMERAS; ++i) {
         m_cameraObjects[i] = nullptr;
     }
 
@@ -54,9 +54,9 @@ void CameraProcessor::Process(IScene* pScene)
         if (!transform->GetEnable() || !camera.GetEnable()) continue;
 
         // gameObjectIDsに登録
-        if (idCounter < 8) {
-            m_cameraObjects[idCounter] = &camera;
-            idCounter++;
+        if (m_cameraCounter < MAX_CAMERAS) {
+            m_cameraObjects[m_cameraCounter] = &camera;
+            m_cameraCounter++;
         } else {
             break; // 最大8つまで
         }
@@ -134,6 +134,18 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
     CameraComponent* camera = m_cameraObjects[index];
     if (!camera) return false;
     if (!camera->GetSnapshot()) return false;
+
+    // シェーダー設定
+    Shader_Begin();
+    const float screenWidth = (float)Direct3D_GetBackBufferWidth();
+    const float screenHeight = (float)Direct3D_GetBackBufferHeight();
+    Shader_SetMatrix(XMMatrixOrthographicOffCenterLH(
+        0.0f,
+        screenWidth,
+        screenHeight,
+        0.0f,
+        0.0f,
+        1.0f));
 
     // スナップショット描画
     ID3D11ShaderResourceView* srv = camera->GetSnapshot();
