@@ -366,15 +366,15 @@ bool Mouse_IsButtonDown(Mouse_Button button)
 {
     switch (button)
     {
-    case Mouse_Button::MUB_LEFT:
+    case Mouse_Button::LEFT:
         return gState.leftButton;
-    case Mouse_Button::MUB_MIDDLE:
+    case Mouse_Button::MIDDLE:
         return gState.middleButton;
-    case Mouse_Button::MUB_RIGHT:
+    case Mouse_Button::RIGHT:
         return gState.rightButton;
-    case Mouse_Button::MUB_X1:
+    case Mouse_Button::X1:
         return gState.xButton1;
-    case Mouse_Button::MUB_X2:
+    case Mouse_Button::X2:
         return gState.xButton2;
     }
 
@@ -385,15 +385,15 @@ bool Mouse_IsButtonUpTrigger(Mouse_Button button)
 {
     switch (button)
     {
-    case Mouse_Button::MUB_LEFT:
+    case Mouse_Button::LEFT:
         return !gState.leftButton && gOldState.leftButton;
-    case Mouse_Button::MUB_MIDDLE:
+    case Mouse_Button::MIDDLE:
         return !gState.middleButton && gOldState.middleButton;
-    case Mouse_Button::MUB_RIGHT:
+    case Mouse_Button::RIGHT:
         return !gState.rightButton && gOldState.rightButton;
-    case Mouse_Button::MUB_X1:
+    case Mouse_Button::X1:
         return !gState.xButton1 && gOldState.xButton1;
-    case Mouse_Button::MUB_X2:
+    case Mouse_Button::X2:
         return !gState.xButton2 && gOldState.xButton2;
     }
 
@@ -404,15 +404,15 @@ bool Mouse_IsButtonDownTrigger(Mouse_Button button)
 {
     switch (button)
     {
-    case Mouse_Button::MUB_LEFT:
+    case Mouse_Button::LEFT:
         return gState.leftButton && !gOldState.leftButton;
-    case Mouse_Button::MUB_MIDDLE:
+    case Mouse_Button::MIDDLE:
         return gState.middleButton && !gOldState.middleButton;
-    case Mouse_Button::MUB_RIGHT:
+    case Mouse_Button::RIGHT:
         return gState.rightButton && !gOldState.rightButton;
-    case Mouse_Button::MUB_X1:
+    case Mouse_Button::X1:
         return gState.xButton1 && !gOldState.xButton1;
-    case Mouse_Button::MUB_X2:
+    case Mouse_Button::X2:
         return gState.xButton2 && !gOldState.xButton2;
     }
 
@@ -427,6 +427,16 @@ float Mouse_GetPositionX()
 float Mouse_GetPositionY()
 {
     return gState.y;
+}
+
+float Mouse_GetOldPositionX()
+{
+    return gOldState.x;
+}
+
+float Mouse_GetOldPositionY()
+{
+    return gOldState.y;
 }
 
 void clipToWindow(void)

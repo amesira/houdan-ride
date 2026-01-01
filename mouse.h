@@ -77,11 +77,11 @@ void mousecopy();
 // マウスボタン
 enum class Mouse_Button
 {
-    MUB_LEFT = 0,
-    MUB_MIDDLE,
-    MUB_RIGHT,
-    MUB_X1,
-    MUB_X2,
+    LEFT = 0,
+    MIDDLE,
+    RIGHT,
+    X1,
+    X2,
 };
 
 // マウスボタン入力取得
@@ -92,6 +92,10 @@ bool Mouse_IsButtonDownTrigger(Mouse_Button button);
 // マウス座標取得
 float Mouse_GetPositionX();
 float Mouse_GetPositionY();
+
+// マウス移動量取得（OldStateからの移動量）
+float Mouse_GetOldPositionX();
+float Mouse_GetOldPositionY();
 
 // 導入方法
 //
