@@ -146,6 +146,9 @@
     <ClCompile Include="camera_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
+    <ClCompile Include="tps_camera_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -288,6 +291,9 @@
     </ClInclude>
     <ClInclude Include="camera_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="tps_camera_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

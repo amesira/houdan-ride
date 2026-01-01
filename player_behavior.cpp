@@ -32,7 +32,7 @@ PlayerBehavior::~PlayerBehavior()
 
 }
 
-void PlayerBehavior::Update()
+void PlayerBehavior::Update(IScene* pScene)
 {
     // 移動
     DirectX::XMFLOAT3 velocity = m_rigidbody->GetVelocity();

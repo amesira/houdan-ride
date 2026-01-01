@@ -40,7 +40,7 @@ public:
         if (!m_active || m_isDestroy)return;
         for (auto& be : m_pBehaviors) {
             if (!be.get()->GetEnable())continue;
-            be.get()->Update();
+            be.get()->Update(m_pScene);
         }
     }
 

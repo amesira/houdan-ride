@@ -25,7 +25,7 @@ public:
     PlayerBehavior(GameObject* owner);
     ~PlayerBehavior();
 
-    void    Update()override;
+    void    Update(IScene* pScene)override;
 
 private:
 

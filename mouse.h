@@ -1,11 +1,11 @@
 //--------------------------------------------------------------------------------------
 // File: mouse.h
 //
-// �֗��ȃ}�E�X���W���[��
+// 便利なマウスモジュール
 //
 //--------------------------------------------------------------------------------------
 // 2020/02/11
-//     DirectXTK���A�Ȃ񂿂����C����p�ɃV�F�C�v�A�b�v����
+//     DirectXTKより、なんちゃってC言語用にシェイプアップ改変
 //
 // Licensed under the MIT License.
 //
@@ -21,15 +21,15 @@
 #include <memory>
 
 
-// �}�E�X���[�h
+// マウスモード
 typedef enum Mouse_PositionMode_tag
 {
-    MOUSE_POSITION_MODE_ABSOLUTE, // ��΍��W���[�h
-    MOUSE_POSITION_MODE_RELATIVE, // ���΍��W���[�h
+    MOUSE_POSITION_MODE_ABSOLUTE, // 絶対座標モード
+    MOUSE_POSITION_MODE_RELATIVE, // 相対座標モード
 } Mouse_PositionMode;
 
 
-// �}�E�X��ԍ\����
+// マウス状態構造体
 typedef struct MouseState_tag
 {
     bool leftButton;
@@ -43,42 +43,63 @@ typedef struct MouseState_tag
     Mouse_PositionMode positionMode;
 } Mouse_State;
 
-
-// �}�E�X���W���[���̏�����
+// マウスモジュールの初期化
 void Mouse_Initialize(HWND window);
 
-// �}�E�X���W���[���̏I������
+// マウスモジュールの終了処理
 void Mouse_Finalize(void);
 
-// �}�E�X�̏�Ԃ��擾����
+// マウスの状態を取得する
 void Mouse_GetState(Mouse_State* pState);
 
-// �ݐς����}�E�X�X�N���[���z�C�[���l�����Z�b�g����
+// 累積したマウススクロールホイール値をリセットする
 void Mouse_ResetScrollWheelValue(void);
 
-// �}�E�X�̃|�W�V�������[�h��ݒ肷��i�f�t�H���g�͐�΍��W���[�h�j
+// マウスのポジションモードを設定する（デフォルトは絶対座標モード）
 void Mouse_SetMode(Mouse_PositionMode mode);
 
-// �}�E�X�̐ڑ������o����
+// マウスの接続を検出する
 bool Mouse_IsConnected(void);
 
-// �}�E�X�J�[�\�����\������Ă��邩�m�F����
+// マウスカーソルが表示されているか確認する
 bool Mouse_IsVisible(void);
 
-// �}�E�X�J�[�\���\����ݒ肷��
+// マウスカーソル表示を設定する
 void Mouse_SetVisible(bool visible);
 
-// �}�E�X����̂��߂̃E�B���h�E���b�Z�[�W�v���V�[�W���t�b�N�֐�
+// マウス制御のためのウィンドウメッセージプロシージャフック関数
 void Mouse_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
+// ↓追加機能
 
-// �������@
+void mousecopy();
+
+// マウスボタン
+enum class Mouse_Button
+{
+    MUB_LEFT = 0,
+    MUB_MIDDLE,
+    MUB_RIGHT,
+    MUB_X1,
+    MUB_X2,
+};
+
+// マウスボタン入力取得
+bool Mouse_IsButtonDown(Mouse_Button button);
+bool Mouse_IsButtonUpTrigger(Mouse_Button button);
+bool Mouse_IsButtonDownTrigger(Mouse_Button button);
+
+// マウス座標取得
+float Mouse_GetPositionX();
+float Mouse_GetPositionY();
+
+// 導入方法
 //
-// �Ώۂ̃E�B���h�E���������ꂽ�炻�̃E�B���h�E�n���h���������ɏ������֐����Ă�
+// 対象のウィンドウが生成されたらそのウィンドウハンドルを引数に初期化関数を呼ぶ
 //
 // Mouse_Initialize(hwnd);
 //
-// �E�B���h�E���b�Z�[�W�v���V�[�W������}�E�X����p�t�b�N�֐����Ăяo��
+// ウィンドウメッセージプロシージャからマウス制御用フック関数を呼び出す
 //
 // LResult CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // {

@@ -19,15 +19,7 @@
 
 // behavior
 #include "player_behavior.h"
-
-// processor
-#include "processor_manager.h"
-#include "renderer_3dcube_processor.h"
-#include "physics_processor.h"
-#include "collision_processor.h"
-#include "dynamics_processor.h"
-#include "renderer_font_processor.h"
-#include "renderer_image_processor.h"
+#include "tps_camera_behavior.h"
 
 void Factory::CreateCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -43,10 +35,15 @@ void Factory::CreateCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX:
     camera->SetAspect(16.0f / 9.0f);
     camera->SetNearClip(0.1f);
     camera->SetFarClip(100.0f);
+
+    // behavior生成・登録
+    TpsCameraBehavior* tpsCameraBe = obj->AddBehavior<TpsCameraBehavior>();
 }
 
 void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 {
+    player->SetName("Player");
+
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
    
