@@ -53,6 +53,8 @@ void PlayerBehavior::Update(IScene* pScene)
     //-------------------------------
     // 入力処理
     //-------------------------------
+    bool isMove = false;
+
     DirectX::XMFLOAT3 cameraForward = m_tpsCamera->GetCameraFoward();
     float vertical = 0.0f;
     float horizontal = 0.0f;
@@ -60,15 +62,19 @@ void PlayerBehavior::Update(IScene* pScene)
     // 移動方向ベクトル計算
     if (Keyboard_IsKeyDown(KK_W)) {
         vertical = 1.0f;
+        isMove = true;
     }
     if (Keyboard_IsKeyDown(KK_S)) {
         vertical = -1.0f;
+        isMove = true;
     }
     if (Keyboard_IsKeyDown(KK_D)) {
         horizontal = 1.0f;
+        isMove = true;
     }
     if (Keyboard_IsKeyDown(KK_A)) {
         horizontal = -1.0f;
+        isMove = true;
     }
 
     // カメラの向きに合わせて移動方向を計算
@@ -85,15 +91,18 @@ void PlayerBehavior::Update(IScene* pScene)
     moveDir = MiMath::Normalize(moveDir);
 
     // 速度設定
-    DirectX::XMFLOAT3 velocity = {
-        moveDir.x * 5.0f,
-        m_rigidbody->GetVelocity().y,
-        moveDir.z * 5.0f,
-    };
+    DirectX::XMFLOAT3 velocity = m_rigidbody->GetVelocity();
+    if (isMove){
+        velocity = {
+            moveDir.x * 5.0f,
+            m_rigidbody->GetVelocity().y,
+            moveDir.z * 5.0f,
+        };
+    }
 
     // ジャンプ
     if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
-        velocity.y += 3.0f;
+        velocity.y += 5.0f;
     }
 
     // 適用処理

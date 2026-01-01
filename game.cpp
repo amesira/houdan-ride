@@ -32,6 +32,11 @@ void GameScene::Initialize()
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,1.0f});
 
+    cube = this->CreateGameObject();
+    cube->SetName("TestCube");
+    Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
+
+
     // ui
     GameObject* uiText = this->CreateGameObject();
     Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
