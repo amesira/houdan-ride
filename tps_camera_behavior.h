@@ -38,6 +38,7 @@ public:
 private:
 
 public:
+    XMFLOAT3    GetCameraFoward();
 
 };
 

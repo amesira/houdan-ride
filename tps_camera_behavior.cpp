@@ -96,3 +96,20 @@ void TpsCameraBehavior::Update(IScene* pScene)
     m_camera->SetAtPosition(m_cameraAnchor);
     m_transform->SetPosition(m_cameraPos);
 }
+
+// カメラの前方向ベクトル取得
+XMFLOAT3 TpsCameraBehavior::GetCameraFoward()
+{
+    // AtPosition - Position
+    XMFLOAT3 at = m_camera->GetAtPosition();
+    XMFLOAT3 pos = m_transform->GetPosition();
+
+    XMFLOAT3 forward = {
+        at.x - pos.x,
+        at.y - pos.y,
+        at.z - pos.z,
+    };
+    forward = MiMath::Normalize(forward);
+
+    return forward;
+}

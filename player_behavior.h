@@ -14,12 +14,17 @@ class CubemeshComponent;
 class ColliderComponent;
 class RigidbodyComponent;
 
+class TpsCameraBehavior;
+
 class PlayerBehavior :public Behavior {
 private:
     TransformComponent* m_transform = nullptr;
     CubemeshComponent* m_cubemesh = nullptr;
     ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
+
+    // TPSカメラの参照
+    TpsCameraBehavior* m_tpsCamera = nullptr;
 
 public:
     PlayerBehavior(GameObject* owner);

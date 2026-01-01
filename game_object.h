@@ -117,8 +117,9 @@ public:
 
     // Behaviorの取得
     template<class T>
-    T* GetBehavior() const {
-        for (Behavior* pBe : m_pBehaviors) {
+    T* GetBehavior() {
+        for (int i = 0; i < m_pBehaviors.size(); i++) {
+            Behavior* pBe = m_pBehaviors[i].get();
             if (pBe->GetType() == BehaviorTypeID::getTypeID<T>()) {
                 return static_cast<T*>(pBe);
             }

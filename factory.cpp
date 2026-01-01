@@ -21,8 +21,10 @@
 #include "player_behavior.h"
 #include "tps_camera_behavior.h"
 
-void Factory::CreateCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
+void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
+    obj->SetName("TPSCamera");
+
     // component生成・登録
     TransformComponent* transform = obj->AddComponent<TransformComponent>();
     CameraComponent* camera = obj->AddComponent<CameraComponent>();

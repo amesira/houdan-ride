@@ -15,7 +15,7 @@
 #include "game_object.h"
 
 namespace Factory {
-    void CreateCamera       (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
+    void CreateTpsCamera       (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
 
     void CreateTestPlayer   (GameObject*, DirectX::XMFLOAT3 position);
     void CreateBox          (GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color);
