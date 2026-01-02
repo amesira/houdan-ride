@@ -69,6 +69,11 @@ void TpsCameraBehavior::Update(IScene* pScene)
 
         m_angleX += moveX * deltaTime * 0.1f;
         m_angleY += moveY * deltaTime * 0.1f;
+
+        FPS_SetTimeScale(0.3f); // スローモーション
+    }
+    else {
+        FPS_SetTimeScale(1.0f); // 通常速度
     }
 
     //-------------------------------

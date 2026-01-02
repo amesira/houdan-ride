@@ -27,14 +27,17 @@ static ID3D11Buffer* g_pWorldConstantBuffer = nullptr; // ワールド行列用�
 // カスタムシェーダー
 static ID3D11PixelShader* g_pFontShader = nullptr; // フォント用ピクセルシェーダー
 
-// フルスクリーンクアッド用インターフェース
-static ID3D11VertexShader* g_pFSQVertexShader = nullptr;
-static ID3D11PixelShader* g_pFSQPixelShader = nullptr;
-
 // 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
+// プロトタイプ宣言
+struct VsBinaryData {
+    unsigned char*	vsBinaryPointer;
+	std::streamsize	fileSize;
+};
+bool	LoadVertexShader(const char* filename, ID3D11VertexShader** ppVertexShader, VsBinaryData* pData);
+bool    LoadPixelShader(const char* filename, ID3D11PixelShader** ppPixelShader);
 
 bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
@@ -50,35 +53,12 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	g_pDevice = pDevice;
 	g_pContext = pContext;
 
+	VsBinaryData vsData{};
 
-	// 事前コンパイル済み頂点シェーダーの読み込み
-	// csoはhlslファイルの実行形式ファイル（c言語で言う.cppと.exeの関係）
-	std::ifstream ifs_vs("shader_vertex_2d.cso", std::ios::binary);
-
-	if (!ifs_vs) {
-		MessageBox(nullptr, "頂点シェーダーの読み込みに失敗しました\n\nshader_vertex_2d.cso", "エラー", MB_OK);
-		return false;
-	}
-
-	// ファイルサイズを取得
-	ifs_vs.seekg(0, std::ios::end); // ファイルポインタを末尾に移動
-	std::streamsize filesize = ifs_vs.tellg(); // ファイルポインタの位置を取得（つまりファイルサイズ）
-	ifs_vs.seekg(0, std::ios::beg); // ファイルポインタを先頭に戻す
-
-	// バイナリデータを格納するためのバッファを確保
-	unsigned char* vsbinary_pointer = new unsigned char[filesize];
-	
-	ifs_vs.read((char*)vsbinary_pointer, filesize); // バイナリデータを読み込む
-	ifs_vs.close(); // ファイルを閉じる
-
-	// 頂点シェーダーの作成
-	hr = g_pDevice->CreateVertexShader(vsbinary_pointer, filesize, nullptr, &g_pVertexShader);
-
-	if (FAILED(hr)) {
+	if (!LoadVertexShader("shader_vertex.cso", &g_pVertexShader, &vsData)) {
 		hal::dout << "Shader_Initialize() : 頂点シェーダーの作成に失敗しました" << std::endl;
-		delete[] vsbinary_pointer; // メモリリークしないようにバイナリデータのバッファを解放
 		return false;
-	}
+    }
 
 	// 頂点レイアウトの定義
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
@@ -91,15 +71,14 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	UINT num_elements = ARRAYSIZE(layout); // 配列の要素数を取得
 
 	// 頂点レイアウトの作成
-	hr = g_pDevice->CreateInputLayout(layout, num_elements, vsbinary_pointer, filesize, &g_pInputLayout);
+	hr = g_pDevice->CreateInputLayout(layout, num_elements, vsData.vsBinaryPointer, vsData.fileSize, &g_pInputLayout);
 
-	delete[] vsbinary_pointer; // バイナリデータのバッファを解放
+    delete[] vsData.vsBinaryPointer; // メモリリークしないようにバイナリデータのバッファを解放
 
 	if (FAILED(hr)) {
 		hal::dout << "Shader_Initialize() : 頂点レイアウトの作成に失敗しました" << std::endl;
 		return false;
 	}
-
 
 	// 頂点シェーダー用定数バッファの作成
 	D3D11_BUFFER_DESC buffer_desc{};
@@ -108,130 +87,22 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
 	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pVSConstantBuffer);
 
+    // 事前コンパイル済みピクセルシェーダーの読み込み
+	if (!LoadPixelShader("shader_pixel.cso", &g_pPixelShader)) {
+		hal::dout << "Shader_Initialize() : ピクセルシェーダーの作成に失敗しました" << std::endl;
+		return false;
+    }
 
-	{
-		// 事前コンパイル済みピクセルシェーダーの読み込み
-		std::ifstream ifs_ps("shader_pixel_2d.cso", std::ios::binary);
-		if (!ifs_ps) {
-			MessageBox(nullptr, "ピクセルシェーダーの読み込みに失敗しました\n\nshader_pixel_2d.cso", "エラー", MB_OK);
-			return false;
-		}
-
-		ifs_ps.seekg(0, std::ios::end);
-		filesize = ifs_ps.tellg();
-		ifs_ps.seekg(0, std::ios::beg);
-
-		unsigned char* psbinary_pointer = new unsigned char[filesize];
-		ifs_ps.read((char*)psbinary_pointer, filesize);
-		ifs_ps.close();
-
-		// ピクセルシェーダーの作成
-		hr = g_pDevice->CreatePixelShader(psbinary_pointer, filesize, nullptr, &g_pPixelShader);
-
-		delete[] psbinary_pointer; // バイナリデータのバッファを解放
-
-		if (FAILED(hr)) {
-			hal::dout << "Shader_Initialize() : ピクセルシェーダーの作成に失敗しました" << std::endl;
-			return false;
-		}
-	}
-
-	//----------------------------------------------------
-    // カスタムシェーダーの読み込み（フォント用ピクセルシェーダー）
-	//----------------------------------------------------
-	{
-		std::ifstream ifs_ps("shader_pixel_font.cso", std::ios::binary);
-		if (!ifs_ps) {
-			MessageBox(nullptr, "フォント用ピクセルシェーダーの読み込みに失敗しました\n\nshader_pixel_font.cso", "エラー", MB_OK);
-			return false;
-		}
-
-		ifs_ps.seekg(0, std::ios::end);
-		filesize = ifs_ps.tellg();
-		ifs_ps.seekg(0, std::ios::beg);
-
-		unsigned char* psbinary_pointer = new unsigned char[filesize];
-		ifs_ps.read((char*)psbinary_pointer, filesize);
-		ifs_ps.close();
-
-		// ピクセルシェーダーの作成
-		hr = g_pDevice->CreatePixelShader(psbinary_pointer, filesize, nullptr, &g_pFontShader);
-
-		delete[] psbinary_pointer; // バイナリデータのバッファを解放
-
-		if (FAILED(hr)) {
-			hal::dout << "Shader_Initialize() : フォント用ピクセルシェーダーの作成に失敗しました" << std::endl;
-			return false;
-		}
-	}
-
-	//----------------------------------------------------
-    // フルスクリーンクアッド用カスタムシェーダーの読み込み
-	//----------------------------------------------------
-	{
-		// 頂点シェーダー
-		std::ifstream ifs_fsq_vs("shader_vertex_fullscreen_quad.cso", std::ios::binary);
-
-		if (!ifs_fsq_vs) {
-			MessageBox(nullptr, "頂点シェーダーの読み込みに失敗しました\nhader_vertex_fullscreen_quad.cso", "エラー", MB_OK);
-			return false;
-		}
-
-		// ファイルサイズを取得
-		ifs_fsq_vs.seekg(0, std::ios::end); // ファイルポインタを末尾に移動
-		filesize = ifs_fsq_vs.tellg(); // ファイルポインタの位置を取得（つまりファイルサイズ）
-		ifs_fsq_vs.seekg(0, std::ios::beg); // ファイルポインタを先頭に戻す
-
-		// バイナリデータを格納するためのバッファを確保
-		vsbinary_pointer = new unsigned char[filesize];
-
-		ifs_fsq_vs.read((char*)vsbinary_pointer, filesize); // バイナリデータを読み込む
-		ifs_fsq_vs.close(); // ファイルを閉じる
-
-		// 頂点シェーダーの作成
-		hr = g_pDevice->CreateVertexShader(vsbinary_pointer, filesize, nullptr, &g_pFSQVertexShader);
-
-		if (FAILED(hr)) {
-			hal::dout << "Shader_Initialize() : 頂点シェーダーの作成に失敗しました" << std::endl;
-			delete[] vsbinary_pointer;
-			return false;
-		}
-
-		delete[] vsbinary_pointer;
-
-		// ピクセルシェーダー
-		std::ifstream ifs_fsq_ps("shader_pixel_fullscreen_quad.cso", std::ios::binary);
-		if (!ifs_fsq_ps) {
-			MessageBox(nullptr, "ピクセルシェーダーの読み込みに失敗しました\n\nshader_pixel_fullscreen_quad.cso", "エラー", MB_OK);
-			return false;
-		}
-
-		ifs_fsq_ps.seekg(0, std::ios::end);
-		filesize = ifs_fsq_ps.tellg();
-		ifs_fsq_ps.seekg(0, std::ios::beg);
-
-		unsigned char* psbinary_pointer = new unsigned char[filesize];
-		ifs_fsq_ps.read((char*)psbinary_pointer, filesize);
-		ifs_fsq_ps.close();
-
-		// ピクセルシェーダーの作成
-		hr = g_pDevice->CreatePixelShader(psbinary_pointer, filesize, nullptr, &g_pFSQPixelShader);
-
-		delete[] psbinary_pointer; // バイナリデータのバッファを解放
-
-		if (FAILED(hr)) {
-			hal::dout << "Shader_Initialize() : ピクセルシェーダーの作成に失敗しました" << std::endl;
-			return false;
-		}
-	}
+	if (!LoadPixelShader("shader_pixel_font.cso", &g_pFontShader)) {
+		hal::dout << "Shader_Initialize() : フォント用ピクセルシェーダーの作成に失敗しました" << std::endl;
+		return false;
+    }
 
 	return true;
 }
 
 void Shader_Finalize()
 {
-	SAFE_RELEASE(g_pFSQPixelShader);
-	SAFE_RELEASE(g_pFSQVertexShader);
 	SAFE_RELEASE(g_pPixelShader);
 	SAFE_RELEASE(g_pVSConstantBuffer);
 	SAFE_RELEASE(g_pInputLayout);
@@ -272,17 +143,60 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->VSSetConstantBuffers(0, 1, &g_pVSConstantBuffer);
 		break;
 	}
+	default: break;
+	}
+}
 
-	case ShaderBeginMode::FullScreenQuad:
-	{
-		// フルスクリーンクアッド用シェーダーを設定
-		g_pContext->VSSetShader(g_pFSQVertexShader, nullptr, 0);
-		g_pContext->PSSetShader(g_pFSQPixelShader, nullptr, 0);
-		g_pContext->IASetInputLayout(nullptr);
-		g_pContext->IASetVertexBuffers(0, 0, nullptr, nullptr, nullptr);
-		g_pContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_R16_UINT, 0);
-		
-		break;
+// 頂点シェーダー読み込み
+bool LoadVertexShader(const char* filename, ID3D11VertexShader** ppVertexShader, VsBinaryData* pData)
+{
+	std::ifstream ifs_vs(filename, std::ios::binary);
+	if (!ifs_vs)return false;
+
+	// ファイルサイズを取得
+	ifs_vs.seekg(0, std::ios::end); // ファイルポインタを末尾に移動
+	pData->fileSize = ifs_vs.tellg(); // ファイルポインタの位置を取得（つまりファイルサイズ）
+	ifs_vs.seekg(0, std::ios::beg); // ファイルポインタを先頭に戻す
+
+	// バイナリデータを格納するためのバッファを確保
+	pData->vsBinaryPointer = new unsigned char[pData->fileSize];
+
+	ifs_vs.read((char*)pData->vsBinaryPointer, pData->fileSize); // バイナリデータを読み込む
+	ifs_vs.close(); // ファイルを閉じる
+
+	// 頂点シェーダーの作成
+	HRESULT hr = g_pDevice->CreateVertexShader(pData->vsBinaryPointer, pData->fileSize, nullptr, ppVertexShader);
+	if (FAILED(hr)) {
+		delete[] pData->vsBinaryPointer; // メモリリークしないようにバイナリデータのバッファを解放
+		return false;
 	}
-	}
+
+	return true;
+}
+
+// ピクセルシェーダー読み込み
+bool LoadPixelShader(const char* filename, ID3D11PixelShader** ppPixelShader)
+{
+	// 事前コンパイル済みピクセルシェーダーの読み込み
+	std::ifstream ifs_ps(filename, std::ios::binary);
+	if (!ifs_ps)return false;
+
+    // ファイルサイズを取得
+	ifs_ps.seekg(0, std::ios::end);
+	std::streamsize filesize = ifs_ps.tellg();
+	ifs_ps.seekg(0, std::ios::beg);
+
+    // バイナリデータを格納するためのバッファを確保
+	unsigned char* psbinary_pointer = new unsigned char[filesize];
+	ifs_ps.read((char*)psbinary_pointer, filesize);
+	ifs_ps.close();
+
+	// ピクセルシェーダーの作成
+	HRESULT hr = g_pDevice->CreatePixelShader(psbinary_pointer, filesize, nullptr, ppPixelShader);
+
+	delete[] psbinary_pointer; // バイナリデータのバッファを解放
+
+	if (FAILED(hr))return false;
+
+	return true;
 }

@@ -128,6 +128,7 @@ void PlayerBehavior::Update(IScene* pScene)
         vec2 = XMVector3Normalize(vec2);
         XMVECTOR axis = XMVector3Cross(vec1, vec2);
 
+        // 回転量
         XMVECTOR    qu;
         qu = XMQuaternionRotationAxis(
             axis, XMConvertToRadians(speed));

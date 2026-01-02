@@ -1,22 +1,22 @@
 /*==============================================================================
 
-   2D�`��p�s�N�Z���V�F�[�_�[ [shader_pixel_2d.hlsl]
+   2D描画用ピクセルシェーダー [shader_pixel.hlsl]
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
 Texture2D g_Texture : register(t0);
 SamplerState g_SamplerState : register(s0);
 
-struct PS_INPUT // VS_OUTPUT�Ɠ������e
+struct PS_INPUT // VS_OUTPUTと同じ内容
 {
-    float4 posH : SV_Position;   // �s�N�Z���̍��W
-    float4 color : COLOR0;       // �s�N�Z���̐F
-    float2 texcoord : TEXCOORD0; // �e�N�X�`�����W
+    float4 posH : SV_Position;   // ピクセルの座標
+    float4 color : COLOR0;       // ピクセルの色
+    float2 texcoord : TEXCOORD0; // テクスチャ座標
 };
 
-// pixel�V�F�[�_�[�͓h��Ԃ��i�s�N�Z���j�̐F�����߂邽�߂����̃V�F�[�_�[�Ȃ̂ŁA
-// �Ԃ�l�͕K��float4�ɂȂ�B
-// ���Ԃ�l�̐F��:SV_TARGET�ɂ��錈�܂�B
+// pixelシェーダーは塗りつぶし（ピクセル）の色を決めるためだけのシェーダーなので、
+// 返り値は必ずfloat4になる。
+// ※返り値の色は:SV_TARGETにする決まり。
 float4 main(PS_INPUT ps_in) : SV_TARGET
 {
     float4 col;
