@@ -59,10 +59,12 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 
     // component設定
     transform->SetPosition(position);
-    transform->SetScaling({ 2.5f, 2.5f, 2.5f });
+    transform->SetScaling({ 0.5f, 0.5f, 0.5f });
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
-    modelComp->LoadModel("asset\\Model\\ball.fbx");
+    rigidbody->SetFriction({ 0.95f, 1.0f, 0.95f });
+
+    modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
 
     // behavior生成・登録
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();

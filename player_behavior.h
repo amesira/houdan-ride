@@ -9,6 +9,9 @@
 
 #include "behavior.h"
 
+#include <DirectXMath.h>
+using namespace DirectX;
+
 class TransformComponent;
 class CubemeshComponent;
 class ColliderComponent;
@@ -25,6 +28,9 @@ private:
 
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
+
+    // 回転
+    XMVECTOR m_quaternion = XMQuaternionIdentity();
 
 public:
     PlayerBehavior(GameObject* owner);

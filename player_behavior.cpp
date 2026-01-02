@@ -20,6 +20,7 @@
 #include "tps_camera_behavior.h"
 
 #include "keyboard.h"
+#include "fps.h"
 
 PlayerBehavior::PlayerBehavior(GameObject* owner) 
     : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
@@ -49,6 +50,9 @@ void PlayerBehavior::Update(IScene* pScene)
         }
         return;
     }
+
+    // deltaTime取得
+    float deltaTime = FPS_GetDeltaTime();
 
     //-------------------------------
     // 入力処理
@@ -105,6 +109,43 @@ void PlayerBehavior::Update(IScene* pScene)
         velocity.y += 5.0f;
     }
 
+    //-------------------------------
+    // 回転処理
+    //-------------------------------
+    XMFLOAT3 rotation = m_transform->GetRotation();
+
+    if (abs(velocity.x) > 0.01f || abs(velocity.z) > 0.01f) {
+        //// 速度（水平のみ）
+        //XMVECTOR v = XMLoadFloat3(&velocity);
+        //v = XMVectorSet(XMVectorGetX(v), 0.0f, XMVectorGetZ(v), 0.0f);
+
+        //float speed = XMVectorGetX(XMVector3Length(v));
+        //if (speed < 0.01f) return;
+
+        //XMVECTOR dir = XMVector3Normalize(v);
+
+        //// 転がり軸： up × dir
+        //XMVECTOR up = XMVectorSet(0, 1, 0, 0);
+        //XMVECTOR axis = XMVector3Cross(up, dir);
+
+        //float axisLen = XMVectorGetX(XMVector3Length(axis));
+        //if (axisLen < 1e-6f) return;
+        //axis = axis / axisLen;
+
+        //// 回転角（rad）= 移動距離 / 半径
+        //float dist = speed * deltaTime;
+        //float angle = dist / 0.5f;
+
+        //// このフレームの回転
+        //XMVECTOR dq = XMQuaternionRotationAxis(axis, angle);
+
+        //// 合成（まずはワールド回転として積む）
+        //XMVECTOR q = m_quaternion;
+        //q = XMQuaternionNormalize(XMQuaternionMultiply(dq, q));
+        //m_quaternion = q;
+    }
+    
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
+    m_transform->SetRotation(rotation);
 }

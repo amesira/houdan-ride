@@ -6,13 +6,19 @@
 #include "model.h"
 #include "shader.h"
 
+#include "sprite.h"
+
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
+
+static ID3D11ShaderResourceView* g_pTexture = nullptr;
 
 void Model_Initialize()
 {
     g_pDevice = Direct3D_GetDevice();
     g_pContext = Direct3D_GetDeviceContext();
+
+    LoadTexture(&g_pTexture, L"asset\\texture\\white.bmp");
 }
 
 void Model_Finalize()
@@ -37,6 +43,7 @@ MODEL* ModelLoad( const char *FileName )
 	for (unsigned int m = 0; m < model->AiScene->mNumMeshes; m++)
 	{
 		aiMesh* mesh = model->AiScene->mMeshes[m];
+        aiMaterial* mat = model->AiScene->mMaterials[mesh->mMaterialIndex];
 
 		// 頂点バッファ生成
 		{
@@ -46,12 +53,19 @@ MODEL* ModelLoad( const char *FileName )
 			{
 				vertex[v].position = XMFLOAT3(mesh->mVertices[v].x, -mesh->mVertices[v].z, mesh->mVertices[v].y);
 				vertex[v].texCoord = XMFLOAT2( mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y);
-				if(mesh->GetNumColorChannels() > 0){
-					vertex[v].color = XMFLOAT4(mesh->mColors[0][v].r, mesh->mColors[0][v].g, mesh->mColors[0][v].b, mesh->mColors[0][v].a);
+				
+				// マテリアル取得
+				XMFLOAT4 baseColor = { 1.0f,1.0f,1.0f,1.0f };
+
+				aiColor4D c;
+				if (AI_SUCCESS == aiGetMaterialColor(mat, AI_MATKEY_BASE_COLOR, &c) ||
+					AI_SUCCESS == aiGetMaterialColor(mat, AI_MATKEY_COLOR_DIFFUSE, &c))
+				{
+					baseColor = { c.r, c.g, c.b, c.a };
 				}
-                else{ 
-					vertex[v].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-				}
+
+                vertex[v].color = baseColor;
+
 				vertex[v].normal = XMFLOAT3(mesh->mNormals[v].x, -mesh->mNormals[v].z, mesh->mNormals[v].y);
 			}
 
@@ -120,8 +134,6 @@ MODEL* ModelLoad( const char *FileName )
 		model->Texture[aitexture->mFilename.data] = texture;
 	}
 
-
-
 	return model;
 }
 
@@ -164,13 +176,13 @@ void ModelDraw(MODEL* model)
 		aiString texture;
 		aiMaterial* aimaterial = model->AiScene->mMaterials[mesh->mMaterialIndex];
 		aimaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture);
-
+		
 		if (texture != aiString("")){
 			g_pContext->PSSetShaderResources(0, 1, &model->Texture[texture.data]);
 		}
 		else {
-			ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
-			g_pContext->PSSetShaderResources(0, 1, nullSRV);
+            // テクスチャが無い場合は白テクスチャを設定
+			g_pContext->PSSetShaderResources(0, 1, &g_pTexture);
         }
 
 		// 頂点バッファ設定

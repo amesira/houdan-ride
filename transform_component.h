@@ -31,28 +31,9 @@ public:
     DirectX::XMFLOAT3   GetRotation()const { return m_rotation; }
     DirectX::XMFLOAT3   GetScaling()const { return m_scaling; }
 
-    DirectX::XMVECTOR   GetRotationQuaternion() const {
-        DirectX::XMVECTOR rot = DirectX::XMLoadFloat3(&m_rotation);
-        DirectX::XMVECTOR quaternion = DirectX::XMQuaternionRotationRollPitchYawFromVector(rot);
-        return quaternion;
-    }
-
     void    SetPrevPosition(DirectX::XMFLOAT3 prevPosition){ m_prevPosition = prevPosition; }
     DirectX::XMFLOAT3   GetPrevPosition()const { return m_prevPosition; }
 
-    void LookAt(DirectX::XMFLOAT3 targetPosition) {
-        DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&m_position);
-        DirectX::XMVECTOR targetPos = DirectX::XMLoadFloat3(&targetPosition);
-        DirectX::XMVECTOR direction = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(targetPos, position));
-
-        // ピッチとヨーを計算
-        float pitch = asinf(-DirectX::XMVectorGetY(direction));
-        float yaw = atan2f(DirectX::XMVectorGetX(direction), DirectX::XMVectorGetZ(direction));
-
-		m_rotation.x = pitch;
-		m_rotation.y = yaw;
-        m_rotation.z = 0.0f;
-    }
 };
 
 
