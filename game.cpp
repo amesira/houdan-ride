@@ -20,14 +20,22 @@ void GameScene::Initialize()
 {
     ProcessorM_Initialize();
 
+    GameObject* camera = this->CreateGameObject();
+    Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,5.0f,0.0f });
+
     GameObject* player = this->CreateGameObject();
     Factory::CreateTestPlayer(player, { -2.0f,0.5f,0.0f });
 
     GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.2f} ,{ 4.0f,1.0f,5.0f },{ 0.2f,0.2f,0.2f,1.0f });
+    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
     GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,1.0f});
+
+    cube = this->CreateGameObject();
+    cube->SetName("TestCube");
+    Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
+
 
     // ui
     GameObject* uiText = this->CreateGameObject();

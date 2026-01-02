@@ -95,7 +95,7 @@ public:
     }
 
     // GameObjectの取得
-    GameObject* GetGameObjectByID(unsigned int id) {
+    GameObject* GetGameObjectByID(unsigned int id) override {
         for (auto& obj : m_gameObjects) {
             if (obj.GetID() == id) {
                 return &obj;
@@ -104,7 +104,7 @@ public:
         return nullptr;
     }
 
-    GameObject* GetGameObjectByName(const std::string& name) {
+    GameObject* GetGameObjectByName(const std::string& name) override {
         for (auto& obj : m_gameObjects) {
             if (obj.GetName() == name) {
                 return &obj;

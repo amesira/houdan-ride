@@ -254,7 +254,7 @@ void Polygon3D_Update()
 }
 
 void Polygon3D_CubeRender(
-    DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, 
+    DirectX::XMFLOAT3 position, DirectX::XMVECTOR rotation, DirectX::XMFLOAT3 scaling, 
     ID3D11ShaderResourceView* tex, DirectX::XMFLOAT4 color)
 {
     for (Vertex& v : vData) {
@@ -278,12 +278,7 @@ void Polygon3D_CubeRender(
     );
 
     // 回転行列の作成
-    XMMATRIX    rotationMatrix = XMMatrixRotationRollPitchYaw
-    (   
-        rotation.x,
-        rotation.y,
-        rotation.z
-    );
+    XMMATRIX    rotationMatrix = XMMatrixRotationQuaternion(rotation);
 
     // ワールド行列（乗算の順番に注意）
     XMMATRIX    worldMatrix =

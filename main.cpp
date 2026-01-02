@@ -16,10 +16,12 @@
 #include "sprite.h"
 #include "keyboard.h"
 #include "Audio.h"
+#include "mouse.h"
 
 #include "manager.h"
 
 #include "fps.h"
+#include "model.h"
 
 //===================================================
 // マクロ定義
@@ -106,6 +108,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
 	//----------------------------------------------------
     Direct3D_Initialize(hWnd);
     Keyboard_Initialize();
+    Mouse_Initialize(hWnd);
 
     ID3D11Device* pDevice = Direct3D_GetDevice();
     ID3D11DeviceContext* pContext = Direct3D_GetDeviceContext();
@@ -114,6 +117,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
     InitializeSprite();
 
     InitAudio();
+
+    Model_Initialize();
 
     Manager_Initialize(pDevice, pContext);
 
@@ -139,11 +144,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
                 Manager_Update();
 
                 // 描画処理
-                //Direct3D_Clear();
                 Manager_Draw();
-                //Direct3D_Present();
 
                 keycopy();
+                mousecopy();
 
                 // 処理回数更新
                 FPS_UpdateFrameCount();
@@ -157,6 +161,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
     Manager_Finalize();
 
     UninitAudio();
+
+    Model_Finalize();
 
     FinalizeSprite();
     Shader_Finalize();
@@ -180,10 +186,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
     switch (uMsg) {
     case WM_ACTIVATEAPP:
+        Mouse_ProcessMessage(uMsg, wParam, lParam);
     case WM_SYSKEYDOWN:
     case WM_KEYUP:
     case WM_SYSKEYUP:
         Keyboard_ProcessMessage(uMsg, wParam, lParam);
+        break;
+
+    case WM_INPUT:
+    case WM_MOUSEMOVE:
+    case WM_LBUTTONDOWN:
+    case WM_LBUTTONUP:
+    case WM_RBUTTONDOWN:
+    case WM_RBUTTONUP:
+    case WM_MBUTTONDOWN:
+    case WM_MBUTTONUP:
+    case WM_MOUSEWHEEL:
+    case WM_XBUTTONDOWN:
+    case WM_XBUTTONUP:
+    case WM_MOUSEHOVER:
+        Mouse_ProcessMessage(uMsg, wParam, lParam);
         break;
 
     case WM_KEYDOWN: // キーが押された

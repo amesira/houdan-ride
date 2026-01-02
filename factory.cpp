@@ -14,34 +14,62 @@
 #include "rect_transform_component.h"
 #include "text_component.h"
 #include "image_component.h"
+#include "model_component.h"
+#include "camera_component.h"
 
 // behavior
 #include "player_behavior.h"
+#include "tps_camera_behavior.h"
 
-// processor
-#include "processor_manager.h"
-#include "renderer_3dcube_processor.h"
-#include "physics_processor.h"
-#include "collision_processor.h"
-#include "dynamics_processor.h"
-#include "renderer_font_processor.h"
-#include "renderer_image_processor.h"
+void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
+{
+    obj->SetName("TPSCamera");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    CameraComponent* camera = obj->AddComponent<CameraComponent>();
+    
+    // component設定
+    transform->SetPosition(position);
+
+    camera->SetAtPosition(atPosition);
+    camera->SetFov(60.0f);
+    camera->SetAspect(16.0f / 9.0f);
+    camera->SetNearClip(0.1f);
+    camera->SetFarClip(100.0f);
+
+    // behavior生成・登録
+    TpsCameraBehavior* tpsCameraBe = obj->AddBehavior<TpsCameraBehavior>();
+}
 
 void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 {
+    player->SetName("Player");
+
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
+   
     CubemeshComponent* cubemesh = player->AddComponent<CubemeshComponent>();
+    ModelComponent* modelComp = player->AddComponent<ModelComponent>();
+
     //BoxColliderComponent* collider = player->AddComponent<BoxColliderComponent>();
     SphereColliderComponent* collider = player->AddComponent<SphereColliderComponent>();
+
     RigidbodyComponent* rigidbody = player->AddComponent<RigidbodyComponent>();
 
     // component設定
     transform->SetPosition(position);
+    transform->SetScaling({ 0.5f, 0.5f, 0.5f });
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
+    rigidbody->SetFriction({ 0.95f, 1.0f, 0.95f });
+
+    modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
 
     // behavior生成・登録
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
+
+    cubemesh->SetEnable(false); // Cubemeshは非表示にしておく
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)
@@ -53,7 +81,7 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 
     // component設定
     transform->SetPosition(position);
-    transform->SetRotation(rotation);
+    transform->SetEulerRotation(rotation);
     transform->SetScaling(scaling);
 
     cubemesh->SetColor(color);

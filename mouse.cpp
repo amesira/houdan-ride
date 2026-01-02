@@ -1,11 +1,11 @@
 //--------------------------------------------------------------------------------------
 // File: mouse.cpp
 //
-// •Ö—˜‚Èƒ}ƒEƒXƒ‚ƒWƒ…[ƒ‹
+// ä¾¿åˆ©ãªãƒã‚¦ã‚¹ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«
 //
 //--------------------------------------------------------------------------------------
 // 2020/02/11
-//     DirectXTK‚æ‚èA‚È‚ñ‚¿‚á‚Á‚ÄCŒ¾Œê—p‚ÉƒVƒFƒCƒvƒAƒbƒv‰ü•Ï
+//     DirectXTKã‚ˆã‚Šã€ãªã‚“ã¡ã‚ƒã£ã¦Cè¨€èªç”¨ã«ã‚·ã‚§ã‚¤ãƒ—ã‚¢ãƒƒãƒ—æ”¹å¤‰
 //
 // Licensed under the MIT License.
 //
@@ -33,6 +33,8 @@ static int                gLastY = 0;
 static int                gRelativeX = INT32_MAX;
 static int                gRelativeY = INT32_MAX;
 static bool               gInFocus = true;
+
+static Mouse_State  gOldState = {};
 
 
 static void clipToWindow(void);
@@ -182,7 +184,7 @@ void Mouse_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
         point.x = gLastX;
         point.y = gLastY;
 
-        // ƒŠƒ‚[ƒgƒfƒBƒXƒNƒgƒbƒv‚É‘Î‰‚·‚é‚½‚ß‚ÉˆÚ“®‘O‚ÉƒJ[ƒ\ƒ‹‚ğ•\¦‚·‚é
+        // ãƒªãƒ¢ãƒ¼ãƒˆãƒ‡ã‚£ã‚¹ã‚¯ãƒˆãƒƒãƒ—ã«å¯¾å¿œã™ã‚‹ãŸã‚ã«ç§»å‹•å‰ã«ã‚«ãƒ¼ã‚½ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹
         ShowCursor(TRUE);
 
         if (MapWindowPoints(gWindow, nullptr, &point, 1)) {
@@ -254,7 +256,7 @@ void Mouse_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
                 }
                 else if (raw.data.mouse.usFlags & MOUSE_VIRTUAL_DESKTOP) {
 
-                    // ƒŠƒ‚[ƒgƒfƒBƒXƒNƒgƒbƒv‚È‚Ç‚É‘Î‰
+                    // ãƒªãƒ¢ãƒ¼ãƒˆãƒ‡ã‚£ã‚¹ã‚¯ãƒˆãƒƒãƒ—ãªã©ã«å¯¾å¿œ
                     const int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
                     const int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 
@@ -340,19 +342,101 @@ void Mouse_ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     default:
-        // ƒ}ƒEƒX‚É‘Î‚·‚éƒƒbƒZ[ƒW‚Í–³‚©‚Á‚½c
+        // ãƒã‚¦ã‚¹ã«å¯¾ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ç„¡ã‹ã£ãŸâ€¦
         return;
     }
 
     if (gMode == MOUSE_POSITION_MODE_ABSOLUTE) {
 
-        // ‚·‚×‚Ä‚Ìƒ}ƒEƒXƒƒbƒZ[ƒW‚É‘Î‚µ‚ÄV‚µ‚¢À•W‚ğæ“¾‚·‚é
+        // ã™ã¹ã¦ã®ãƒã‚¦ã‚¹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã«å¯¾ã—ã¦æ–°ã—ã„åº§æ¨™ã‚’å–å¾—ã™ã‚‹
         int xPos = GET_X_LPARAM(lParam);
         int yPos = GET_Y_LPARAM(lParam);
 
         gState.x = gLastX = xPos;
         gState.y = gLastY = yPos;
     }
+}
+
+void mousecopy()
+{
+    gOldState = gState;
+}
+
+bool Mouse_IsButtonDown(Mouse_Button button)
+{
+    switch (button)
+    {
+    case Mouse_Button::LEFT:
+        return gState.leftButton;
+    case Mouse_Button::MIDDLE:
+        return gState.middleButton;
+    case Mouse_Button::RIGHT:
+        return gState.rightButton;
+    case Mouse_Button::X1:
+        return gState.xButton1;
+    case Mouse_Button::X2:
+        return gState.xButton2;
+    }
+
+    return false;
+}
+
+bool Mouse_IsButtonUpTrigger(Mouse_Button button)
+{
+    switch (button)
+    {
+    case Mouse_Button::LEFT:
+        return !gState.leftButton && gOldState.leftButton;
+    case Mouse_Button::MIDDLE:
+        return !gState.middleButton && gOldState.middleButton;
+    case Mouse_Button::RIGHT:
+        return !gState.rightButton && gOldState.rightButton;
+    case Mouse_Button::X1:
+        return !gState.xButton1 && gOldState.xButton1;
+    case Mouse_Button::X2:
+        return !gState.xButton2 && gOldState.xButton2;
+    }
+
+    return false;
+}
+
+bool Mouse_IsButtonDownTrigger(Mouse_Button button)
+{
+    switch (button)
+    {
+    case Mouse_Button::LEFT:
+        return gState.leftButton && !gOldState.leftButton;
+    case Mouse_Button::MIDDLE:
+        return gState.middleButton && !gOldState.middleButton;
+    case Mouse_Button::RIGHT:
+        return gState.rightButton && !gOldState.rightButton;
+    case Mouse_Button::X1:
+        return gState.xButton1 && !gOldState.xButton1;
+    case Mouse_Button::X2:
+        return gState.xButton2 && !gOldState.xButton2;
+    }
+
+    return false;
+}
+
+float Mouse_GetPositionX()
+{
+    return gState.x;
+}
+
+float Mouse_GetPositionY()
+{
+    return gState.y;
+}
+
+float Mouse_GetOldPositionX()
+{
+    return gOldState.x;
+}
+
+float Mouse_GetOldPositionY()
+{
+    return gOldState.y;
 }
 
 void clipToWindow(void)

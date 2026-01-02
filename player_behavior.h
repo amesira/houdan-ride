@@ -9,10 +9,15 @@
 
 #include "behavior.h"
 
+#include <DirectXMath.h>
+using namespace DirectX;
+
 class TransformComponent;
 class CubemeshComponent;
 class ColliderComponent;
 class RigidbodyComponent;
+
+class TpsCameraBehavior;
 
 class PlayerBehavior :public Behavior {
 private:
@@ -21,11 +26,17 @@ private:
     ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
 
+    // TPSカメラの参照
+    TpsCameraBehavior* m_tpsCamera = nullptr;
+
+    // 回転
+    XMVECTOR m_quaternion = XMQuaternionIdentity();
+
 public:
     PlayerBehavior(GameObject* owner);
     ~PlayerBehavior();
 
-    void    Update()override;
+    void    Update(IScene* pScene)override;
 
 private:
 

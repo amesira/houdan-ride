@@ -17,6 +17,7 @@
 
 // 自らのオーナーとして保持するため、前方宣言を行う。
 class GameObject;
+class IScene;
 
 class Behavior {
 private:
@@ -29,7 +30,8 @@ public:
     Behavior(int typeID) : m_typeID(typeID) {}
     virtual ~Behavior() = default;
 
-    virtual void    Update() {}
+    virtual void    Start(IScene* pScene) {}
+    virtual void    Update(IScene* pScene) {}
 
     // Behaviorのタイプ取得
     int     GetType() const { return m_typeID; }
