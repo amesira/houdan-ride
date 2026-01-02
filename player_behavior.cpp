@@ -112,7 +112,7 @@ void PlayerBehavior::Update(IScene* pScene)
     //-------------------------------
     // 回転処理
     //-------------------------------
-    XMFLOAT3 rotation = m_transform->GetRotation();
+    //XMFLOAT3 rotation = m_transform->GetRotation();
 
     if (abs(velocity.x) > 0.01f || abs(velocity.z) > 0.01f) {
         //// 速度（水平のみ）
@@ -147,5 +147,5 @@ void PlayerBehavior::Update(IScene* pScene)
     
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
-    m_transform->SetRotation(rotation);
+    //m_transform->SetRotation(rotation);
 }

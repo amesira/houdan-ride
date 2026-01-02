@@ -64,10 +64,8 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
             t->GetScaling().x,
             t->GetScaling().y,
             t->GetScaling().z);
-        DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(
-            t->GetRotation().x,
-            t->GetRotation().y,
-            t->GetRotation().z);
+        DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationQuaternion(
+            t->GetRotation());
         DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(
             t->GetPosition().x,
             t->GetPosition().y,

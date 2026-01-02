@@ -81,7 +81,7 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 
     // component設定
     transform->SetPosition(position);
-    transform->SetRotation(rotation);
+    transform->SetEulerRotation(rotation);
     transform->SetScaling(scaling);
 
     cubemesh->SetColor(color);

@@ -104,7 +104,7 @@ namespace MiMath
     }
 
     // ベクトルを回転させる
-    inline XMFLOAT3 RotateVectorByEuler(XMFLOAT3 euler, XMFLOAT3 v) {
+    inline XMFLOAT3 RotateVector(XMFLOAT3 euler, XMFLOAT3 v) {
         DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
             euler.x,
             euler.y,
@@ -126,6 +126,20 @@ namespace MiMath
             XMVectorGetZ(cWorld)
         };
 
+        return rv;
+    }
+
+    inline XMFLOAT3 RotateVector(XMVECTOR quaternion, XMFLOAT3 v) {
+        XMVECTOR q = XMQuaternionNormalize(quaternion);
+
+        XMVECTOR vec = XMLoadFloat3(&v);
+
+        // 回転行列で方向ベクトルを回す（平行移動の影響を受けない）
+        XMMATRIX R = XMMatrixRotationQuaternion(q);
+        XMVECTOR out = XMVector3TransformNormal(vec, R);
+
+        XMFLOAT3 rv;
+        XMStoreFloat3(&rv, out);
         return rv;
     }
 

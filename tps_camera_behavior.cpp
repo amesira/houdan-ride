@@ -82,7 +82,7 @@ void TpsCameraBehavior::Update(IScene* pScene)
 
     // 回転
     XMFLOAT3 rotate = { m_angleY, m_angleX, 0.0f };
-    offset = MiMath::RotateVectorByEuler(rotate, offset);
+    offset = MiMath::RotateVector(rotate, offset);
     
     // 補間してなめらかに移動
     XMFLOAT3 desiredCameraPos = {

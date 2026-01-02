@@ -179,7 +179,7 @@ void CollisionProcessor::DrawDebugCollider(IScene* pScene)
 
         // 回転させる
         for(int i = 0; i < 8; i++) {
-            verts[i] = MiMath::RotateVectorByEuler(t->GetRotation(), verts[i]);
+            verts[i] = MiMath::RotateVector(t->GetRotation(), verts[i]);
             verts[i].x += t->GetPosition().x;
             verts[i].y += t->GetPosition().y;
             verts[i].z += t->GetPosition().z;
@@ -219,7 +219,7 @@ void CollisionProcessor::DrawDebugCollider(IScene* pScene)
             t->GetPosition().y + c.GetCenter().y,
             t->GetPosition().z + c.GetCenter().z
         };
-        const XMFLOAT3 rotation = t->GetRotation();
+        const XMFLOAT3 rotation = t->GetEulerRotation();
 
         // 円の描画
         for (int i = 0; i < circleSegment; i++) {
@@ -244,9 +244,9 @@ void CollisionProcessor::DrawDebugCollider(IScene* pScene)
             // 各平面ごとに描画
             for (int j = 0; j < 3; j++) {
                 // 回転・平行移動を適用
-                p1[j] = MiMath::RotateVectorByEuler(rotation, p1[j]);
+                p1[j] = MiMath::RotateVector(rotation, p1[j]);
                 p1[j] = { p1[j].x + center.x, p1[j].y + center.y, p1[j].z + center.z };
-                p2[j] = MiMath::RotateVectorByEuler(rotation, p2[j]);
+                p2[j] = MiMath::RotateVector(rotation, p2[j]);
                 p2[j] = { p2[j].x + center.x, p2[j].y + center.y, p2[j].z + center.z };
 
                 // 描画
@@ -266,11 +266,7 @@ CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
 
     using namespace DirectX;
 
-    XMMATRIX R = XMMatrixRotationRollPitchYaw(
-        t->GetRotation().x,
-        t->GetRotation().y,
-        t->GetRotation().z
-    );
+    XMMATRIX R = XMMatrixRotationQuaternion(t->GetRotation());
 
     // half extents (ローカル半サイズ)
     float ex = c->GetScale().x * 0.5f;
@@ -278,7 +274,7 @@ CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
     float ez = c->GetScale().z * 0.5f;
 
     // ワールド座標系での中心座標を計算
-    XMFLOAT3 pos = MiMath::RotateVectorByEuler(t->GetRotation(), c->GetCenter());
+    XMFLOAT3 pos = MiMath::RotateVector(t->GetRotation(), c->GetCenter());
     pos.x += t->GetPosition().x;
     pos.y += t->GetPosition().y;
     pos.z += t->GetPosition().z;
@@ -371,11 +367,11 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
     CollisionResult result = { false,{0.0f,0.0f,0.0f} };
 
     // コライダーのワールド座標を取得
-    XMFLOAT3 posA = MiMath::RotateVectorByEuler(tA->GetRotation(), cA->GetCenter());
+    XMFLOAT3 posA = MiMath::RotateVector(tA->GetRotation(), cA->GetCenter());
     posA.x += tA->GetPosition().x;
     posA.y += tA->GetPosition().y;
     posA.z += tA->GetPosition().z;
-    XMFLOAT3 posB = MiMath::RotateVectorByEuler(tB->GetRotation(), cB->GetCenter());
+    XMFLOAT3 posB = MiMath::RotateVector(tB->GetRotation(), cB->GetCenter());
     posB.x += tB->GetPosition().x;
     posB.y += tB->GetPosition().y;
     posB.z += tB->GetPosition().z;
@@ -389,18 +385,18 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformC
 
     // 分離軸の情報
     XMFLOAT3 ea1 = {cA->GetScale().x * 0.5f, 0.0f, 0.0f};
-    ea1 = MiMath::RotateVectorByEuler(tA->GetRotation(), ea1);
+    ea1 = MiMath::RotateVector(tA->GetRotation(), ea1);
     XMFLOAT3 ea2 = { 0.0f, cA->GetScale().y * 0.5f, 0.0f };
-    ea2 = MiMath::RotateVectorByEuler(tA->GetRotation(), ea2);
+    ea2 = MiMath::RotateVector(tA->GetRotation(), ea2);
     XMFLOAT3 ea3 = { 0.0f, 0.0f, cA->GetScale().z * 0.5f };
-    ea3 = MiMath::RotateVectorByEuler(tA->GetRotation(), ea3);
+    ea3 = MiMath::RotateVector(tA->GetRotation(), ea3);
 
     XMFLOAT3 eb1 = { cB->GetScale().x * 0.5f, 0.0f, 0.0f };
-    eb1 = MiMath::RotateVectorByEuler(tB->GetRotation(), eb1);
+    eb1 = MiMath::RotateVector(tB->GetRotation(), eb1);
     XMFLOAT3 eb2 = { 0.0f, cB->GetScale().y * 0.5f, 0.0f };
-    eb2 = MiMath::RotateVectorByEuler(tB->GetRotation(), eb2);
+    eb2 = MiMath::RotateVector(tB->GetRotation(), eb2);
     XMFLOAT3 eb3 = { 0.0f, 0.0f, cB->GetScale().z * 0.5f };
-    eb3 = MiMath::RotateVectorByEuler(tB->GetRotation(), eb3);
+    eb3 = MiMath::RotateVector(tB->GetRotation(), eb3);
 
     XMFLOAT3 c11 = MiMath::Cross(ea1, eb1);
     XMFLOAT3 c12 = MiMath::Cross(ea1, eb2);
@@ -489,22 +485,21 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToSphere(Transfo
     CollisionResult result = { false,{0.0f,0.0f,0.0f} };
 
     // ワールド座標系での中心座標を計算
-    XMFLOAT3 boxPos = MiMath::RotateVectorByEuler(tA->GetRotation(), cA->GetCenter());
+    XMFLOAT3 boxPos = MiMath::RotateVector(tA->GetRotation(), cA->GetCenter());
     boxPos.x += tA->GetPosition().x;
     boxPos.y += tA->GetPosition().y;
     boxPos.z += tA->GetPosition().z;
-    XMFLOAT3 spherePos = MiMath::RotateVectorByEuler(tB->GetRotation(), cB->GetCenter());
+    XMFLOAT3 spherePos = MiMath::RotateVector(tB->GetRotation(), cB->GetCenter());
     spherePos.x += tB->GetPosition().x;
     spherePos.y += tB->GetPosition().y;
     spherePos.z += tB->GetPosition().z;
 
     // BoxColliderから見たSphereColliderのローカル座標を計算
     // ・BoxColliderをAABBとして扱うため
-    XMFLOAT3 localSpherePos = MiMath::RotateVectorByEuler(
+    XMFLOAT3 localSpherePos = MiMath::RotateVector(
         {
-            -tA->GetRotation().x,
-            -tA->GetRotation().y,
-            -tA->GetRotation().z
+            // 回転の逆行列（共役クォータニオン）を使って逆回転
+            XMQuaternionConjugate(tA->GetRotation())
         },
         {
             spherePos.x - boxPos.x,
@@ -555,7 +550,7 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToSphere(Transfo
         };
 
         // ワールド座標系に変換
-        XMFLOAT3 worldMtv = MiMath::RotateVectorByEuler(
+        XMFLOAT3 worldMtv = MiMath::RotateVector(
             tA->GetRotation(),
             localMtv
         );
@@ -572,11 +567,11 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckSphereToSphere(Tran
     CollisionResult result = { false,{0.0f,0.0f,0.0f} };
 
     // ワールド座標系での中心座標、半径を計算
-    DirectX::XMFLOAT3 posA = MiMath::RotateVectorByEuler(tA->GetRotation(), cA->GetCenter());
+    DirectX::XMFLOAT3 posA = MiMath::RotateVector(tA->GetRotation(), cA->GetCenter());
     posA.x += tA->GetPosition().x;
     posA.y += tA->GetPosition().y;
     posA.z += tA->GetPosition().z;
-    DirectX::XMFLOAT3 posB = MiMath::RotateVectorByEuler(tB->GetRotation(), cB->GetCenter());
+    DirectX::XMFLOAT3 posB = MiMath::RotateVector(tB->GetRotation(), cB->GetCenter());
     posB.x += tB->GetPosition().x;
     posB.y += tB->GetPosition().y;
     posB.z += tB->GetPosition().z;

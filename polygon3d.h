@@ -18,7 +18,7 @@ void    Polygon3D_Update();
 
 void    Polygon3D_CubeRender(
     DirectX::XMFLOAT3 position, 
-    DirectX::XMFLOAT3 rotation, 
+    DirectX::XMVECTOR rotation, 
     DirectX::XMFLOAT3 scaling,
     ID3D11ShaderResourceView* tex,
     DirectX::XMFLOAT4 color);
