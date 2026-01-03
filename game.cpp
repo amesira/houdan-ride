@@ -23,7 +23,7 @@ void GameScene::Initialize()
     Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,5.0f,0.0f });
 
     GameObject* player = this->CreateGameObject();
-    Factory::CreateTestPlayer(player, { -2.0f,0.5f,0.0f });
+    Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
 
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });

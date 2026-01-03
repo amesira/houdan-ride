@@ -42,25 +42,20 @@ void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, Direc
     TpsCameraBehavior* tpsCameraBe = obj->AddBehavior<TpsCameraBehavior>();
 }
 
-void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
+void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
 {
     player->SetName("Player");
 
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
-   
-    CubemeshComponent* cubemesh = player->AddComponent<CubemeshComponent>();
     ModelComponent* modelComp = player->AddComponent<ModelComponent>();
 
-    //BoxColliderComponent* collider = player->AddComponent<BoxColliderComponent>();
     SphereColliderComponent* collider = player->AddComponent<SphereColliderComponent>();
-
     RigidbodyComponent* rigidbody = player->AddComponent<RigidbodyComponent>();
 
     // component設定
     transform->SetPosition(position);
     transform->SetScaling({ 0.5f, 0.5f, 0.5f });
-    cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
@@ -69,8 +64,11 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
 
     // behavior生成・登録
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
+}
 
-    cubemesh->SetEnable(false); // Cubemeshは非表示にしておく
+void Factory::CreatePlayer_Chara(GameObject* player)
+{
+    player->SetName("Player_Chara");
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)

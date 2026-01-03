@@ -26,11 +26,8 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
 {
     m_transform = owner->GetComponent<TransformComponent>();
-    m_cubemesh = owner->GetComponent<CubemeshComponent>();
     m_collider = owner->GetComponent<SphereColliderComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
-
-    m_cubemesh->SetEnable(false);
 
     m_tpsCamera = nullptr;
 }
