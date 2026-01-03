@@ -81,11 +81,11 @@ void RendererImageProcessor::Process(IScene* pScene)
         else if (pTransform) {
             scaleMatrix = XMMatrixScaling(
                 pTransform->GetScaling().x, pTransform->GetScaling().y, 1.0f);
+            rotMatrix = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, XMConvertToRadians(180.0f));
 
             // ビルボード表示
             if (pImage->GetIsBillboard()) {
-                rotMatrix = XMMatrixScaling(-1.0f, 1.0f, 1.0f);
-                rotMatrix *= XMMatrixRotationRollPitchYaw(0.0f, 0.0f, XMConvertToRadians(180.0f));
+                rotMatrix *= XMMatrixScaling(-1.0f, 1.0f, 1.0f);
                 transMatrix = view3D;
                 {
                     transMatrix.r[3].m128_f32[0] = 0.0f;
@@ -102,12 +102,13 @@ void RendererImageProcessor::Process(IScene* pScene)
                 }
             }
             else { // transformの回転を用いる
-                rotMatrix = XMMatrixRotationQuaternion(pTransform->GetRotation());
+                rotMatrix *= XMMatrixRotationQuaternion(pTransform->GetRotation());
                 transMatrix = XMMatrixTranslation(
                     pTransform->GetPosition().x,
                     pTransform->GetPosition().y,
                     pTransform->GetPosition().z);
             }
+            
         }
         XMMATRIX worldMatrix = scaleMatrix * rotMatrix * transMatrix;
 
@@ -128,6 +129,6 @@ void RendererImageProcessor::Process(IScene* pScene)
         g_pContext->PSSetShaderResources(0, 1, &texture);
 
         // スプライト描画
-        DrawSprite(pImage->GetColor(), 0, 1, 1);
+        DrawSprite(pImage->GetColor(), pImage->GetUvRect());
     }
 }

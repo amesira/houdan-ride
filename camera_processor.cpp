@@ -163,7 +163,7 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
         1.0f);
 
     Shader_SetMatrix(world * vp);
-    DrawSprite(XMFLOAT4(1.0f,1.0f,1.0f,1.0f),0,1,1);
+    DrawSprite(XMFLOAT4(1.0f,1.0f,1.0f,1.0f),XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 
     // リセット
     Shader_SetPixelOption(0.0f);

@@ -73,7 +73,7 @@ void FinalizeSprite() {
 //===================================================
 // スプライト描画
 //===================================================
-void DrawSprite(XMFLOAT4 color, int bno, int wc, int hc)
+void DrawSprite(XMFLOAT4 color, XMFLOAT4 uvRect)
 {
 	//----------------------------------------------------
 	// 頂点バッファをロック
@@ -85,13 +85,13 @@ void DrawSprite(XMFLOAT4 color, int bno, int wc, int hc)
 	Vertex* v = (Vertex*)msr.pData;
 
 	// スプライト1つ当たりの比率
-	float w = 1.0f / (float)wc;
-	float h = 1.0f / (float)hc;
+	float w = uvRect.z;
+	float h = uvRect.w;
 
 	// テクスチャの左上座標を計算
 	DirectX::XMFLOAT2 uv;
-	uv.x = (bno % wc) * w;
-	uv.y = (bno / wc) * h;
+	uv.x = uvRect.x;
+	uv.y = uvRect.y;
 
 	//----------------------------------------------------
 	// スプライトの頂点設定

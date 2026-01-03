@@ -16,6 +16,7 @@
 #include "cubemesh_component.h"
 #include "collider_component.h"
 #include "rigidbody_component.h"
+#include "image_component.h"
 
 #include "tps_camera_behavior.h"
 
@@ -39,6 +40,15 @@ PlayerBehavior::~PlayerBehavior()
 
 void PlayerBehavior::Update(IScene* pScene)
 {
+    // charaの参照取得
+    if (!m_charaTransform) {
+        GameObject* charaObj = pScene->GetGameObjectByName("Player_Chara");
+        if (charaObj) {
+            m_charaTransform = charaObj->GetComponent<TransformComponent>();
+            m_charaImage = charaObj->GetComponent<ImageComponent>();
+        }
+    }
+
     // TPSカメラの参照取得
     if (!m_tpsCamera) {
         GameObject* cameraObj = pScene->GetGameObjectByName("TPSCamera");
@@ -139,5 +149,50 @@ void PlayerBehavior::Update(IScene* pScene)
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
 
-    
+    //-------------------------------
+    // キャラの更新
+    //-------------------------------
+    XMFLOAT3 charaPos = m_transform->GetPosition();
+    charaPos.y += 2.0f; // キャラの高さ調整
+    m_charaTransform->SetPosition(charaPos);
+
+    XMFLOAT3 lookAt = m_tpsCamera->GetCameraFoward();
+    lookAt.y = 0.0f;
+    float angleY = std::atan2(lookAt.x, lookAt.z);
+    m_charaTransform->SetEulerRotation(XMFLOAT3(0.0f, angleY + XM_2PI * 0.5f, 0.0f));
+
+    // キャラの画像切り替え
+    int animIndex = 0;
+    m_charaAnimTimer += deltaTime;
+    animIndex = (int)(m_charaAnimTimer * 7.0f) % 4;
+    if (animIndex == 3) animIndex = 1; // 0,1,2のループにする
+
+    int directIndex = 0;
+    {
+        float dot = MiMath::Dot(lookAt, velocity);
+        XMFLOAT3 right = { lookAt.z, 0.0f, -lookAt.x };
+        float rightDot = MiMath::Dot(right, velocity);
+        if (abs(dot) > abs(rightDot)) {
+                    // 前後方向
+            if (dot >= 0.1f) {
+                // 前方向
+                directIndex = 3;
+            }
+            else if(dot <= -0.1f){
+                directIndex = 0;
+            }
+        }
+        else {
+            // 左右方向
+            if (rightDot >= 0.1f) {
+                // 右方向
+                directIndex = 2;
+            }
+            else if(rightDot <= -0.1f){
+                directIndex = 1;
+            }
+        }
+    }
+
+    m_charaImage->SetUvRect({1.0f / 3.0f * (float)animIndex, 1.0f / 4.0f * (float)directIndex, 1.0f / 3.0f, 1.0f / 4.0f});
 }

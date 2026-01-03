@@ -77,9 +77,9 @@ void Factory::CreatePlayer_Chara(GameObject* player)
 
     // component設定
     transform->SetPosition({ 0.0f,0.0f,0.0f });
-    transform->SetScaling({ 1.0f,1.3f,1.0f });
+    transform->SetScaling({ 1.5f,2.0f,1.0f });
     imageComp->Load(L"asset\\Texture\\player.png");
-    imageComp->SetIsBillboard(true);
+    imageComp->SetIsBillboard(false);
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)

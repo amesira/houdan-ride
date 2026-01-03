@@ -15,15 +15,20 @@ using namespace DirectX;
 class TransformComponent;
 class ColliderComponent;
 class RigidbodyComponent;
+class ImageComponent;
 
 class TpsCameraBehavior;
 
 class PlayerBehavior :public Behavior {
 private:
     TransformComponent* m_transform = nullptr;
-
     ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
+
+    // charaの参照
+    TransformComponent* m_charaTransform = nullptr;
+    ImageComponent*     m_charaImage = nullptr;
+    float               m_charaAnimTimer = 0.0f;
 
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
