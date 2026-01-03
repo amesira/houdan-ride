@@ -34,6 +34,8 @@ void Shader_Finalize();
 
 void Shader_SetMatrix(const DirectX::XMMATRIX& matrix);
 
+void Shader_SetPixelOption(float grayRate);
+
 void Shader_Begin(ShaderBeginMode mode = ShaderBeginMode::Default);
 
 #endif // SHADER_H

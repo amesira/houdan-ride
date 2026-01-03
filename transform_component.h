@@ -20,7 +20,7 @@ using namespace DirectX;
 class TransformComponent : public Component {
 private:
     DirectX::XMFLOAT3   m_position = { 0.0f,0.0f,0.0f };
-    DirectX::XMVECTOR   m_rotation = { 0.0f,0.0f,0.0f };
+    DirectX::XMVECTOR   m_rotation = XMQuaternionRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
     DirectX::XMFLOAT3   m_scaling = { 1.0f,1.0f,1.0f };
 
     DirectX::XMFLOAT3   m_prevPosition = { 0.0f,0.0f,0.0f };

@@ -112,40 +112,31 @@ void PlayerBehavior::Update(IScene* pScene)
     //-------------------------------
     // 回転処理
     //-------------------------------
-    //XMFLOAT3 rotation = m_transform->GetRotation();
+    float speed = MiMath::Length(XMFLOAT3(
+        velocity.x,
+        0.0f,
+        velocity.z
+        ))* deltaTime * 100.0f; // 回転速度調整用
 
-    if (abs(velocity.x) > 0.01f || abs(velocity.z) > 0.01f) {
-        //// 速度（水平のみ）
-        //XMVECTOR v = XMLoadFloat3(&velocity);
-        //v = XMVectorSet(XMVectorGetX(v), 0.0f, XMVectorGetZ(v), 0.0f);
+    if (speed > 0.1f){
+        XMVECTOR quaternion = m_transform->GetRotation();
 
-        //float speed = XMVectorGetX(XMVector3Length(v));
-        //if (speed < 0.01f) return;
+        // 回転軸
+        XMVECTOR    vec1, vec2;
+        vec1 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f); // 上方向
+        vec2 = XMLoadFloat3(&velocity);             // 進行方向
+        vec2 = XMVector3Normalize(vec2);
+        XMVECTOR axis = XMVector3Cross(vec1, vec2); // 外積で回転軸を求める
 
-        //XMVECTOR dir = XMVector3Normalize(v);
+        // 回転量
+        XMVECTOR    qu;
+        qu = XMQuaternionRotationAxis(
+            axis, XMConvertToRadians(speed));
+        quaternion = XMQuaternionMultiply(quaternion, qu);
 
-        //// 転がり軸： up × dir
-        //XMVECTOR up = XMVectorSet(0, 1, 0, 0);
-        //XMVECTOR axis = XMVector3Cross(up, dir);
-
-        //float axisLen = XMVectorGetX(XMVector3Length(axis));
-        //if (axisLen < 1e-6f) return;
-        //axis = axis / axisLen;
-
-        //// 回転角（rad）= 移動距離 / 半径
-        //float dist = speed * deltaTime;
-        //float angle = dist / 0.5f;
-
-        //// このフレームの回転
-        //XMVECTOR dq = XMQuaternionRotationAxis(axis, angle);
-
-        //// 合成（まずはワールド回転として積む）
-        //XMVECTOR q = m_quaternion;
-        //q = XMQuaternionNormalize(XMQuaternionMultiply(dq, q));
-        //m_quaternion = q;
+        m_transform->SetRotation(quaternion);
     }
-    
+
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
-    //m_transform->SetRotation(rotation);
 }

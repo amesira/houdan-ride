@@ -147,12 +147,20 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
         0.0f,
         1.0f));
 
+    SetBlendState(BLENDSTATE_NONE);
+
     // スナップショット描画
     ID3D11ShaderResourceView* srv = camera->GetSnapshot();
-
-    SetBlendState(BLENDSTATE_NONE);
     g_pDeviceContext->PSSetShaderResources(0, 1, &srv);
+
+    // シェーダー
+    Shader_SetPixelOption(camera->GetShaderGrayRate());
+
+    // スプライト描画
     DrawSprite({x, y},{width, height},{1.0f,1.0f,1.0f,1.0f});
+
+    // リセット
+    Shader_SetPixelOption(0.0f);
 
     return true;
 }

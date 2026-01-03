@@ -103,6 +103,10 @@ namespace MiMath
         return result;
     }
 
+    inline float Lerp(float a, float b, float t) {
+        return a + (b - a) * t;
+    }
+
     // ベクトルを回転させる
     inline XMFLOAT3 RotateVector(XMFLOAT3 euler, XMFLOAT3 v) {
         DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(
