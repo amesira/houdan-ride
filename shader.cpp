@@ -19,8 +19,10 @@ using namespace DirectX;
 static ID3D11VertexShader* g_pVertexShader = nullptr;	// 頂点シェーダー
 static ID3D11InputLayout* g_pInputLayout = nullptr;		// 頂点レイアウト
 
-static ID3D11Buffer* g_pVSConstantBuffer = nullptr;		// 定数バッファ1個
-static ID3D11Buffer* g_pWorldConstantBuffer = nullptr;	// ワールド行列用定数バッファ
+static ID3D11Buffer* g_pMtxCB = nullptr;		// mtx
+static ID3D11Buffer* g_pWorldCB = nullptr;		// world
+
+static ID3D11Buffer* g_pLightCB = nullptr;		// light
 
 // ピクセルシェーダー
 static ID3D11PixelShader* g_pPixelShader = nullptr;	// ピクセルシェーダー
@@ -92,7 +94,11 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	buffer_desc.ByteWidth = sizeof(XMFLOAT4X4); // バッファのサイズ
 	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
 
-	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pVSConstantBuffer);
+	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pMtxCB);
+
+    g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pWorldCB);
+
+
 
     // 事前コンパイル済みピクセルシェーダーの読み込み
 	if (!LoadPixelShader("shader_pixel.cso", &g_pPixelShader)) {
@@ -102,12 +108,10 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
     // ピクセルシェーダー用定数バッファの作成
     // オプション用定数バッファの作成
-	{
-		buffer_desc.ByteWidth = sizeof(OptionBuffer); // バッファのサイズ
-		buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
+	buffer_desc.ByteWidth = sizeof(OptionBuffer); // バッファのサイズ
+	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
 
-		g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pOptionCB);
-	}
+	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pOptionCB);
 
 	if (!LoadPixelShader("shader_pixel_font.cso", &g_pFontShader)) {
 		hal::dout << "Shader_Initialize() : フォント用ピクセルシェーダーの作成に失敗しました" << std::endl;
@@ -120,7 +124,7 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 void Shader_Finalize()
 {
 	SAFE_RELEASE(g_pPixelShader);
-	SAFE_RELEASE(g_pVSConstantBuffer);
+	SAFE_RELEASE(g_pMtxCB);
 	SAFE_RELEASE(g_pInputLayout);
 	SAFE_RELEASE(g_pVertexShader);
 
@@ -136,7 +140,12 @@ void Shader_SetMatrix(const DirectX::XMMATRIX& matrix)
 	XMStoreFloat4x4(&transpose, XMMatrixTranspose(matrix));
 
 	// 定数バッファに行列をセット
-	g_pContext->UpdateSubresource(g_pVSConstantBuffer, 0, nullptr, &transpose, 0, 0);
+	g_pContext->UpdateSubresource(g_pMtxCB, 0, nullptr, &transpose, 0, 0);
+}
+
+void Shader_SetWorldMatrix(const DirectX::XMMATRIX& world)
+{
+
 }
 
 void Shader_SetPixelOption(float grayRate)
@@ -157,7 +166,7 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->PSSetShader(g_pPixelShader, nullptr, 0);
 		g_pContext->IASetInputLayout(g_pInputLayout);
 
-		g_pContext->VSSetConstantBuffers(0, 1, &g_pVSConstantBuffer);
+		g_pContext->VSSetConstantBuffers(0, 1, &g_pMtxCB);
         g_pContext->PSSetConstantBuffers(0, 1, &g_pOptionCB);
 		break;
     }
@@ -168,7 +177,7 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->PSSetShader(g_pFontShader, nullptr, 0);
 		g_pContext->IASetInputLayout(g_pInputLayout);
 
-		g_pContext->VSSetConstantBuffers(0, 1, &g_pVSConstantBuffer);
+		g_pContext->VSSetConstantBuffers(0, 1, &g_pMtxCB);
 		break;
 	}
 	default: break;
