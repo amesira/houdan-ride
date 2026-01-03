@@ -12,6 +12,7 @@
 #include "mi_math.h"
 #include "fps.h"
 #include "mouse.h"
+#include "keyboard.h"
 
 #include "transform_component.h"
 #include "camera_component.h"
@@ -72,11 +73,15 @@ void TpsCameraBehavior::Update(IScene* pScene)
         m_angleX += moveX * deltaTime * 0.1f;
         m_angleY += moveY * deltaTime * 0.1f;
 
-        FPS_SetTimeScale(0.3f); // スローモーション
+    }
+
+    // スローモーション
+    if (Keyboard_IsKeyDown(KK_LEFTSHIFT)) {
+        FPS_SetTimeScale(0.3f);
         grayRate = MiMath::Lerp(grayRate, 1.0f, deltaTime * 5.0f);
     }
     else {
-        FPS_SetTimeScale(1.0f); // 通常速度
+        FPS_SetTimeScale(1.0f);
         grayRate = MiMath::Lerp(grayRate, 0.0f, deltaTime * 3.0f);
     }
 

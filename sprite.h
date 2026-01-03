@@ -29,22 +29,22 @@ void FinalizeSprite();
 //----------------------------------------------------
 
 /// @brief スプライト描画関数
-void DrawSprite(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color = {1.0f,1.0f,1.0f,1.0f});
-
-/// @brief スプライト描画関数EX：スプライト分割
-/// @param bno 分割番号
-/// @param wc 分割数（横）
-/// @param hc 分割数（縦）
-void DrawSpriteEx(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
-    int bno, int wc, int hc);
-
-/// @brief スクロール用スプライト描画
-void DrawSpriteScroll(XMFLOAT2 pos, XMFLOAT2 size, 
-	XMFLOAT4 color,XMFLOAT2 texcoord);
-
-/// @brief スプライト描画EX：スプライト分割 + 回転
-void DrawSpriteExRotation(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
-	int bno, int wc, int hc,float rad);
+//void DrawSprite(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color = {1.0f,1.0f,1.0f,1.0f});
+//
+///// @brief スプライト描画関数EX：スプライト分割
+///// @param bno 分割番号
+///// @param wc 分割数（横）
+///// @param hc 分割数（縦）
+//void DrawSpriteEx(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
+//    int bno, int wc, int hc);
+//
+///// @brief スクロール用スプライト描画
+//void DrawSpriteScroll(XMFLOAT2 pos, XMFLOAT2 size, 
+//	XMFLOAT4 color,XMFLOAT2 texcoord);
+//
+///// @brief スプライト描画EX：スプライト分割 + 回転
+//void DrawSpriteExRotation(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT4 color,
+//	int bno, int wc, int hc,float rad);
 
 /// @brief スプライト描画（行列使用ver）
-void DrawSprite(XMFLOAT2 size,XMFLOAT4 color,int bno, int wc,int hc);
+void DrawSprite(XMFLOAT4 color,int bno, int wc,int hc);

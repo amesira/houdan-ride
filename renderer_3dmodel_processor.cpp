@@ -18,7 +18,6 @@ using namespace DirectX;
 #include "shader.h"
 #include "sprite.h"
 #include "keyboard.h"
-#include "polygon3d.h"
 
 #include "model.h"
 

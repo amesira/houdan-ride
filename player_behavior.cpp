@@ -97,11 +97,13 @@ void PlayerBehavior::Update(IScene* pScene)
     // 速度設定
     DirectX::XMFLOAT3 velocity = m_rigidbody->GetVelocity();
     if (isMove){
-        velocity = {
-            moveDir.x * 5.0f,
-            m_rigidbody->GetVelocity().y,
-            moveDir.z * 5.0f,
-        };
+        velocity.x += moveDir.x * 10.0f * deltaTime;
+        if (velocity.x > 5.0f)velocity.x = 5.0f;
+        else if (velocity.x < -5.0f)velocity.x = -5.0f;
+
+        velocity.z += moveDir.z * 10.0f * deltaTime;
+        if (velocity.z > 5.0f)velocity.z = 5.0f;
+        else if (velocity.z < -5.0f)velocity.z = -5.0f;
     }
 
     // ジャンプ
@@ -139,4 +141,6 @@ void PlayerBehavior::Update(IScene* pScene)
 
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
+
+    
 }

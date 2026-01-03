@@ -150,8 +150,6 @@
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="physics_processor.cpp" />
     <ClCompile Include="player_behavior.cpp" />
-    <ClCompile Include="polygon.cpp" />
-    <ClCompile Include="polygon3d.cpp" />
     <ClCompile Include="processor_manager.cpp" />
     <ClCompile Include="renderer_3dcube_processor.cpp" />
     <ClCompile Include="renderer_3dmodel_processor.cpp" />
@@ -176,6 +174,7 @@
     <ClInclude Include="factory.h" />
     <ClInclude Include="fps.h" />
     <ClInclude Include="image_component.h" />
+    <ClInclude Include="light_component.h" />
     <ClInclude Include="mi_math.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="model_component.h" />
@@ -194,8 +193,6 @@
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="mouse.h" />
-    <ClInclude Include="polygon.h" />
-    <ClInclude Include="polygon3d.h" />
     <ClInclude Include="processor.h" />
     <ClInclude Include="renderer_3dmodel_processor.h" />
     <ClInclude Include="renderer_font_processor.h" />

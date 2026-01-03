@@ -62,7 +62,8 @@ void Factory::CreateTestPlayer(GameObject* player, DirectX::XMFLOAT3 position)
     transform->SetScaling({ 0.5f, 0.5f, 0.5f });
     cubemesh->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
-    rigidbody->SetFriction({ 0.95f, 1.0f, 0.95f });
+    rigidbody->SetMass(1.5f);
+    rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
 
     modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
 
