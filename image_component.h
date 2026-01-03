@@ -22,6 +22,9 @@ private:
     DirectX::XMFLOAT4           m_uvRect = { 0.0f,0.0f,1.0f,1.0f };
     DirectX::XMFLOAT4           m_color = { 1.0f,1.0f,1.0f,1.0f };
 
+    // ビルボード表示するかどうか（ワールド配置時のみ使用するパラメータ）
+    bool    m_isBillboard = false;
+
 public:
     void    SetTexture(ID3D11ShaderResourceView* pTexture) { m_pTexture = pTexture; }
     void    Load(const wchar_t* fileName) {
@@ -33,6 +36,9 @@ public:
     ID3D11ShaderResourceView* GetTexture()const { return m_pTexture; }
     DirectX::XMFLOAT4   GetUvRect()const { return m_uvRect; }
     DirectX::XMFLOAT4   GetColor()const { return m_color; }
+
+    void    SetIsBillboard(bool isBillboard) { m_isBillboard = isBillboard; }
+    bool    GetIsBillboard()const { return m_isBillboard; }
 };
 
 #endif

@@ -55,8 +55,9 @@ void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
 
     // component設定
     transform->SetPosition(position);
-    transform->SetScaling({ 0.5f, 0.5f, 0.5f });
+    transform->SetScaling({ 1.0f, 1.0f, 1.0f });
 
+    collider->SetRadius(1.0f);
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
 
@@ -69,6 +70,16 @@ void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
 void Factory::CreatePlayer_Chara(GameObject* player)
 {
     player->SetName("Player_Chara");
+
+    // component生成・登録
+    TransformComponent* transform = player->AddComponent<TransformComponent>();
+    ImageComponent* imageComp = player->AddComponent<ImageComponent>();
+
+    // component設定
+    transform->SetPosition({ 0.0f,0.0f,0.0f });
+    transform->SetScaling({ 1.0f,1.3f,1.0f });
+    imageComp->Load(L"asset\\Texture\\player.png");
+    imageComp->SetIsBillboard(true);
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)
@@ -96,13 +107,14 @@ void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const
 
     // component設定
     rectTransform->SetPosition(position);
+    rectTransform->SetScaling({ 100.0f,100.0f,1.0f });
 
     textComponent->SetText(text);
     textComponent->SetFontSize((int)fontSize);
     textComponent->SetColor(color);
     textComponent->SetCenter(isCenter);
 
-    imageComponent->SetColor({ 1.0f,1.0f,0.0f,1.0f }); // 透明にしておく
+    imageComponent->SetColor({ 1.0f,1.0f,1.0f,1.0f }); // 透明にしておく
     imageComponent->SetUvRect({ 0.0f,0.0f,1.0f,1.0f });
     imageComponent->Load(L"asset\\Texture\\test.jpg");
 }

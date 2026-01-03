@@ -24,6 +24,8 @@ void GameScene::Initialize()
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
+    player = this->CreateGameObject();
+    Factory::CreatePlayer_Chara(player);
 
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });

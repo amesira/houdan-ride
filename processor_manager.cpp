@@ -133,6 +133,9 @@ void ProcessorM_Draw(IScene* pScene)
         g_Renderer3DModelProcessor->Process(pScene);
         g_Renderer3DCubeProcessor->Process(pScene);
 
+        // world配置
+        g_RendererImageProcessor->Process(pScene);
+
         DebugRenderer_DrawFlush();
 
         // スナップショット撮影
@@ -140,6 +143,8 @@ void ProcessorM_Draw(IScene* pScene)
     }
     
     Direct3D_Clear();
+
+    SetBlendState(BLENDSTATE_NONE);
 
     // カメラからのスナップショットをフルスクリーンに描画
     const float w = (float)Direct3D_GetBackBufferWidth();
@@ -149,8 +154,8 @@ void ProcessorM_Draw(IScene* pScene)
     SetBlendState(BLENDSTATE_ALFA);
 
     // 各2D描画プロセッサーの実行
-    g_RendererImageProcessor->Process(pScene);
     g_RendererFontProcessor->Process(pScene);
+    g_RendererImageProcessor->Process(pScene);
 
     Direct3D_Present();
 }
