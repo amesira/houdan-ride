@@ -137,16 +137,7 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
 
     // シェーダー設定
     Shader_Begin();
-    const float screenWidth = (float)Direct3D_GetBackBufferWidth();
-    const float screenHeight = (float)Direct3D_GetBackBufferHeight();
-    Shader_SetMatrix(XMMatrixOrthographicOffCenterLH(
-        0.0f,
-        screenWidth,
-        screenHeight,
-        0.0f,
-        0.0f,
-        1.0f));
-
+    
     SetBlendState(BLENDSTATE_NONE);
 
     // スナップショット描画
@@ -157,7 +148,22 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
     Shader_SetPixelOption(camera->GetShaderGrayRate());
 
     // スプライト描画
-    DrawSprite({x, y},{width, height},{1.0f,1.0f,1.0f,1.0f});
+    XMMATRIX scaleMatrix = XMMatrixScaling(width, height, 1.0f);
+    XMMATRIX transMatrix = XMMatrixTranslation(x, y, 0.0f);
+    XMMATRIX world = scaleMatrix * transMatrix;
+
+    const float screenWidth = (float)Direct3D_GetBackBufferWidth();
+    const float screenHeight = (float)Direct3D_GetBackBufferHeight();
+    XMMATRIX vp = XMMatrixOrthographicOffCenterLH(
+        0.0f,
+        screenWidth,
+        screenHeight,
+        0.0f,
+        0.0f,
+        1.0f);
+
+    Shader_SetMatrix(world * vp);
+    DrawSprite(XMFLOAT4(1.0f,1.0f,1.0f,1.0f),0,1,1);
 
     // リセット
     Shader_SetPixelOption(0.0f);

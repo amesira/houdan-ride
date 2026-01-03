@@ -53,7 +53,7 @@ void PhysicsProcessor::Process(IScene* pScene)
             velocity.z *= friction.z;
 
             // 重力の適用
-            velocity.y += rigidbody->GetGravityScale() * deltaTime;
+            velocity.y += rigidbody->GetGravityScale() * rigidbody->GetMass() * deltaTime;
         }
         rigidbody->SetVelocity(velocity);
 

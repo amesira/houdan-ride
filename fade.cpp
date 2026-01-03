@@ -1,14 +1,14 @@
 //===================================================
-// fade.cpp [ƒtƒF[ƒhƒNƒ‰ƒX]
+// fade.cpp [ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¯ãƒ©ã‚¹]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/09/08
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/09/08
 //===================================================
 #include "fade.h"
 
 #include "shader.h"
 
-// ’ˆÓI‰Šú‰»‚ÅŠO•”‚©‚çİ’è‚³‚ê‚é‚à‚ÌBRelease•s—vB
+// æ³¨æ„ï¼åˆæœŸåŒ–ã§å¤–éƒ¨ã‹ã‚‰è¨­å®šã•ã‚Œã‚‹ã‚‚ã®ã€‚Releaseä¸è¦ã€‚
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;
 
@@ -16,19 +16,19 @@ FadeObject g_Fade;
 static ID3D11ShaderResourceView* g_Texture;
 
 //===================================================
-// ƒtƒF[ƒh‰Šú‰»
+// ãƒ•ã‚§ãƒ¼ãƒ‰åˆæœŸåŒ–
 //===================================================
 void Fade_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     if (!g_pDevice)g_pDevice = pDevice;
     if (!g_pContext)g_pContext = pContext;
 
-    // ƒeƒNƒXƒ`ƒƒ‰æ‘œ“Ç‚İ‚İ
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”»åƒèª­ã¿è¾¼ã¿
     LoadTexture(&g_Texture, L"asset\\Texture\\fade.bmp");
 }
 
 //===================================================
-// ƒtƒF[ƒhI—¹ˆ—
+// ãƒ•ã‚§ãƒ¼ãƒ‰çµ‚äº†å‡¦ç†
 //===================================================
 void Fade_Finalize()
 {
@@ -36,7 +36,7 @@ void Fade_Finalize()
 }
 
 //===================================================
-// ƒtƒF[ƒhXVˆ—
+// ãƒ•ã‚§ãƒ¼ãƒ‰æ›´æ–°å‡¦ç†
 //===================================================
 void Fade_Update()
 {
@@ -44,7 +44,7 @@ void Fade_Update()
 }
 
 //===================================================
-// ƒtƒF[ƒh•`‰æˆ—
+// ãƒ•ã‚§ãƒ¼ãƒ‰æç”»å‡¦ç†
 //===================================================
 void Fade_Draw()
 {
@@ -53,14 +53,14 @@ void Fade_Draw()
         break;
     case FADE_STATE::FADE_IN:
         if (g_Fade.fadeColor.w < 0.0f) {
-            // ƒtƒF[ƒhƒCƒ“I—¹
+            // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³çµ‚äº†
             g_Fade.fadeColor.w = 0.0f;
             g_Fade.state = FADE_STATE::FADE_NONE;
         }
         break;
     case FADE_STATE::FADE_OUT:
         if (g_Fade.fadeColor.w > 1.0f) {
-            // ƒtƒF[ƒhƒAƒEƒgI—¹
+            // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆçµ‚äº†
             g_Fade.fadeColor.w = 1.0f;
             SetFade(g_Fade.frame, g_Fade.fadeColor, 
                 FADE_STATE::FADE_IN, g_Fade.scene);
@@ -69,17 +69,17 @@ void Fade_Draw()
         break;
     }
 
-    // ƒVƒF[ƒ_[‚ğ•`‰æƒpƒCƒvƒ‰ƒCƒ“‚Éİ’è
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’æç”»ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã«è¨­å®š
     Shader_Begin();
 
-    // ‰æ–ÊƒTƒCƒYæ“¾
+    // ç”»é¢ã‚µã‚¤ã‚ºå–å¾—
     const float SCREEN_WIDTH = (float)Direct3D_GetBackBufferWidth();
     const float SCREEN_HEIGHT = (float)Direct3D_GetBackBufferHeight();
 
     //----------------------------------------------------
-    // •`‰æ‘O‚Ìİ’èˆ—
+    // æç”»å‰ã®è¨­å®šå‡¦ç†
     //----------------------------------------------------
-    // ’¸“_ƒVƒF[ƒ_[‚É•ÏŠ·s—ñ‚ğİ’è
+    // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã«å¤‰æ›è¡Œåˆ—ã‚’è¨­å®š
     Shader_SetMatrix(XMMatrixOrthographicOffCenterLH(
         0.0f,
         SCREEN_WIDTH,
@@ -88,20 +88,20 @@ void Fade_Draw()
         0.0f,
         1.0f));
 
-    // ƒeƒNƒXƒ`ƒƒg—pİ’è
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½¿ç”¨è¨­å®š
     g_pContext->PSSetShaderResources(0, 1, &g_Texture);
 
     //----------------------------------------------------
-    // ‰æ–ÊƒTƒCƒY‚ÌƒXƒvƒ‰ƒCƒg‚ğ•`‰æ
+    // ç”»é¢ã‚µã‚¤ã‚ºã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’æç”»
     //----------------------------------------------------
     SetBlendState(BLENDSTATE_ALFA);
 
-    DrawSprite(
+    /*DrawSprite(
         { SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f },
         { SCREEN_WIDTH,SCREEN_HEIGHT },
-        g_Fade.fadeColor);
+        g_Fade.fadeColor);*/
 
-    // ƒtƒF[ƒhˆ—
+    // ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†
     switch (g_Fade.state) {
     case FADE_STATE::FADE_IN:
         g_Fade.fadeColor.w -= (1.0f / g_Fade.frame);

@@ -1,8 +1,8 @@
 //===================================================
-// title.cpp [�^�C�g���V�[������]
+// title.cpp [タイトルシーン制御]
 // 
-// Author�FMiu Kitamura
-// Date  �F2025/09/05
+// Author：Miu Kitamura
+// Date  ：2025/09/05
 //===================================================
 #include "title.h"
 
@@ -22,20 +22,20 @@ static ID3D11DeviceContext* g_pContext = nullptr;
 static ID3D11ShaderResourceView* g_Texture;
 
 //===================================================
-// �^�C�g���V�[������������
+// タイトルシーン初期化処理
 //===================================================
 void Title_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
-	// �f�o�C�X�ƃf�o�C�X�R���e�L�X�g�̕ۑ�
+	// デバイスとデバイスコンテキストの保存
 	g_pDevice = pDevice;
 	g_pContext = pContext;
 
-	// �e�N�X�`���摜�ǂݍ���
+	// テクスチャ画像読み込み
 	LoadTexture(&g_Texture, L"asset\\Texture\\Title.png");
 }
 
 //===================================================
-// �^�C�g���V�[���I������
+// タイトルシーン終了処理
 //===================================================
 void Title_Finalize()
 {
@@ -43,7 +43,7 @@ void Title_Finalize()
 }
 
 //===================================================
-// �^�C�g���V�[���X�V����
+// タイトルシーン更新処理
 //===================================================
 void Title_Update()
 {
@@ -57,21 +57,21 @@ void Title_Update()
 }
 
 //===================================================
-// �^�C�g���V�[���`�揈��
+// タイトルシーン描画処理
 //===================================================
 void Title_Draw()
 {
-	// �V�F�[�_�[��`��p�C�v���C���ɐݒ�
+	// シェーダーを描画パイプラインに設定
 	Shader_Begin();
 
-	// ��ʃT�C�Y�擾
+	// 画面サイズ取得
 	const float SCREEN_WIDTH = (float)Direct3D_GetBackBufferWidth();
 	const float SCREEN_HEIGHT = (float)Direct3D_GetBackBufferHeight();
 
 	//----------------------------------------------------
-	// �`��O�̐ݒ菈��
+	// 描画前の設定処理
 	//----------------------------------------------------
-	// ���_�V�F�[�_�[�ɕϊ��s���ݒ�
+	// 頂点シェーダーに変換行列を設定
 	Shader_SetMatrix(XMMatrixOrthographicOffCenterLH(
 		0.0f,
 		SCREEN_WIDTH,
@@ -80,16 +80,16 @@ void Title_Draw()
 		0.0f,
 		1.0f));
 
-	// �e�N�X�`���g�p�ݒ�
+	// テクスチャ使用設定
 	g_pContext->PSSetShaderResources(0, 1, &g_Texture);
 
 	//----------------------------------------------------
-	// ��ʃT�C�Y�̃X�v���C�g��`��
+	// 画面サイズのスプライトを描画
 	//----------------------------------------------------
 	SetBlendState(BLENDSTATE_NONE);
 
-	DrawSprite(
+	/*DrawSprite(
 		{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f },
 		{ SCREEN_WIDTH,SCREEN_HEIGHT },
-		{ 1.0f,1.0f,1.0f,1.0f });
+		{ 1.0f,1.0f,1.0f,1.0f });*/
 }

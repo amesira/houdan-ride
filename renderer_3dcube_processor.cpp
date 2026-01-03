@@ -16,7 +16,6 @@ using namespace DirectX;
 #include "shader.h"
 #include "sprite.h"
 #include "keyboard.h"
-#include "polygon3d.h"
 
 #include "scene_interface.h"
 #include "game_object.h"
@@ -30,7 +29,7 @@ static ID3D11ShaderResourceView* g_DefTexture = NULL;
 void Renderer3DCubeProcessor::Initialize()
 {
     LoadTexture(&g_DefTexture, L"asset\\Texture\\sample.png");
-    Polygon3D_Initialize(Direct3D_GetDevice(), Direct3D_GetDeviceContext());
+    //Polygon3D_Initialize(Direct3D_GetDevice(), Direct3D_GetDeviceContext());
 }
 
 void Renderer3DCubeProcessor::Finalize()
@@ -57,12 +56,12 @@ void Renderer3DCubeProcessor::Process(IScene* pScene)
         ID3D11ShaderResourceView* tex = cubemesh->GetTexture();
         if (!tex)tex = g_DefTexture;
 
-        Polygon3D_CubeRender(
+       /* Polygon3D_CubeRender(
             transform->GetPosition(),
             transform->GetRotation(),
             transform->GetScaling(),
             tex,
             cubemesh->GetColor()
-        );
+        );*/
     }
 }

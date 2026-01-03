@@ -7,7 +7,6 @@
 #include "game.h"
 
 #include "Audio.h"
-#include "polygon3d.h"
 #include "processor_manager.h"
 
 #include "factory.h"
@@ -48,8 +47,6 @@ void GameScene::Initialize()
 void GameScene::Finalize()
 {
     ProcessorM_Finalize();
-
-    Polygon3D_Finalize();
 }
 
 //===================================================
