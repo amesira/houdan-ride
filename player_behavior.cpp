@@ -123,10 +123,10 @@ void PlayerBehavior::Update(IScene* pScene)
 
         // 回転軸
         XMVECTOR    vec1, vec2;
-        vec1 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-        vec2 = XMLoadFloat3(&velocity);
+        vec1 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f); // 上方向
+        vec2 = XMLoadFloat3(&velocity);             // 進行方向
         vec2 = XMVector3Normalize(vec2);
-        XMVECTOR axis = XMVector3Cross(vec1, vec2);
+        XMVECTOR axis = XMVector3Cross(vec1, vec2); // 外積で回転軸を求める
 
         // 回転量
         XMVECTOR    qu;

@@ -7,6 +7,11 @@
 Texture2D g_Texture : register(t0);
 SamplerState g_SamplerState : register(s0);
 
+cbuffer Option : register(b0)
+{
+    float grayRate; // 0.0 = 通常, 1.0 = 完全グレー
+};
+
 struct PS_INPUT // VS_OUTPUTと同じ内容
 {
     float4 posH : SV_Position;   // ピクセルの座標
@@ -21,8 +26,14 @@ float4 main(PS_INPUT ps_in) : SV_TARGET
 {
     float4 col;
     
+    // テクスチャの色を取得
     col = g_Texture.Sample(g_SamplerState, ps_in.texcoord);
     col *= ps_in.color;
+    
+    // グレースケール化
+    float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));
+    float3 grayColor = float3(gray, gray, gray);
+    col.rgb = lerp(col.rgb, grayColor, grayRate);
     
     return col;
 }

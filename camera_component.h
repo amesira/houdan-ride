@@ -16,8 +16,6 @@ class CameraProcessor;
 
 class CameraComponent : public Component {
 private:
-    bool        m_useRotationFromOwner = true;      // オーナーの回転を使うかどうか
-
     XMFLOAT3    m_atPosition = { 0.0f, 0.0f, 0.0f };// 注視点(オーナーの回転を使う場合、Processorで更新される)
     XMFLOAT3    m_upVector = { 0.0f, 1.0f, 0.0f };  // 上方ベクトル
 
@@ -29,10 +27,10 @@ private:
     XMMATRIX    m_view;         // ビュー行列
     XMMATRIX    m_projection;   // プロジェクション行列
 
+    // シェーダー
+    float       m_shaderGrayRate = 0.0f;
+
 public:
-    void    SetUseRotationFromOwner(bool use) { m_useRotationFromOwner = use; }
-    bool    GetUseRotationFromOwner() const { return m_useRotationFromOwner; }
-    
     void    SetAtPosition(XMFLOAT3 atPosition) { m_atPosition = atPosition; }
     XMFLOAT3   GetAtPosition() const { return m_atPosition; }
     XMFLOAT3   GetUpVector() const { return m_upVector; }
@@ -49,6 +47,10 @@ public:
 
     XMMATRIX    GetViewMatrix() const { return m_view; }
     XMMATRIX    GetProjectionMatrix() const { return m_projection; }
+
+    // シェーダーオプション設定
+    void    SetShaderGrayRate(float grayRate) { m_shaderGrayRate = grayRate; }
+    float   GetShaderGrayRate() const { return m_shaderGrayRate; }
 
 private:
     friend CameraProcessor;

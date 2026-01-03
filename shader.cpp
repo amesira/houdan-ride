@@ -15,14 +15,21 @@ using namespace DirectX;
 #include "debug_ostream.h"
 #include <fstream>
 
-// デフォルトのシェーダー関連
+// 頂点シェーダー
 static ID3D11VertexShader* g_pVertexShader = nullptr;	// 頂点シェーダー
 static ID3D11InputLayout* g_pInputLayout = nullptr;		// 頂点レイアウト
 
-static ID3D11Buffer* g_pVSConstantBuffer = nullptr;	// 定数バッファ1個
+static ID3D11Buffer* g_pVSConstantBuffer = nullptr;		// 定数バッファ1個
+static ID3D11Buffer* g_pWorldConstantBuffer = nullptr;	// ワールド行列用定数バッファ
+
+// ピクセルシェーダー
 static ID3D11PixelShader* g_pPixelShader = nullptr;	// ピクセルシェーダー
 
-static ID3D11Buffer* g_pWorldConstantBuffer = nullptr; // ワールド行列用定数バッファ
+static ID3D11Buffer* g_pOptionCB = nullptr;			// オプション用定数バッファ
+struct OptionBuffer {
+    float grayRate;  // グレースケール率
+	float padding[3]; // 16バイトアライメント用パディング
+};
 
 // カスタムシェーダー
 static ID3D11PixelShader* g_pFontShader = nullptr; // フォント用ピクセルシェーダー
@@ -93,6 +100,15 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		return false;
     }
 
+    // ピクセルシェーダー用定数バッファの作成
+    // オプション用定数バッファの作成
+	{
+		buffer_desc.ByteWidth = sizeof(OptionBuffer); // バッファのサイズ
+		buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
+
+		g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pOptionCB);
+	}
+
 	if (!LoadPixelShader("shader_pixel_font.cso", &g_pFontShader)) {
 		hal::dout << "Shader_Initialize() : フォント用ピクセルシェーダーの作成に失敗しました" << std::endl;
 		return false;
@@ -123,6 +139,14 @@ void Shader_SetMatrix(const DirectX::XMMATRIX& matrix)
 	g_pContext->UpdateSubresource(g_pVSConstantBuffer, 0, nullptr, &transpose, 0, 0);
 }
 
+void Shader_SetPixelOption(float grayRate)
+{
+	OptionBuffer optionBuffer;
+    optionBuffer.grayRate = grayRate;
+
+    g_pContext->UpdateSubresource(g_pOptionCB, 0, nullptr, &optionBuffer, 0, 0);
+}
+
 void Shader_Begin(ShaderBeginMode mode)
 {
 	switch (mode)
@@ -132,6 +156,9 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->VSSetShader(g_pVertexShader, nullptr, 0);
 		g_pContext->PSSetShader(g_pPixelShader, nullptr, 0);
 		g_pContext->IASetInputLayout(g_pInputLayout);
+
+		g_pContext->VSSetConstantBuffers(0, 1, &g_pVSConstantBuffer);
+        g_pContext->PSSetConstantBuffers(0, 1, &g_pOptionCB);
 		break;
     }
       
@@ -140,6 +167,7 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->VSSetShader(g_pVertexShader, nullptr, 0);
 		g_pContext->PSSetShader(g_pFontShader, nullptr, 0);
 		g_pContext->IASetInputLayout(g_pInputLayout);
+
 		g_pContext->VSSetConstantBuffers(0, 1, &g_pVSConstantBuffer);
 		break;
 	}

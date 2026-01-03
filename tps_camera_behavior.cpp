@@ -62,6 +62,8 @@ void TpsCameraBehavior::Update(IScene* pScene)
     targetPos.y += 1.0f; // 少し上を見るようにする
     m_cameraAnchor = MiMath::Lerp(m_cameraAnchor, targetPos, deltaTime * 3.0f);
 
+    float grayRate = m_camera->GetShaderGrayRate();
+
     // 左クリック中のマウス移動でカメラ回転
     if (Mouse_IsButtonDown(Mouse_Button::LEFT)) {
         float moveX = (float)Mouse_GetPositionX() - (float)Mouse_GetOldPositionX();
@@ -71,10 +73,14 @@ void TpsCameraBehavior::Update(IScene* pScene)
         m_angleY += moveY * deltaTime * 0.1f;
 
         FPS_SetTimeScale(0.3f); // スローモーション
+        grayRate = MiMath::Lerp(grayRate, 1.0f, deltaTime * 5.0f);
     }
     else {
         FPS_SetTimeScale(1.0f); // 通常速度
+        grayRate = MiMath::Lerp(grayRate, 0.0f, deltaTime * 3.0f);
     }
+
+    m_camera->SetShaderGrayRate(grayRate);
 
     //-------------------------------
     // カメラ位置設定
