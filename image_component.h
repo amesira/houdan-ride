@@ -17,13 +17,19 @@
 #include "sprite.h"
 
 class ImageComponent : public Component {
+public:
+    // ワールド空間での表示方法
+    enum class WorldSpaceType {
+        None,       // 通常表示
+        Billboard,  // 常にカメラ方向を向く
+        HD2D,       // Y軸回りのみカメラ方向を向く
+    };
 private:
     ID3D11ShaderResourceView*   m_pTexture = nullptr;
     DirectX::XMFLOAT4           m_uvRect = { 0.0f,0.0f,1.0f,1.0f };
     DirectX::XMFLOAT4           m_color = { 1.0f,1.0f,1.0f,1.0f };
 
-    // ビルボード表示するかどうか（ワールド配置時のみ使用するパラメータ）
-    bool    m_isBillboard = false;
+    WorldSpaceType  m_worldSpaceType = WorldSpaceType::None;
 
 public:
     void    SetTexture(ID3D11ShaderResourceView* pTexture) { m_pTexture = pTexture; }
@@ -37,8 +43,8 @@ public:
     DirectX::XMFLOAT4   GetUvRect()const { return m_uvRect; }
     DirectX::XMFLOAT4   GetColor()const { return m_color; }
 
-    void    SetIsBillboard(bool isBillboard) { m_isBillboard = isBillboard; }
-    bool    GetIsBillboard()const { return m_isBillboard; }
+   void    SetWorldSpaceType(WorldSpaceType type) { m_worldSpaceType = type; }
+   WorldSpaceType  GetWorldSpaceType()const { return m_worldSpaceType; }
 };
 
 #endif

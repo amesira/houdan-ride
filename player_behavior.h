@@ -43,6 +43,16 @@ public:
     void    Update(IScene* pScene)override;
 
 private:
+    // 参考オブジェクトの取得
+    void    GetReferenceObjects(IScene* pScene);
+
+    // 移動処理の更新
+    void    UpdateMovement(float deltaTime);
+    // ボール回転の更新
+    void    UpdateBallRotation(float deltaTime);
+
+    // キャラクター画像更新
+    void    UpdateCharacter(float deltaTime);
 
 public:
 };

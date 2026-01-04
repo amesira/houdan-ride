@@ -84,7 +84,7 @@ void RendererImageProcessor::Process(IScene* pScene)
             rotMatrix = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, XMConvertToRadians(180.0f));
 
             // ビルボード表示
-            if (pImage->GetIsBillboard()) {
+            if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::Billboard) {
                 rotMatrix *= XMMatrixScaling(-1.0f, 1.0f, 1.0f);
                 transMatrix = view3D;
                 {
@@ -101,6 +101,17 @@ void RendererImageProcessor::Process(IScene* pScene)
                     transMatrix.r[3].m128_f32[3] = 1.0f;
                 }
             }
+            // HD2D表示
+            else if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::HD2D) {
+                // 仮
+                // direct3d.cppなどにカメラの位置を持たせる必要がありそう
+                rotMatrix *= XMMatrixRotationQuaternion(pTransform->GetRotation());
+                transMatrix = XMMatrixTranslation(
+                    pTransform->GetPosition().x,
+                    pTransform->GetPosition().y,
+                    pTransform->GetPosition().z);
+            }
+            // 通常のワールド配置
             else { // transformの回転を用いる
                 rotMatrix *= XMMatrixRotationQuaternion(pTransform->GetRotation());
                 transMatrix = XMMatrixTranslation(
