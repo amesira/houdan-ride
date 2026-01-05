@@ -149,6 +149,9 @@
     <ClCompile Include="switch_sprite_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="light_processor.cpp">
+      <Filter>Sources\GameParts\Processor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -289,19 +292,28 @@
     <ClInclude Include="tps_camera_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="light_component.h" />
     <ClInclude Include="enemy_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
     <ClInclude Include="switch_sprite_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
+    <ClInclude Include="light_component.h">
+      <Filter>Sources\GameParts\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="light_processor.h">
+      <Filter>Sources\GameParts\Processor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader_pixel_font.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="shader_pixel.hlsl" />
-    <FxCompile Include="shader_vertex.hlsl" />
+    <FxCompile Include="shader_pixel.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="shader_vertex.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

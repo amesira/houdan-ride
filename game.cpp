@@ -19,8 +19,13 @@ void GameScene::Initialize()
 {
     ProcessorM_Initialize();
 
+    // camera
     GameObject* camera = this->CreateGameObject();
     Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,5.0f,0.0f });
+    
+    // light
+    GameObject* light = this->CreateGameObject();
+    Factory::CreateLight(light, { -0.5f,-1.0f,-0.5f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, { 0.2f,0.2f,0.2f,1.0f });
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });

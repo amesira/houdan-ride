@@ -11,6 +11,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+using namespace DirectX;
 
 /// @brief 頂点構造体
 struct Vertex
@@ -29,11 +30,17 @@ enum ShaderBeginMode {
 	MAX,
 };
 
+#define MAX_LIGHT (4)
+
 bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 void Shader_Finalize();
 
-void Shader_SetMatrix(const DirectX::XMMATRIX& matrix);
-void Shader_SetWorldMatrix(const DirectX::XMMATRIX& world);
+void Shader_SetMatrix(const XMMATRIX& matrix);
+void Shader_SetWorldMatrix(const XMMATRIX& world);
+
+void Shader_SetLight(int index, 
+	const XMFLOAT4& dir, const XMFLOAT4& diff, const XMFLOAT4& ambi);
+void Shader_SetLightEnable(int index, bool enable);
 
 void Shader_SetPixelOption(float grayRate);
 

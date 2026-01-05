@@ -16,6 +16,7 @@
 
 namespace Factory {
     void CreateTpsCamera       (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
+    void CreateLight        (GameObject*, DirectX::XMFLOAT4 direction, DirectX::XMFLOAT4 diffuse, DirectX::XMFLOAT4 ambient);
 
     void CreatePlayer       (GameObject*, DirectX::XMFLOAT3 position);
     void CreatePlayer_Chara (GameObject*);

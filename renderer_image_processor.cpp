@@ -134,6 +134,7 @@ void RendererImageProcessor::Process(IScene* pScene)
 
         // シェーダーに行列セット
         Shader_SetMatrix(worldMatrix * vpMatrix);
+        Shader_SetWorldMatrix(worldMatrix);
 
         // テクスチャ設定
         ID3D11ShaderResourceView* texture = pImage->GetTexture();

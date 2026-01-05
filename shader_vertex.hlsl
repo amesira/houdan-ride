@@ -63,16 +63,16 @@ VS_OUTPUT main(VS_INPUT vs_in)
     //-------------------------
     
     // 法線をワールド変換
-    float4 normal = float4(vs_in.normal.xyz,0.0f);
+    float4 normal = float4(vs_in.normal.xyz, 0.0f);
     normal = mul(normal, World);
     normal = normalize(normal);
     
-    for(int i = 0; i < MAX_LIGHT; i++)
+    for (int i = 0; i < MAX_LIGHT; i++)
     {
         // ライティング
         if (Lights[i].Enable == true)
         {
-            float light = -dot(normal.xyz,Lights[i].Direction.xyz);
+            float light = -dot(normal.xyz, Lights[i].Direction.xyz);
             light = saturate(light);
             vs_out.color.rgb *= light;
             vs_out.color.rgb += Lights[i].Ambient.rgb;

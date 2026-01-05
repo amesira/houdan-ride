@@ -74,6 +74,7 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
 
         // 行列セット
         Shader_SetMatrix(worldMatrix * viewMatrix * projectionMatrix);
+        Shader_SetWorldMatrix(worldMatrix);
 
         // モデル描画
         ModelDraw(model);

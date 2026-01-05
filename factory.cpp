@@ -16,6 +16,7 @@
 #include "image_component.h"
 #include "model_component.h"
 #include "camera_component.h"
+#include "light_component.h"
 
 // behavior
 #include "player_behavior.h"
@@ -42,6 +43,17 @@ void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, Direc
 
     // behavior生成・登録
     TpsCameraBehavior* tpsCameraBe = obj->AddBehavior<TpsCameraBehavior>();
+}
+
+void Factory::CreateLight(GameObject* obj, DirectX::XMFLOAT4 direction, DirectX::XMFLOAT4 diffuse, DirectX::XMFLOAT4 ambient)
+{
+    // component生成・登録
+    LightComponent* lightComp = obj->AddComponent<LightComponent>();
+    
+    // component設定
+    lightComp->SetDirection(direction);
+    lightComp->SetDiffuse(diffuse);
+    lightComp->SetAmbient(ambient);
 }
 
 void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)

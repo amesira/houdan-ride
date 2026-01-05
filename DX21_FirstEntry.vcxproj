@@ -145,6 +145,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_object.h" />
     <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="light_processor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="model.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="fps.h" />
     <ClInclude Include="image_component.h" />
     <ClInclude Include="light_component.h" />
+    <ClInclude Include="light_processor.h" />
     <ClInclude Include="mi_math.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="model_component.h" />

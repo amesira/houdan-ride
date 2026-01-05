@@ -72,14 +72,6 @@ void CameraProcessor::Process(IScene* pScene)
             camera.GetAtPosition().y,
             camera.GetAtPosition().z,
             0.0f);
-        //if (camera.GetUseRotationFromOwner()) {
-        //    // オーナーの回転を使う場合、注視点を更新
-        //    XMFLOAT3 forward = { 0.0f, 0.0f, 1.0f };
-        //    XMVECTOR vForward = XMVectorSet(forward.x, forward.y, forward.z, 0.0f);
-        //    XMVECTOR rotationQuat = transform->GetRotationQuaternion();
-        //    XMVECTOR vRotatedForward = XMVector3Rotate(vForward, rotationQuat);
-        //    vAt = XMVectorAdd(vPos, vRotatedForward);
-        //}
         XMVECTOR vUp = XMVectorSet(
             camera.GetUpVector().x,
             camera.GetUpVector().y,
@@ -169,6 +161,7 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
         1.0f);
 
     Shader_SetMatrix(world * vp);
+    Shader_SetWorldMatrix(world);
     DrawSprite(XMFLOAT4(1.0f,1.0f,1.0f,1.0f),XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 
     // リセット

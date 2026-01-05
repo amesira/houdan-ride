@@ -18,6 +18,7 @@
 #include "renderer_font_processor.h"
 #include "renderer_image_processor.h"
 #include "camera_processor.h"
+#include "light_processor.h"
 
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
@@ -30,6 +31,7 @@ static RendererFontProcessor* g_RendererFontProcessor = nullptr;
 static RendererImageProcessor* g_RendererImageProcessor = nullptr;
 
 static CameraProcessor* g_CameraProcessor = nullptr;
+static LightProcessor* g_LightProcessor = nullptr;
 
 void ProcessorM_Initialize()
 {
@@ -47,6 +49,7 @@ void ProcessorM_Initialize()
     g_RendererImageProcessor = new RendererImageProcessor();
 
     g_CameraProcessor = new CameraProcessor();
+    g_LightProcessor = new LightProcessor();
 
     // Processor初期化
     {   // 3D描画系プロセッサー初期化
@@ -62,8 +65,9 @@ void ProcessorM_Initialize()
         g_RendererFontProcessor->Initialize();
         g_RendererImageProcessor->Initialize();
     }
-    {
+    {   // カメラ・ライト系プロセッサー初期化
         g_CameraProcessor->Initialize();
+        g_LightProcessor->Initialize();
     }
 }
 
@@ -104,9 +108,12 @@ void ProcessorM_Finalize()
     }
     {
         g_CameraProcessor->Finalize();
+        g_LightProcessor->Finalize();
 
         delete g_CameraProcessor;
         g_CameraProcessor = nullptr;
+        delete g_LightProcessor;
+        g_LightProcessor = nullptr;
     }
 }
 
@@ -122,6 +129,9 @@ void ProcessorM_Draw(IScene* pScene)
 {
     // カメラ設定
     g_CameraProcessor->Process(pScene);
+
+    // ライト設定
+    g_LightProcessor->Process(pScene);
 
     for(int i = 0; i < g_CameraProcessor->GetCameraCount(); i++) {
 

@@ -23,6 +23,17 @@ static ID3D11Buffer* g_pMtxCB = nullptr;		// mtx
 static ID3D11Buffer* g_pWorldCB = nullptr;		// world
 
 static ID3D11Buffer* g_pLightCB = nullptr;		// light
+struct Light {
+	BOOL	enable;
+	BOOL    padding[3];
+	XMFLOAT4	direction;
+	XMFLOAT4    diffuse;
+	XMFLOAT4	ambient;
+};
+struct LightBuffer {
+    Light lights[MAX_LIGHT];
+};
+static LightBuffer g_LightData;
 
 // ピクセルシェーダー
 static ID3D11PixelShader* g_pPixelShader = nullptr;	// ピクセルシェーダー
@@ -89,15 +100,22 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		return false;
 	}
 
-	// 頂点シェーダー用定数バッファの作成
+    // 定数バッファの作成
 	D3D11_BUFFER_DESC buffer_desc{};
-	buffer_desc.ByteWidth = sizeof(XMFLOAT4X4); // バッファのサイズ
-	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
+	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
+	buffer_desc.ByteWidth = sizeof(XMFLOAT4X4);
 	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pMtxCB);
-
     g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pWorldCB);
 
+    buffer_desc.ByteWidth = sizeof(LightBuffer);
+    g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pLightCB);
+	for(int i = 0; i < MAX_LIGHT;i++) {
+		g_LightData.lights[i].enable = FALSE;
+    }
+
+	buffer_desc.ByteWidth = sizeof(OptionBuffer);
+	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pOptionCB);
 
 
     // 事前コンパイル済みピクセルシェーダーの読み込み
@@ -106,13 +124,7 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		return false;
     }
 
-    // ピクセルシェーダー用定数バッファの作成
-    // オプション用定数バッファの作成
-	buffer_desc.ByteWidth = sizeof(OptionBuffer); // バッファのサイズ
-	buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // バインドフラグ
-
-	g_pDevice->CreateBuffer(&buffer_desc, nullptr, &g_pOptionCB);
-
+    // フォント用ピクセルシェーダーの読み込み
 	if (!LoadPixelShader("shader_pixel_font.cso", &g_pFontShader)) {
 		hal::dout << "Shader_Initialize() : フォント用ピクセルシェーダーの作成に失敗しました" << std::endl;
 		return false;
@@ -145,14 +157,48 @@ void Shader_SetMatrix(const DirectX::XMMATRIX& matrix)
 
 void Shader_SetWorldMatrix(const DirectX::XMMATRIX& world)
 {
+	// 定数バッファ格納用行列の構造体を定義
+	XMFLOAT4X4 transpose;
 
+	// 行列を転置して定数バッファ格納用行列に変換
+	XMStoreFloat4x4(&transpose, XMMatrixTranspose(world));
+
+	// 定数バッファに行列をセット
+	g_pContext->UpdateSubresource(g_pWorldCB, 0, nullptr, &transpose, 0, 0);
+}
+
+void Shader_SetLight(int index, const XMFLOAT4& dir, const XMFLOAT4& diff, const XMFLOAT4& ambi)
+{
+	if(index < 0 || index >= MAX_LIGHT) return;
+
+	// ライト設定
+    g_LightData.lights[index].enable = TRUE;
+    g_LightData.lights[index].direction = dir;
+    g_LightData.lights[index].diffuse = diff;
+    g_LightData.lights[index].ambient = ambi;
+
+    // 定数バッファにライトをセット
+    g_pContext->UpdateSubresource(g_pLightCB, 0, nullptr, &g_LightData, 0, 0);
+}
+
+void Shader_SetLightEnable(int index, bool enable)
+{
+	if (index < 0 || index >= MAX_LIGHT) return;
+
+	// ライト設定
+	g_LightData.lights[index].enable = enable ? TRUE : FALSE;
+
+	// 定数バッファにライトをセット
+    g_pContext->UpdateSubresource(g_pLightCB, 0, nullptr, &g_LightData, 0, 0);
 }
 
 void Shader_SetPixelOption(float grayRate)
 {
+	// オプション設定
 	OptionBuffer optionBuffer;
     optionBuffer.grayRate = grayRate;
 
+    // 定数バッファにオプションをセット
     g_pContext->UpdateSubresource(g_pOptionCB, 0, nullptr, &optionBuffer, 0, 0);
 }
 
@@ -167,6 +213,8 @@ void Shader_Begin(ShaderBeginMode mode)
 		g_pContext->IASetInputLayout(g_pInputLayout);
 
 		g_pContext->VSSetConstantBuffers(0, 1, &g_pMtxCB);
+        g_pContext->VSSetConstantBuffers(1, 1, &g_pWorldCB);
+        g_pContext->VSSetConstantBuffers(2, 1, &g_pLightCB);
         g_pContext->PSSetConstantBuffers(0, 1, &g_pOptionCB);
 		break;
     }
