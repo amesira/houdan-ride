@@ -138,6 +138,7 @@
     <ClCompile Include="debug_renderer.cpp" />
     <ClCompile Include="direct3d.cpp" />
     <ClCompile Include="dynamics_processor.cpp" />
+    <ClCompile Include="enemy_behavior.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="fps.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="stb_implementation.cpp" />
+    <ClCompile Include="switch_sprite_behavior.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tps_camera_behavior.cpp" />
   </ItemGroup>
@@ -171,6 +173,7 @@
     <ClInclude Include="cubemesh_component.h" />
     <ClInclude Include="debug_renderer.h" />
     <ClInclude Include="dynamics_processor.h" />
+    <ClInclude Include="enemy_behavior.h" />
     <ClInclude Include="factory.h" />
     <ClInclude Include="fps.h" />
     <ClInclude Include="image_component.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="stb_truetype.h" />
+    <ClInclude Include="switch_sprite_behavior.h" />
     <ClInclude Include="text_component.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tps_camera_behavior.h" />

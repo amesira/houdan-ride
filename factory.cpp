@@ -20,6 +20,8 @@
 // behavior
 #include "player_behavior.h"
 #include "tps_camera_behavior.h"
+#include "enemy_behavior.h"
+#include "switch_sprite_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -65,6 +67,7 @@ void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
 
     // behavior生成・登録
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
+    SwitchSpriteBehavior* switchSpriteBe = player->AddBehavior<SwitchSpriteBehavior>();
 }
 
 void Factory::CreatePlayer_Chara(GameObject* player)
@@ -80,6 +83,27 @@ void Factory::CreatePlayer_Chara(GameObject* player)
     transform->SetScaling({ 1.5f,2.0f,1.0f });
     imageComp->Load(L"asset\\Texture\\player.png");
     imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::HD2D);
+}
+
+void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
+{
+    // component生成・登録
+    TransformComponent* transform = enemy->AddComponent<TransformComponent>();
+    SphereColliderComponent* collider = enemy->AddComponent<SphereColliderComponent>();
+    RigidbodyComponent* rigidbody = enemy->AddComponent<RigidbodyComponent>();
+    ImageComponent* imageComp = enemy->AddComponent<ImageComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetScaling({ 1.0f,1.0f,1.0f });
+    collider->SetRadius(0.5f);
+    imageComp->Load(L"asset\\Texture\\enemy1.png");
+    imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::HD2D);
+    imageComp->SetUvRect({ 0.0f,0.0f,1.0f/3.0f,1.0f/4.0f });
+
+    // behavior生成・登録
+    EnemyBehavior* enemyBe = enemy->AddBehavior<EnemyBehavior>();
+    SwitchSpriteBehavior* switchSpriteBe = enemy->AddBehavior<SwitchSpriteBehavior>();
 }
 
 void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color)
@@ -114,7 +138,7 @@ void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const
     textComponent->SetColor(color);
     textComponent->SetCenter(isCenter);
 
-    imageComponent->SetColor({ 1.0f,1.0f,1.0f,1.0f }); // 透明にしておく
+    imageComponent->SetColor({ 1.0f,1.0f,1.0f,0.0f }); // 透明にしておく
     imageComponent->SetUvRect({ 0.0f,0.0f,1.0f,1.0f });
     imageComponent->Load(L"asset\\Texture\\test.jpg");
 }

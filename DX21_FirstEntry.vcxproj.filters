@@ -89,12 +89,6 @@
     <ClCompile Include="player_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="polygon.cpp">
-      <Filter>Sources\System\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="polygon3d.cpp">
-      <Filter>Sources\System\Graphic</Filter>
-    </ClCompile>
     <ClCompile Include="shader.cpp">
       <Filter>Sources\System\Graphic</Filter>
     </ClCompile>
@@ -149,6 +143,12 @@
     <ClCompile Include="tps_camera_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="enemy_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="switch_sprite_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -192,12 +192,6 @@
     </ClInclude>
     <ClInclude Include="player_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
-    </ClInclude>
-    <ClInclude Include="polygon.h">
-      <Filter>Sources\System\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="polygon3d.h">
-      <Filter>Sources\System\Graphic</Filter>
     </ClInclude>
     <ClInclude Include="shader.h">
       <Filter>Sources\System\Graphic</Filter>
@@ -295,16 +289,19 @@
     <ClInclude Include="tps_camera_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
+    <ClInclude Include="light_component.h" />
+    <ClInclude Include="enemy_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="switch_sprite_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="shader_pixel_2d.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="shader_vertex_2d.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="shader_pixel_font.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="shader_pixel.hlsl" />
+    <FxCompile Include="shader_vertex.hlsl" />
   </ItemGroup>
 </Project>
