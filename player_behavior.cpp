@@ -11,6 +11,8 @@
 #include "game_object.h"
 using namespace DirectX;
 
+#include "debug_ostream.h"
+
 #include "mi_math.h"
 
 #include "transform_component.h"
@@ -124,8 +126,8 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
 
     // 入力がある場合のみ加速
     if (fabsf(horizontal) > 0.1f || fabsf(vertical) > 0.1f) {
-        velocity.x += moveDir.x * 10.0f * deltaTime;
-        velocity.z += moveDir.z * 10.0f * deltaTime;
+        velocity.x += moveDir.x * 20.0f * deltaTime;
+        velocity.z += moveDir.z * 20.0f * deltaTime;
 
         velocity.x = std::clamp(velocity.x, -5.0f, 5.0f);
         velocity.z = std::clamp(velocity.z, -5.0f, 5.0f);
@@ -189,14 +191,6 @@ void PlayerBehavior::UpdateCharacter(float deltaTime)
         m_transform->GetPosition().z,
     };
     m_charaTransform->SetPosition(charaPos);
-
-    //-------------------------------
-    // HD2D画像更新
-    //-------------------------------
-    XMFLOAT3 lookAt = m_tpsCamera->GetCameraFoward();
-    lookAt.y = 0.0f;
-    float angleY = std::atan2(lookAt.x, lookAt.z);
-    m_charaTransform->SetEulerRotation(XMFLOAT3(0.0f, angleY + XM_2PI * 0.5f, 0.0f));
 
     //-------------------------------
     // キャラの画像切り替え

@@ -112,6 +112,12 @@ bool CameraProcessor::BindMatrix(int index)
     Direct3D_SetProjectionMatrix(camera->GetProjectionMatrix());
     Direct3D_SetViewMatrix(camera->GetViewMatrix());
 
+    // カメラ設定
+    Direct3D_SetCameraInfo(
+        camera->GetOwner()->GetComponent<TransformComponent>()->GetPosition(),
+        camera->GetAtPosition()
+    );
+
     return true;
 }
 

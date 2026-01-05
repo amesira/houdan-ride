@@ -103,9 +103,9 @@ void RendererImageProcessor::Process(IScene* pScene)
             }
             // HD2D表示
             else if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::HD2D) {
-                // 仮
-                // direct3d.cppなどにカメラの位置を持たせる必要がありそう
-                rotMatrix *= XMMatrixRotationQuaternion(pTransform->GetRotation());
+                XMFLOAT3 camForward = Direct3D_GetCameraForward();
+                float angleY = atan2f(camForward.x, camForward.z);
+                rotMatrix *= XMMatrixRotationY(angleY + XM_PI);
                 transMatrix = XMMatrixTranslation(
                     pTransform->GetPosition().x,
                     pTransform->GetPosition().y,
