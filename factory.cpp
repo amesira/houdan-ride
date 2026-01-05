@@ -110,16 +110,19 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 {
     // component生成・登録
     TransformComponent* transform = cube->AddComponent<TransformComponent>();
-    CubemeshComponent* cubemesh = cube->AddComponent<CubemeshComponent>();
     BoxColliderComponent* collider = cube->AddComponent<BoxColliderComponent>();
+    ModelComponent* modelComp = cube->AddComponent<ModelComponent>();
 
     // component設定
     transform->SetPosition(position);
     transform->SetEulerRotation(rotation);
-    transform->SetScaling(scaling);
-
-    cubemesh->SetColor(color);
+    transform->SetScaling({
+        scaling.x * 0.5f,
+        scaling.y * 0.5f,
+        scaling.z * 0.5f
+        });
     collider->SetScale(scaling);
+    modelComp->LoadModel("asset\\Model\\cube.fbx");
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)
