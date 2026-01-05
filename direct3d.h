@@ -50,29 +50,23 @@ enum BLENDSTATE {
     BLENDSTATE_MAX,
 };
 
+// ブレンドステートの設定
 void SetBlendState(BLENDSTATE blend);
+// デプスステートの設定
 void SetDepthState(bool flag);
 
+// スナップショット用シーンテクスチャSRVの作成
 void Direct3D_CreateSnapshotSceneSRV(ID3D11ShaderResourceView** ppSrv);
 
+// ビュー行列・プロジェクション行列の取得・設定
 DirectX::XMMATRIX& Direct3D_GetViewMatrix();
 DirectX::XMMATRIX& Direct3D_GetProjectionMatrix();
 void Direct3D_SetViewMatrix(const DirectX::XMMATRIX& matrix);
 void Direct3D_SetProjectionMatrix(const DirectX::XMMATRIX& matrix);
 
-// バックバッファにSRVのテクスチャをまるごとコピーする関数
-void Direct3D_CopySRVToBackBuffer(ID3D11ShaderResourceView* pSrv);
-
-// ブロック縦横配列サイズ
-#define BLOCK_COLS (6)  // ブロックスタックの横幅
-#define BLOCK_ROWS (13) // ブロックスタックの縦幅
-
-// ブロックサイズ
-#define BLOCK_WIDTH  (50.0f)
-#define BLOCK_HEIGHT (50.0f)
-
-
-#define POSITION_OFFSET_X (490.0f)
-#define POSITION_OFFSET_Y (34.0f)
+// カメラ位置の設定
+void Direct3D_SetCameraInfo(DirectX::XMFLOAT3 const& position, DirectX::XMFLOAT3 const& atPosition);
+DirectX::XMFLOAT3 Direct3D_GetCameraForward();
+DirectX::XMFLOAT3 Direct3D_GetCameraRight();
 
 #endif

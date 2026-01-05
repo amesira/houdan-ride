@@ -41,6 +41,7 @@ void Renderer3DCubeProcessor::Process(IScene* pScene)
 {
     auto* cubemeshPool = pScene->GetComponentPool<CubemeshComponent>();
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    if (!cubemeshPool || !transformPool)return;
 
     auto& cubemeshList = cubemeshPool->GetList();
 

@@ -42,7 +42,7 @@ void PhysicsProcessor::Process(IScene* pScene)
         if (!transform->GetEnable() || !rigidbody->GetEnable())continue;
 
         transform->SetPrevPosition(transform->GetPosition());
-        rigidbody->SetPrevVelocity(rigidbody->GetPrevVelocity());
+        rigidbody->SetPrevVelocity(rigidbody->GetVelocity());
 
         DirectX::XMFLOAT3 velocity = rigidbody->GetVelocity();
         {

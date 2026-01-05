@@ -13,18 +13,22 @@
 using namespace DirectX;
 
 class TransformComponent;
-class CubemeshComponent;
 class ColliderComponent;
 class RigidbodyComponent;
+class ImageComponent;
 
 class TpsCameraBehavior;
 
 class PlayerBehavior :public Behavior {
 private:
     TransformComponent* m_transform = nullptr;
-    CubemeshComponent* m_cubemesh = nullptr;
     ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
+
+    // charaの参照
+    TransformComponent* m_charaTransform = nullptr;
+    ImageComponent*     m_charaImage = nullptr;
+    float               m_charaAnimTimer = 0.0f;
 
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
@@ -39,6 +43,16 @@ public:
     void    Update(IScene* pScene)override;
 
 private:
+    // 参考オブジェクトの取得
+    void    GetReferenceObjects(IScene* pScene);
+
+    // 移動処理の更新
+    void    UpdateMovement(float deltaTime);
+    // ボール回転の更新
+    void    UpdateBallRotation(float deltaTime);
+
+    // キャラクター画像更新
+    void    UpdateCharacter(float deltaTime);
 
 public:
 };

@@ -45,7 +45,8 @@ void RendererImageProcessor::Process(IScene* pScene)
         0.0f,
         0.0f,
         1.0f);
-    XMMATRIX vpMatrix3D = Direct3D_GetViewMatrix() * Direct3D_GetProjectionMatrix();
+    XMMATRIX view3D = Direct3D_GetViewMatrix();
+    XMMATRIX projection3D = Direct3D_GetProjectionMatrix();
 
     auto* imagePool = pScene->GetComponentPool<ImageComponent>();
     auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
@@ -80,11 +81,45 @@ void RendererImageProcessor::Process(IScene* pScene)
         else if (pTransform) {
             scaleMatrix = XMMatrixScaling(
                 pTransform->GetScaling().x, pTransform->GetScaling().y, 1.0f);
-            rotMatrix = XMMatrixRotationQuaternion(pTransform->GetRotation());
-            transMatrix = XMMatrixTranslation(
-                pTransform->GetPosition().x,
-                pTransform->GetPosition().y,
-                pTransform->GetPosition().z);
+            rotMatrix = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, XMConvertToRadians(180.0f));
+
+            // ビルボード表示
+            if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::Billboard) {
+                rotMatrix *= XMMatrixScaling(-1.0f, 1.0f, 1.0f);
+                transMatrix = view3D;
+                {
+                    transMatrix.r[3].m128_f32[0] = 0.0f;
+                    transMatrix.r[3].m128_f32[1] = 0.0f;
+                    transMatrix.r[3].m128_f32[2] = 0.0f;
+                    transMatrix.r[3].m128_f32[3] = 1.0f;
+                }
+                transMatrix = XMMatrixTranspose(transMatrix); // 転置行列にする
+                {
+                    transMatrix.r[3].m128_f32[0] = pTransform->GetPosition().x;
+                    transMatrix.r[3].m128_f32[1] = pTransform->GetPosition().y;
+                    transMatrix.r[3].m128_f32[2] = pTransform->GetPosition().z;
+                    transMatrix.r[3].m128_f32[3] = 1.0f;
+                }
+            }
+            // HD2D表示
+            else if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::HD2D) {
+                XMFLOAT3 camForward = Direct3D_GetCameraForward();
+                float angleY = atan2f(camForward.x, camForward.z);
+                rotMatrix *= XMMatrixRotationY(angleY + XM_PI);
+                transMatrix = XMMatrixTranslation(
+                    pTransform->GetPosition().x,
+                    pTransform->GetPosition().y,
+                    pTransform->GetPosition().z);
+            }
+            // 通常のワールド配置
+            else { // transformの回転を用いる
+                rotMatrix *= XMMatrixRotationQuaternion(pTransform->GetRotation());
+                transMatrix = XMMatrixTranslation(
+                    pTransform->GetPosition().x,
+                    pTransform->GetPosition().y,
+                    pTransform->GetPosition().z);
+            }
+            
         }
         XMMATRIX worldMatrix = scaleMatrix * rotMatrix * transMatrix;
 
@@ -94,7 +129,7 @@ void RendererImageProcessor::Process(IScene* pScene)
             vpMatrix = vpMatrix2D;
         }
         else {
-            vpMatrix = vpMatrix3D;
+            vpMatrix = view3D * projection3D;
         }
 
         // シェーダーに行列セット
@@ -105,6 +140,6 @@ void RendererImageProcessor::Process(IScene* pScene)
         g_pContext->PSSetShaderResources(0, 1, &texture);
 
         // スプライト描画
-        DrawSprite(pImage->GetColor(), 0, 1, 1);
+        DrawSprite(pImage->GetColor(), pImage->GetUvRect());
     }
 }

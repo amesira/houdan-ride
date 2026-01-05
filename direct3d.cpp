@@ -48,6 +48,10 @@ ID3D11DepthStencilState* g_DepthStateDisable;
 static DirectX::XMMATRIX g_viewMatrix = DirectX::XMMatrixIdentity();
 static DirectX::XMMATRIX g_projectionMatrix = DirectX::XMMatrixIdentity();
 
+// カメラ位置
+static DirectX::XMFLOAT3 g_cameraForward;
+static DirectX::XMFLOAT3 g_cameraRight;
+
 //===================================================
 // Direct3D初期化処理
 //===================================================
@@ -493,15 +497,27 @@ void Direct3D_SetProjectionMatrix(const DirectX::XMMATRIX& matrix)
 	g_projectionMatrix = matrix;
 }
 
-void Direct3D_CopySRVToBackBuffer(ID3D11ShaderResourceView* pSrv)
+void Direct3D_SetCameraInfo(DirectX::XMFLOAT3 const& position, DirectX::XMFLOAT3 const& atPosition)
 {
-    ComPtr<ID3D11Texture2D> pBackBufferTex;
-    HRESULT hr = g_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBufferTex));
-     
-    ComPtr<ID3D11Resource> pCameraResource;
-	pSrv->GetResource(&pCameraResource);
+    DirectX::XMFLOAT3 forward = {
+        atPosition.x - position.x,
+        0.0f,
+        atPosition.z - position.z
+    };
+    g_cameraForward = forward;
+    g_cameraRight = {
+        forward.z,
+        0.0f,
+        -forward.x
+    };
+}
 
-	// コピー先のバックバッファテクスチャを取得できたらコピー実行
-    if (SUCCEEDED(hr))
-        g_pDeviceContext->CopyResource(pBackBufferTex.Get(), pCameraResource.Get());
+DirectX::XMFLOAT3 Direct3D_GetCameraForward()
+{
+    return g_cameraForward;
+}
+
+DirectX::XMFLOAT3 Direct3D_GetCameraRight()
+{
+    return g_cameraRight;
 }

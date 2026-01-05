@@ -23,7 +23,9 @@ void GameScene::Initialize()
     Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,5.0f,0.0f });
 
     GameObject* player = this->CreateGameObject();
-    Factory::CreateTestPlayer(player, { -2.0f,0.5f,0.0f });
+    Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
+    player = this->CreateGameObject();
+    Factory::CreatePlayer_Chara(player);
 
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
@@ -35,6 +37,8 @@ void GameScene::Initialize()
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
 
+    GameObject* enemy = this->CreateGameObject();
+    Factory::CreateEnemy(enemy, { 5.0f,0.5f,0.0f });
 
     // ui
     GameObject* uiText = this->CreateGameObject();
