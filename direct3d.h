@@ -49,11 +49,17 @@ enum BLENDSTATE {
 
     BLENDSTATE_MAX,
 };
+enum DEPTHSTATE {
+    DEPTHSTATE_ENABLE = 0,  // デプス有効
+    DEPTHSTATE_DISABLE,     // デプス無効
+    DEPTHSTATE_NOWRITE,     // デプス書き込み無効
+    DEPTHSTATE_MAX,
+};
 
 // ブレンドステートの設定
 void SetBlendState(BLENDSTATE blend);
 // デプスステートの設定
-void SetDepthState(bool flag);
+void SetDepthState(DEPTHSTATE depth);
 
 // スナップショット用シーンテクスチャSRVの作成
 void Direct3D_CreateSnapshotSceneSRV(ID3D11ShaderResourceView** ppSrv);

@@ -11,11 +11,12 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "direct3d.h"
+using namespace DirectX;
 
 #include "game_object.h"
 
 namespace Factory {
-    void CreateTpsCamera       (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
+    void CreateTpsCamera    (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
     void CreateLight        (GameObject*, DirectX::XMFLOAT4 direction, DirectX::XMFLOAT4 diffuse, DirectX::XMFLOAT4 ambient);
 
     void CreatePlayer       (GameObject*, DirectX::XMFLOAT3 position);
@@ -25,7 +26,8 @@ namespace Factory {
 
     void CreateBox          (GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color);
    
-    void CreateUiText       (GameObject*, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
+    void CreateUiText       (GameObject*, XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
+    void CreateUiImageWorld (GameObject*, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale, const wchar_t* texturePath = L"asset\\Texture\\test.jpg");
 }
 
 #endif

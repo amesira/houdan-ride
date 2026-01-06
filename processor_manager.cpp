@@ -133,6 +133,10 @@ void ProcessorM_Draw(IScene* pScene)
     // ライト設定
     g_LightProcessor->Process(pScene);
 
+    // ワールド配置設定
+    g_RendererImageProcessor->SetDrawWorldImages(true);
+    g_RendererImageProcessor->SetDrawUiImages(false);
+
     for(int i = 0; i < g_CameraProcessor->GetCameraCount(); i++) {
 
         // バッファのクリアとシーン描画用RTVのセット
@@ -140,10 +144,13 @@ void ProcessorM_Draw(IScene* pScene)
         g_CameraProcessor->BindMatrix(i);
 
         // 各3D描画プロセッサーの実行
+        SetDepthState(DEPTHSTATE_ENABLE);
         g_Renderer3DModelProcessor->Process(pScene);
         g_Renderer3DCubeProcessor->Process(pScene);
 
         // world配置
+        SetDepthState(DEPTHSTATE_NOWRITE);
+        SetBlendState(BLENDSTATE_ALFA);
         g_RendererImageProcessor->Process(pScene);
 
         DebugRenderer_DrawFlush();
@@ -155,6 +162,7 @@ void ProcessorM_Draw(IScene* pScene)
     Direct3D_Clear();
 
     SetBlendState(BLENDSTATE_NONE);
+    SetDepthState(DEPTHSTATE_DISABLE);
 
     // カメラからのスナップショットをフルスクリーンに描画
     const float w = (float)Direct3D_GetBackBufferWidth();
@@ -163,9 +171,15 @@ void ProcessorM_Draw(IScene* pScene)
 
     SetBlendState(BLENDSTATE_ALFA);
 
+    // UI配置設定
+    g_RendererImageProcessor->SetDrawWorldImages(false);
+    g_RendererImageProcessor->SetDrawUiImages(true);
+
     // 各2D描画プロセッサーの実行
     g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
+
+    SetDepthState(DEPTHSTATE_ENABLE);
 
     Direct3D_Present();
 }

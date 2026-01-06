@@ -33,4 +33,4 @@ void Model_Finalize();
 MODEL* ModelLoad(const char* FileName);
 void ModelRelease(MODEL* model);
 
-void ModelDraw(MODEL* model);
+void ModelDraw(MODEL* model, XMFLOAT4 color);

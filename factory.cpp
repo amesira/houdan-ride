@@ -142,7 +142,6 @@ void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const
     // component生成・登録
     RectTransformComponent* rectTransform = uiText->AddComponent<RectTransformComponent>();
     TextComponent* textComponent = uiText->AddComponent<TextComponent>();
-    ImageComponent* imageComponent = uiText->AddComponent<ImageComponent>();
 
     // component設定
     rectTransform->SetPosition(position);
@@ -152,8 +151,18 @@ void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const
     textComponent->SetFontSize((int)fontSize);
     textComponent->SetColor(color);
     textComponent->SetCenter(isCenter);
+}
 
-    imageComponent->SetColor({ 1.0f,1.0f,1.0f,0.0f }); // 透明にしておく
-    imageComponent->SetUvRect({ 0.0f,0.0f,1.0f,1.0f });
-    imageComponent->Load(L"asset\\Texture\\test.jpg");
+void Factory::CreateUiImageWorld(GameObject* obj, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale, const wchar_t* texturePath)
+{
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ImageComponent* imageComp = obj->AddComponent<ImageComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation(euler);
+    transform->SetScaling(scale);
+    imageComp->Load(texturePath);
+    imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::None);
 }

@@ -39,11 +39,9 @@ static bool configureSceneTexture();  // シーンテクスチャの設定・生
 static void releaseSceneTexture();    // シーンテクスチャの解散
 
 // ブレンドステート関連
-float bFactor[4] = { 0.0f,0.0f,0.0f,0.0f };
-ID3D11BlendState* bState[BLENDSTATE_MAX];
-ID3D11DepthStencilState* g_DepthStateEnable;
-ID3D11DepthStencilState* g_DepthStateDisable;
-
+static float bFactor[4] = { 0.0f,0.0f,0.0f,0.0f };
+static ID3D11BlendState* bState[BLENDSTATE_MAX];
+static ID3D11DepthStencilState* g_pDepthState[DEPTHSTATE_MAX];
 // 行列置き場
 static DirectX::XMMATRIX g_viewMatrix = DirectX::XMMatrixIdentity();
 static DirectX::XMMATRIX g_projectionMatrix = DirectX::XMMatrixIdentity();
@@ -179,14 +177,19 @@ bool Direct3D_Initialize(HWND hWnd)
     depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
     depthStencilDesc.StencilEnable = FALSE;
-    g_pDevice->CreateDepthStencilState(&depthStencilDesc, &g_DepthStateEnable);
+    g_pDevice->CreateDepthStencilState(&depthStencilDesc, &g_pDepthState[DEPTHSTATE_ENABLE]);
 
     // 深度無効ステート
     depthStencilDesc.DepthEnable = FALSE;
     depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-    g_pDevice->CreateDepthStencilState(&depthStencilDesc, &g_DepthStateDisable);
+    g_pDevice->CreateDepthStencilState(&depthStencilDesc, &g_pDepthState[DEPTHSTATE_DISABLE]);
 
-    g_pDeviceContext->OMSetDepthStencilState(g_DepthStateEnable, NULL); // デフォルト設定（深度無効）
+    // 深度書き込み無効ステート
+    depthStencilDesc.DepthEnable = TRUE;
+    depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    g_pDevice->CreateDepthStencilState(&depthStencilDesc, &g_pDepthState[DEPTHSTATE_NOWRITE]);
+
+    g_pDeviceContext->OMSetDepthStencilState(g_pDepthState[DEPTHSTATE_ENABLE], NULL);
 
     return true;
 }
@@ -431,14 +434,9 @@ void SetBlendState(BLENDSTATE blend)
     g_pDeviceContext->OMSetBlendState(bState[blend], bFactor, 0xffffff);
 }
 
-void SetDepthState(bool flag)
+void SetDepthState(DEPTHSTATE depth)
 {
-    if (flag) {
-        g_pDeviceContext->OMSetDepthStencilState(g_DepthStateEnable, NULL);
-    }
-    else {
-        g_pDeviceContext->OMSetDepthStencilState(g_DepthStateDisable, NULL);
-    }
+    g_pDeviceContext->OMSetDepthStencilState(g_pDepthState[depth], NULL);
 }
 
 //===================================================

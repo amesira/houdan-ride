@@ -13,6 +13,7 @@ using namespace DirectX;
 
 class TransformComponent;
 class CameraComponent;
+class ImageComponent;
 
 class TpsCameraBehavior : public Behavior {
 private:
@@ -28,6 +29,9 @@ private:
     float       m_distance = 10.0f; // カメラと注視点の距離
     float       m_angleX = 0.0f;   // カメラの水平角度
     float       m_angleY = 0.0f;  // カメラの垂直角度
+
+    // 投影面に映し出すImageComponent
+    ImageComponent* m_cameraImageComp;
 
 public:
     TpsCameraBehavior(GameObject* owner);

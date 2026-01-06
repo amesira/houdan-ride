@@ -34,6 +34,7 @@ void RendererImageProcessor::Finalize()
 void RendererImageProcessor::Process(IScene* pScene)
 {
     Shader_Begin();
+    SetBlendState(BLENDSTATE_ALFA);
 
     const float screenWidth = (float)Direct3D_GetBackBufferWidth();
     const float screenHeight = (float)Direct3D_GetBackBufferHeight();
@@ -63,8 +64,8 @@ void RendererImageProcessor::Process(IScene* pScene)
         RectTransformComponent* pRect = rectTransformPool->GetByGameObjectID(gameObjectID);
         TransformComponent* pTransform = transformPool->GetByGameObjectID(gameObjectID);
         if (!pRect && !pTransform) continue;
-        if (pRect && !pRect->GetEnable()) continue;
-        if (pTransform && !pTransform->GetEnable()) continue;
+        if (pRect && (!pRect->GetEnable() || !m_drawUiImages)) continue;
+        if (pTransform && (!pTransform->GetEnable() || !m_drawWorldImages)) continue;
 
         // ワールド座標計算
         XMMATRIX scaleMatrix, rotMatrix, transMatrix;

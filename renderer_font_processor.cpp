@@ -97,8 +97,6 @@ void RendererFontProcessor::Process(IScene* pScene)
 		0.0f,
 		1.0f));
 
-	SetDepthState(false);
-
     auto* textPool = pScene->GetComponentPool<TextComponent>();
     auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
 
@@ -204,8 +202,6 @@ void RendererFontProcessor::Process(IScene* pScene)
 			rectPos.x += (glyph->x_advance * render_scale);
 		}
     }
-
-	SetDepthState(true);
 }
 
 int RendererFontProcessor::DecodeUtf8(const char8_t** text_ptr) {

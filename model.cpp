@@ -162,7 +162,7 @@ void ModelRelease(MODEL* model)
 }
 
 
-void ModelDraw(MODEL* model)
+void ModelDraw(MODEL* model, XMFLOAT4 color)
 {
 	// プリミティブトポロジ設定
 	g_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

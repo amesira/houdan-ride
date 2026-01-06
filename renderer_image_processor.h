@@ -15,12 +15,16 @@ class ImageComponent;
 
 class RendererImageProcessor : public Processor {
 private:
+    bool    m_drawUiImages = true;
+    bool    m_drawWorldImages = true;
 
 public:
     void    Initialize()override;
     void    Finalize()override;
     void    Process(IScene* pScene)override;
 
+    void    SetDrawUiImages(bool draw) { m_drawUiImages = draw; }
+    void    SetDrawWorldImages(bool draw) { m_drawWorldImages = draw; }
 };
 
 #endif

@@ -77,6 +77,6 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
         Shader_SetWorldMatrix(worldMatrix);
 
         // モデル描画
-        ModelDraw(model);
+        ModelDraw(model, m.GetColor());
     }
 }

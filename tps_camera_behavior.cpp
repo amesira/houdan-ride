@@ -16,6 +16,7 @@
 
 #include "transform_component.h"
 #include "camera_component.h"
+#include "image_component.h"
 
 TpsCameraBehavior::TpsCameraBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<TpsCameraBehavior>())
@@ -24,6 +25,8 @@ TpsCameraBehavior::TpsCameraBehavior(GameObject* owner)
     m_camera = owner->GetComponent<CameraComponent>();
 
     m_targetTransform = nullptr;
+
+    m_cameraImageComp = nullptr;
 }
 
 TpsCameraBehavior::~TpsCameraBehavior()
@@ -111,6 +114,17 @@ void TpsCameraBehavior::Update(IScene* pScene)
     // コンポーネントに反映
     m_camera->SetAtPosition(m_cameraAnchor);
     m_transform->SetPosition(m_cameraPos);
+
+    // imageCompに反映
+    if (!m_cameraImageComp) {
+        GameObject* cameraImageObj = pScene->GetGameObjectByName("CameraImage");
+        if (cameraImageObj) {
+            m_cameraImageComp = cameraImageObj->GetComponent<ImageComponent>();
+        }
+        return;
+    }
+
+    m_cameraImageComp->SetTexture(m_camera->GetSnapshot());
 }
 
 // カメラの前方向ベクトル取得

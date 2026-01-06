@@ -36,7 +36,7 @@ void GameScene::Initialize()
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
     GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
-    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,1.0f});
+    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,0.5f});
 
     cube = this->CreateGameObject();
     cube->SetName("TestCube");
@@ -48,6 +48,11 @@ void GameScene::Initialize()
     // ui
     GameObject* uiText = this->CreateGameObject();
     Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+
+    // image
+    GameObject* uiImage = this->CreateGameObject();
+    uiImage->SetName("CameraImage");
+    Factory::CreateUiImageWorld(uiImage, { -3.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
 }
 
 //===================================================
