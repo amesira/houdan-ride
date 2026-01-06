@@ -56,4 +56,17 @@ void EnemyBehavior::Update(IScene* pScene)
         dirToPlayer.z * 2.0f
     };
     m_rigidbody->SetVelocity(velocity);
+
+    // プレイヤーに触れた場合
+    for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
+        auto collisionData = m_collider->GetCollisionData(i);
+
+        if(collisionData.GetCollisionEnter()) {
+            GameObject* otherObj = collisionData.m_other->GetOwner();
+            if(otherObj->GetName() == "Player") {
+                // ダメージ処理など
+                GetOwner()->Destroy();
+            }
+        }
+    }
 }

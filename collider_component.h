@@ -23,14 +23,23 @@ public:
     };
     struct CollisionData {
         ColliderComponent*  m_other;    // 衝突相手
-        DirectX::XMFLOAT3   m_mtv;      // 最小移動ベクトル
+        XMFLOAT3    m_mtv;      // 最小移動ベクトル
 
         bool    m_isCollision;          // 当たり判定フラグ
         bool    m_wasCollision;         // 前フレームの当たり判定フラグ
 
-        bool    GetCollisionEnter() { return m_isCollision && !m_wasCollision; }
-        bool    GetCollisionStay() { return m_isCollision; }
-        bool    GetCollisionExit() { return !m_isCollision && m_wasCollision; }
+        bool    GetCollisionEnter() {
+            if(m_other == nullptr)return false;
+            return m_isCollision && !m_wasCollision;
+        }
+        bool    GetCollisionStay() { 
+            if (m_other == nullptr)return false; 
+            return m_isCollision;
+        }
+        bool    GetCollisionExit() { 
+            if (m_other == nullptr)return false;
+            return !m_isCollision && m_wasCollision; 
+        }
     };
 
     // 衝突情報の最大登録数

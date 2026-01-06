@@ -364,7 +364,8 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckAABB(Bounds a, Boun
 // Box同士の衝突判定
 CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformComponent* tA, BoxColliderComponent* cA, TransformComponent* tB, BoxColliderComponent* cB)
 {
-    CollisionResult result = { false,{0.0f,0.0f,0.0f} };
+    CollisionResult result = {};
+    result.isCollision = false;
 
     // コライダーのワールド座標を取得
     XMFLOAT3 posA = MiMath::RotateVector(tA->GetRotation(), cA->GetCenter());

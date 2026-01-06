@@ -33,7 +33,7 @@ void GameScene::Initialize()
     Factory::CreatePlayer_Chara(player);
 
     GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
+    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,-0.4f} ,{ 200.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
     GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,0.5f});

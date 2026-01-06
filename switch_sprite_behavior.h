@@ -18,8 +18,12 @@ private:
     ImageComponent* m_image = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
 
+    // tpsカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
-    float m_frameTimer = 0.0f;
+
+    // アニメーション
+    float   m_frameTimer = 0.0f;
+    int     m_directIndex = 0;
 
 public:
     SwitchSpriteBehavior(GameObject* owner);

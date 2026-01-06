@@ -142,7 +142,38 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
 
     // ジャンプ
     if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
-        velocity.y += 7.0f;
+        velocity.y += 12.0f;
+    }
+
+    //-------------------------------
+    // 跳ね返り
+    //-------------------------------
+    for (int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
+        auto collisionData = m_collider->GetCollisionData(i);
+        if(collisionData.GetCollisionEnter()) {
+            XMFLOAT3 mtv = collisionData.m_mtv;
+            // 法線ベクトル計算
+            XMFLOAT3 normal = MiMath::Normalize(mtv);
+            if (fabsf(normal.y) < 0.5f) continue; // 上方向への跳ね返りのみ処理
+
+            // 速度ベクトルを法線ベクトルに投影
+            float velocityDotNormal = MiMath::Dot(velocity, normal);
+            XMFLOAT3 projectedVelocity = {
+                normal.x * velocityDotNormal,
+                normal.y * velocityDotNormal,
+                normal.z * velocityDotNormal,
+            };
+            // 跳ね返りベクトル計算
+            XMFLOAT3 bounceVelocity = {
+                projectedVelocity.x * -3.5f,
+                projectedVelocity.y * -1.5f,
+                projectedVelocity.z * -3.5f,
+            };
+            // 速度に跳ね返りを加算
+            velocity.x += bounceVelocity.x;
+            velocity.y += bounceVelocity.y;
+            velocity.z += bounceVelocity.z;
+        }
     }
 
     // 適用処理
@@ -198,44 +229,4 @@ void PlayerBehavior::UpdateCharacter(float deltaTime)
         m_transform->GetPosition().z,
     };
     m_charaTransform->SetPosition(charaPos);
-
-    ////-------------------------------
-    //// キャラの画像切り替え
-    ////-------------------------------
-    //static const float CHARA_SPRITE_WIDTH = 1.0f / 3.0f;
-    //static const float CHARA_SPRITE_HEIGHT = 1.0f / 4.0f;
-
-    //m_charaAnimTimer += deltaTime;
-
-    //// 連番インデックス計算（0~2を繰り返す）
-    //int sequenceIndex = (int)(m_charaAnimTimer * 7.0f) % 4;
-    //if (sequenceIndex == 3) sequenceIndex = 1;
-
-    //// 方向インデックス計算
-    //int directIndex = 0;
-
-    //XMFLOAT3 cameraForward = { m_tpsCamera->GetCameraFoward().x , 0.0f, m_tpsCamera->GetCameraFoward().z };
-    //XMFLOAT3 cameraRight = { cameraForward.z, 0.0f, -cameraForward.x };
-    //
-    //float forwardDot = MiMath::Dot(cameraForward, m_rigidbody->GetVelocity());
-    //float rightDot = MiMath::Dot(cameraRight, m_rigidbody->GetVelocity());
-
-    //// 前後方向
-    //if (fabsf(forwardDot) > fabsf(rightDot)) {
-    //    if (forwardDot >= 0.1f)directIndex = 3;         // 前方向（背を向ける）
-    //    else if (forwardDot <= -0.1f)directIndex = 0;   // 後方向（正面）
-    //}
-    //// 左右方向
-    //else {
-    //    if (rightDot >= 0.1f) directIndex = 2;          // 右方向
-    //    else if (rightDot <= -0.1f) directIndex = 1;    // 左方向
-    //}
-
-    //// UV矩形設定
-    //m_charaImage->SetUvRect({
-    //    CHARA_SPRITE_WIDTH * (float)sequenceIndex,
-    //    CHARA_SPRITE_HEIGHT * (float)directIndex,
-    //    CHARA_SPRITE_WIDTH,
-    //    CHARA_SPRITE_HEIGHT});
-
 }
