@@ -73,7 +73,7 @@ void FinalizeSprite() {
 //===================================================
 // スプライト描画
 //===================================================
-void DrawSprite(XMFLOAT4 color, XMFLOAT4 uvRect)
+void DrawSprite(XMFLOAT4 color, XMFLOAT4 uvRect, XMFLOAT3 normal)
 {
 	//----------------------------------------------------
 	// 頂点バッファをロック
@@ -112,6 +112,11 @@ void DrawSprite(XMFLOAT4 color, XMFLOAT4 uvRect)
 	v[3].position = { halfSize.x,halfSize.y,0.0f };
 	v[3].color = color;
 	v[3].texCoord = { uv.x + w,uv.y + h };
+
+    // 法線の設定
+	for (int i = 0; i < 4; i++) {
+		v[i].normal = normal;
+    }
 
 	//----------------------------------------------------
 	// ロック解除 → 描画準備

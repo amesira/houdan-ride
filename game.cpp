@@ -25,7 +25,7 @@ void GameScene::Initialize()
     
     // light
     GameObject* light = this->CreateGameObject();
-    Factory::CreateLight(light, { -0.5f,-1.0f,-0.5f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, { 0.2f,0.2f,0.2f,1.0f });
+    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.9f,0.9f,0.9f,1.0f }, { 0.6f,0.6f,0.6f,1.0f });
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });

@@ -25,4 +25,4 @@ void LoadTexture(ID3D11ShaderResourceView** texture, const wchar_t* fileName);
 void FinalizeSprite();
 
 /// @brief スプライト描画
-void DrawSprite(XMFLOAT4 color,XMFLOAT4 uvRect);
+void DrawSprite(XMFLOAT4 color,XMFLOAT4 uvRect,XMFLOAT3 normal = XMFLOAT3(0.0f,0.0f,1.0f));
