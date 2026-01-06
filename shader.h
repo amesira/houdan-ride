@@ -16,20 +16,35 @@ using namespace DirectX;
 /// @brief 頂点構造体
 struct Vertex
 {
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT3 normal;
-	DirectX::XMFLOAT4 color;		// 頂点カラー（R,G,B,A）
-	DirectX::XMFLOAT2 texCoord;	// テクスチャ座標
+	XMFLOAT3 position;
+	XMFLOAT3 normal;
+	XMFLOAT4 color;		// 頂点カラー（R,G,B,A）
+	XMFLOAT2 texCoord;	// テクスチャ座標
 };
 struct InstanceData
 {
-	DirectX::XMFLOAT4 color; // インスタンスカラー（R,G,B,A）
+	XMFLOAT4 world0;
+    XMFLOAT4 world1;
+    XMFLOAT4 world2;
+    XMFLOAT4 world3; // ワールド行列(4行分)
+	XMFLOAT4 color; // インスタンスカラー（R,G,B,A）
+    XMFLOAT4 uvRect; // UV矩形(x,y,width,height)
+
+	InstanceData()
+		: world0(1.0f, 0.0f, 0.0f, 0.0f)
+		, world1(0.0f, 1.0f, 0.0f, 0.0f)
+		, world2(0.0f, 0.0f, 1.0f, 0.0f)
+		, world3(0.0f, 0.0f, 0.0f, 1.0f)
+		, color(1.0f, 1.0f, 1.0f, 1.0f)
+		, uvRect(0.0f, 0.0f, 1.0f, 1.0f)
+    {
+    }
+
 };
 
 enum ShaderBeginMode {
     Default = 0,
 	TrueTypeFont,
-	FullScreenQuad,
 
 	MAX,
 };

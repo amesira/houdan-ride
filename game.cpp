@@ -10,6 +10,7 @@
 #include "processor_manager.h"
 
 #include "factory.h"
+#include "particle_manager.h"
 
 
 //===================================================

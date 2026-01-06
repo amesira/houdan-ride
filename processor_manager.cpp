@@ -7,8 +7,11 @@
 #include "direct3d.h"
 
 #include "scene_interface.h"
+#include "fps.h"
 
 #include "debug_renderer.h"
+
+#include "particle_manager.h"
 
 #include "renderer_3dcube_processor.h"
 #include "renderer_3dmodel_processor.h"
@@ -36,6 +39,7 @@ static LightProcessor* g_LightProcessor = nullptr;
 void ProcessorM_Initialize()
 {
     DebugRenderer_Initialize();
+    ParticleM_Initialize();
 
     // Processorインスタンス化
     g_Renderer3DCubeProcessor = new Renderer3DCubeProcessor();
@@ -74,6 +78,7 @@ void ProcessorM_Initialize()
 void ProcessorM_Finalize()
 {
     DebugRenderer_Finalize();
+    ParticleM_Finalize();
     
     // 終了処理
     {
@@ -123,6 +128,9 @@ void ProcessorM_Update(IScene* pScene)
     g_PhysicsProcessor->Process(pScene);
     g_CollisionProcessor->Process(pScene);
     g_DynamicsProcessor->Process(pScene);
+
+    // パーティクル更新
+    ParticleM_Update(FPS_GetDeltaTime());
 }
 
 void ProcessorM_Draw(IScene* pScene)
@@ -148,8 +156,8 @@ void ProcessorM_Draw(IScene* pScene)
         g_Renderer3DModelProcessor->Process(pScene);
         g_Renderer3DCubeProcessor->Process(pScene);
 
-        // スプライト描画
-        // -キャラクターやエフェクトなどの3D配置UIは、デプス有効で描画する-
+        // パーティクル
+        ParticleM_Draw();
 
         // world配置
         // -ワールド配置のUIは、必ず前面に描画される-

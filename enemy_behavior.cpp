@@ -17,6 +17,8 @@
 #include "collider_component.h"
 #include "image_component.h"
 
+#include "particle_manager.h"
+
 EnemyBehavior::EnemyBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<EnemyBehavior>())
 {
@@ -24,6 +26,8 @@ EnemyBehavior::EnemyBehavior(GameObject* owner)
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
     m_collider = owner->GetComponent<SphereColliderComponent>();
     m_image = owner->GetComponent<ImageComponent>();
+
+    ParticleM_RegisterEmitter("EnemyDeath");
 }
 
 EnemyBehavior::~EnemyBehavior()
@@ -66,6 +70,29 @@ void EnemyBehavior::Update(IScene* pScene)
             if(otherObj->GetName() == "Player") {
                 // ダメージ処理など
                 GetOwner()->Destroy();
+
+                // パーティクル発生(test)
+                Particle::Data particleData = {};
+                particleData.position = m_transform->GetPosition();
+                particleData.scaling = { 0.1f,0.1f,0.1f };
+                particleData.color = { 1.0f, 0.5f, 0.0f, 1.0f };
+                particleData.uvRect = { 0.0f, 0.0f, 1.0f, 1.0f };
+
+                Particle::Settings particleSettings = {};
+                particleSettings.velocity = { 0.0f, 5.0f, 0.0f };
+                particleSettings.gravity = { 0.0f, -9.8f, 0.0f };
+                particleSettings.fadeSize = false;
+                particleSettings.fadeAlpha = false;
+
+                for(int i = 0; i < 10; ++i) {
+                    particleSettings.velocity.x += 3.0f;
+                    ParticleM_EmitParticle(
+                        "EnemyDeath",
+                        particleData,
+                        particleSettings,
+                        3.0f
+                    );
+                }
             }
         }
     }
