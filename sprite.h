@@ -30,3 +30,4 @@ void DrawSprite(XMFLOAT4 color,XMFLOAT4 uvRect,XMFLOAT3 normal = XMFLOAT3(0.0f,0
 void    PrepareDrawInstance();
 void    AddInstanceData(const XMMATRIX& world, const XMFLOAT4& color, const XMFLOAT4& uvRect);
 void    DrawInstance();
+void    EndDrawInstance();

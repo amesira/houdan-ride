@@ -75,24 +75,22 @@ void EnemyBehavior::Update(IScene* pScene)
                 Particle::Data particleData = {};
                 particleData.position = m_transform->GetPosition();
                 particleData.scaling = { 0.1f,0.1f,0.1f };
-                particleData.color = { 1.0f, 0.5f, 0.0f, 1.0f };
+                particleData.color = { 0.0f, 1.0f, 0.5f, 1.0f };
                 particleData.uvRect = { 0.0f, 0.0f, 1.0f, 1.0f };
 
                 Particle::Settings particleSettings = {};
                 particleSettings.velocity = { 0.0f, 5.0f, 0.0f };
                 particleSettings.gravity = { 0.0f, -9.8f, 0.0f };
-                particleSettings.fadeSize = false;
+                particleSettings.fadeSize = true;
                 particleSettings.fadeAlpha = false;
 
-                for(int i = 0; i < 10; ++i) {
-                    particleSettings.velocity.x += 3.0f;
-                    ParticleM_EmitParticle(
-                        "EnemyDeath",
-                        particleData,
-                        particleSettings,
-                        3.0f
-                    );
-                }
+                ParticleEmit::EmitExplosion(
+                    "EnemyDeath",
+                    particleData,
+                    particleSettings,
+                    5.0f,
+                    50
+                );
             }
         }
     }

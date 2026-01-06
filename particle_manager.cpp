@@ -116,6 +116,8 @@ void ParticleM_Draw()
         g_pDeviceContext->PSSetShaderResources(0, 1, &texture);
         DrawInstance();
     }
+
+    EndDrawInstance();
 }
 
 void ParticleM_RegisterEmitter(const std::string& emitterName, ID3D11ShaderResourceView* texture)
@@ -136,12 +138,7 @@ void ParticleM_RegisterEmitter(const std::string& emitterName, ID3D11ShaderResou
     g_emitters.push_back(newEmitter);
 }
 
-bool ParticleM_EmitParticle(
-    const std::string& emitterName,
-    Particle::Data data,
-    Particle::Settings settings,
-    float lifeTime
-)
+bool ParticleEmit::Emit(const std::string& emitterName, Particle::Data data, Particle::Settings settings, float lifeTime)
 {
     Emitter* targetEmitter = nullptr; // 対象のエミッターを探す
 
@@ -166,7 +163,7 @@ bool ParticleM_EmitParticle(
     }
 
     // 空きスロットがない場合、新しいパーティクルを追加（最大数まで）
-    if(targetEmitter->particles.size() < MAX_PARTICLES) {
+    if (targetEmitter->particles.size() < MAX_PARTICLES) {
         Particle newParticle;
         newParticle.enabled = true;
         newParticle.lifeTime = lifeTime;
@@ -177,4 +174,49 @@ bool ParticleM_EmitParticle(
     }
 
     return false;
+}
+
+bool ParticleEmit::EmitExplosion(
+    const std::string& emitterName, 
+    Particle::Data baseData,
+    Particle::Settings baseSettings, 
+    float lifeTime, int particleCount)
+{
+    // 黄金角の計算
+    static const float phiAngle = XM_2PI / ((1.0f + sqrt(5.0f)) / 2.0f);
+
+    // velocityの大きさを計算
+    float baseSpeed = MiMath::Length(baseSettings.velocity);
+
+    // 指定された数のパーティクルを発生させる
+    for(int i = 0; i < particleCount; i++) {
+        Particle::Settings settings = baseSettings;
+
+        // 速度方向を黄金角スパイラルで分布させる
+        float y = 1.0f - (i / float(particleCount - 1)) * 2.0f;
+        float r = sqrt(1.0f * 1.0f - y * y);
+        float theta = phiAngle * i;
+        float x = cos(theta) * r;
+        float z = sin(theta) * r;
+        XMFLOAT3 dir = { x, y, z };
+        dir = MiMath::Normalize(dir);
+
+        // 速度ベクトルを設定
+        settings.velocity = {
+            dir.x * baseSpeed,
+            dir.y * baseSpeed,
+            dir.z * baseSpeed
+        };
+
+        // パーティクル発生
+        bool h = ParticleEmit::Emit(
+            emitterName,
+            baseData,
+            settings,
+            lifeTime
+        );
+        if(!h)return false;
+    }
+
+    return true;
 }

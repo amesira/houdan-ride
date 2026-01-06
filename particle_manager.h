@@ -52,11 +52,24 @@ void ParticleM_RegisterEmitter(
     const std::string& emitterName,
     ID3D11ShaderResourceView* texture = nullptr
 );
-bool ParticleM_EmitParticle(
-    const std::string& emitterName,
-    Particle::Data data,
-    Particle::Settings settings,
-    float lifeTime
-);
+
+// パーティクル発生用名前空間
+namespace ParticleEmit {
+    // 単一パーティクルを発生させる
+    bool Emit(
+        const std::string& emitterName,
+        Particle::Data data,
+        Particle::Settings settings,
+        float lifeTime
+    );
+    // 爆発エフェクトを発生させる
+    bool EmitExplosion(
+        const std::string& emitterName,
+        Particle::Data baseData,
+        Particle::Settings baseSettings,
+        float lifeTime,
+        int particleCount
+    );
+}
 
 #endif

@@ -135,17 +135,6 @@ void DrawSprite(XMFLOAT4 color, XMFLOAT4 uvRect, XMFLOAT3 normal)
 	UINT offset = 0;
 	g_pContext->IASetVertexBuffers(0, 1, &g_pVertexBuffer, &stride, &offset);
 
-	// インスタンスバッファのデフォルト設定
-    g_pContext->Map(g_pInstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
-    g_InstanceData = (InstanceData*)msr.pData;
-	g_InstanceData[0] = InstanceData();
-    g_pContext->Unmap(g_pInstanceBuffer, 0);
-
-    // インスタンスバッファを描画パイプラインに設定
-    stride = sizeof(InstanceData);
-    offset = 0;
-    g_pContext->IASetVertexBuffers(1, 1, &g_pInstanceBuffer, &stride, &offset);
-
 	// プリミティブトポロジ設定 トライアングルストリップ
 	g_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -234,4 +223,21 @@ void DrawInstance()
 	// 描画命令
 	g_pContext->DrawInstanced(4, g_InstanceCount, 0, 0);
 	g_InstanceCount = -1;
+}
+
+void EndDrawInstance()
+{
+	// インスタンスバッファのデフォルト設定
+	D3D11_MAPPED_SUBRESOURCE msr;
+	g_pContext->Map(g_pInstanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &msr);
+
+	g_InstanceData = (InstanceData*)msr.pData;
+	g_InstanceData[0] = InstanceData();
+
+	g_pContext->Unmap(g_pInstanceBuffer, 0);
+
+	// インスタンスバッファを描画パイプラインに設定
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	g_pContext->IASetVertexBuffers(1, 1, &g_pInstanceBuffer, &stride, &offset);
 }
