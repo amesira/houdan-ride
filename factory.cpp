@@ -94,7 +94,7 @@ void Factory::CreatePlayer_Chara(GameObject* player)
     transform->SetPosition({ 0.0f,0.0f,0.0f });
     transform->SetScaling({ 1.5f,2.0f,1.0f });
     imageComp->Load(L"asset\\Texture\\player.png");
-    imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::HD2D);
+    imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
 }
 
 void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
@@ -110,7 +110,7 @@ void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
     transform->SetScaling({ 1.0f,1.0f,1.0f });
     collider->SetRadius(0.5f);
     imageComp->Load(L"asset\\Texture\\enemy1.png");
-    imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::HD2D);
+    imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
     imageComp->SetUvRect({ 0.0f,0.0f,1.0f/3.0f,1.0f/4.0f });
 
     // behavior生成・登録
@@ -164,5 +164,5 @@ void Factory::CreateUiImageWorld(GameObject* obj, XMFLOAT3 position, XMFLOAT3 eu
     transform->SetEulerRotation(euler);
     transform->SetScaling(scale);
     imageComp->Load(texturePath);
-    imageComp->SetWorldSpaceType(ImageComponent::WorldSpaceType::None);
+    imageComp->SetWorldSpaceType(WorldSpaceType::None);
 }

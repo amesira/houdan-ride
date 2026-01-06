@@ -148,8 +148,11 @@ void ProcessorM_Draw(IScene* pScene)
         g_Renderer3DModelProcessor->Process(pScene);
         g_Renderer3DCubeProcessor->Process(pScene);
 
+        // スプライト描画
+        // -キャラクターやエフェクトなどの3D配置UIは、デプス有効で描画する-
+
         // world配置
-        SetDepthState(DEPTHSTATE_NOWRITE);
+        // -ワールド配置のUIは、必ず前面に描画される-
         SetBlendState(BLENDSTATE_ALFA);
         g_RendererImageProcessor->Process(pScene);
 
@@ -178,8 +181,6 @@ void ProcessorM_Draw(IScene* pScene)
     // 各2D描画プロセッサーの実行
     g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
-
-    SetDepthState(DEPTHSTATE_ENABLE);
 
     Direct3D_Present();
 }

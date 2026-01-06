@@ -35,5 +35,12 @@ float4 main(PS_INPUT ps_in) : SV_TARGET
     float3 grayColor = float3(gray, gray, gray);
     col.rgb = lerp(col.rgb, grayColor, grayRate);
     
+    // 透明だった場合は処理を抜ける
+    // -zバッファに書き込まないようにするため-
+    if (col.a <= 0.01f)
+    {
+        discard;
+    }
+    
     return col;
 }

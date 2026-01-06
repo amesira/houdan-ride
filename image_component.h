@@ -16,14 +16,13 @@
 
 #include "sprite.h"
 
+enum class WorldSpaceType {
+    None,       // 通常表示
+    Billboard,  // 常にカメラ方向を向く
+    HD2D,       // Y軸回りのみカメラ方向を向く
+};
+
 class ImageComponent : public Component {
-public:
-    // ワールド空間での表示方法
-    enum class WorldSpaceType {
-        None,       // 通常表示
-        Billboard,  // 常にカメラ方向を向く
-        HD2D,       // Y軸回りのみカメラ方向を向く
-    };
 private:
     ID3D11ShaderResourceView*   m_pTexture = nullptr;
     DirectX::XMFLOAT4           m_uvRect = { 0.0f,0.0f,1.0f,1.0f };

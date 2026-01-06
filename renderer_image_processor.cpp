@@ -85,7 +85,7 @@ void RendererImageProcessor::Process(IScene* pScene)
             rotMatrix = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, XMConvertToRadians(180.0f));
 
             // ビルボード表示
-            if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::Billboard) {
+            if (pImage->GetWorldSpaceType() == WorldSpaceType::Billboard) {
                 rotMatrix *= XMMatrixScaling(-1.0f, 1.0f, 1.0f);
                 transMatrix = view3D;
                 {
@@ -103,7 +103,7 @@ void RendererImageProcessor::Process(IScene* pScene)
                 }
             }
             // HD2D表示
-            else if (pImage->GetWorldSpaceType() == ImageComponent::WorldSpaceType::HD2D) {
+            else if (pImage->GetWorldSpaceType() == WorldSpaceType::HD2D) {
                 XMFLOAT3 camForward = Direct3D_GetCameraForward();
                 float angleY = atan2f(camForward.x, camForward.z);
                 rotMatrix *= XMMatrixRotationY(angleY + XM_PI);
