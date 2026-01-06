@@ -33,10 +33,14 @@ cbuffer LightBuffer : register(b2)
 // 入力用頂点構造体
 struct VS_INPUT
 {
-    float4 posL : POSITION0; // 頂点座標
-    float4 normal : NORMAL0; // 頂点法線
-    float4 color : COLOR0; // 頂点カラー（R,G,B,A）
-    float2 texcoord : TEXCOORD0;
+    // slot0: 頂点座標
+    float4 posL     : POSITION0;    // 頂点座標
+    float4 normal   : NORMAL0;      // 頂点法線
+    float4 color    : COLOR0;       // 頂点カラー（R,G,B,A）
+    float2 texcoord : TEXCOORD0;    // テクスチャ座標（U,V）
+    
+    // slot1: インスタンスバッファ
+    float4 ins_color : INS_COLOR0;  // インスタンスカラー（R,G,B,A）
 };
 
 // 出力用頂点構造体

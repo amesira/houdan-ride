@@ -85,7 +85,6 @@ MODEL* ModelLoad( const char *FileName )
 			delete[] vertex;
 		}
 
-
 		// インデックスバッファ生成
 		{
 			unsigned int* index = new unsigned int[mesh->mNumFaces * 3];//ポリゴン数数*3
@@ -162,7 +161,7 @@ void ModelRelease(MODEL* model)
 }
 
 
-void ModelDraw(MODEL* model, XMFLOAT4 color)
+void ModelDraw(MODEL* model)
 {
 	// プリミティブトポロジ設定
 	g_pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

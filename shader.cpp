@@ -40,8 +40,9 @@ static ID3D11PixelShader* g_pPixelShader = nullptr;	// ピクセルシェーダ�
 
 static ID3D11Buffer* g_pOptionCB = nullptr;			// オプション用定数バッファ
 struct OptionBuffer {
-    float grayRate;  // グレースケール率
-	float padding[3]; // 16バイトアライメント用パディング
+	XMFLOAT4	colorRate;
+    float	grayRate;  // グレースケール率
+	float	padding[3]; // 16バイトアライメント用パディング
 };
 
 // カスタムシェーダー
@@ -86,6 +87,8 @@ bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+        { "INS_COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_INSTANCE_DATA, 1 }, 
 	};
 
 	UINT num_elements = ARRAYSIZE(layout); // 配列の要素数を取得
@@ -192,10 +195,11 @@ void Shader_SetLightEnable(int index, bool enable)
     g_pContext->UpdateSubresource(g_pLightCB, 0, nullptr, &g_LightData, 0, 0);
 }
 
-void Shader_SetPixelOption(float grayRate)
+void Shader_SetPixelOption(const XMFLOAT4& colorRate, float grayRate)
 {
 	// オプション設定
 	OptionBuffer optionBuffer;
+    optionBuffer.colorRate = colorRate;
     optionBuffer.grayRate = grayRate;
 
     // 定数バッファにオプションをセット

@@ -16,6 +16,7 @@
 using namespace DirectX;
 #include	"direct3d.h"
 
+#define MODEL_MAX_INSTANCE (512)
 
 struct MODEL
 {
@@ -23,6 +24,9 @@ struct MODEL
 
 	ID3D11Buffer** VertexBuffer;
 	ID3D11Buffer** IndexBuffer;
+
+	// インスタンスバッファ
+    ID3D11Buffer* InstanceBuffer;
 
 	std::unordered_map<std::string, ID3D11ShaderResourceView*> Texture;
 };
@@ -33,4 +37,4 @@ void Model_Finalize();
 MODEL* ModelLoad(const char* FileName);
 void ModelRelease(MODEL* model);
 
-void ModelDraw(MODEL* model, XMFLOAT4 color);
+void ModelDraw(MODEL* model);

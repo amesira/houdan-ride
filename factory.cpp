@@ -135,6 +135,7 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
         });
     collider->SetScale(scaling);
     modelComp->LoadModel("asset\\Model\\cube.fbx");
+    modelComp->SetColor(color);
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)

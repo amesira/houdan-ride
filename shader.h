@@ -21,6 +21,10 @@ struct Vertex
 	DirectX::XMFLOAT4 color;		// 頂点カラー（R,G,B,A）
 	DirectX::XMFLOAT2 texCoord;	// テクスチャ座標
 };
+struct InstanceData
+{
+	DirectX::XMFLOAT4 color; // インスタンスカラー（R,G,B,A）
+};
 
 enum ShaderBeginMode {
     Default = 0,
@@ -42,7 +46,7 @@ void Shader_SetLight(int index,
 	const XMFLOAT4& dir, const XMFLOAT4& diff, const XMFLOAT4& ambi);
 void Shader_SetLightEnable(int index, bool enable);
 
-void Shader_SetPixelOption(float grayRate);
+void Shader_SetPixelOption(const XMFLOAT4& colorRate, float grayRate);
 
 void Shader_Begin(ShaderBeginMode mode = ShaderBeginMode::Default);
 

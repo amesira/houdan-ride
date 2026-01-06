@@ -76,7 +76,12 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
         Shader_SetMatrix(worldMatrix * viewMatrix * projectionMatrix);
         Shader_SetWorldMatrix(worldMatrix);
 
+        Shader_SetPixelOption(m.GetColor(), 0.0f);
+
         // モデル描画
-        ModelDraw(model, m.GetColor());
+        ModelDraw(model);
     }
+
+    // オプションリセット
+    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
 }

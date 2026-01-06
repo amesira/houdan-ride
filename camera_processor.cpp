@@ -143,7 +143,7 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
     g_pDeviceContext->PSSetShaderResources(0, 1, &srv);
 
     // シェーダー
-    Shader_SetPixelOption(camera->GetShaderGrayRate());
+    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), camera->GetShaderGrayRate());
 
     // スプライト描画
     XMMATRIX scaleMatrix = XMMatrixScaling(width, height, 1.0f);
@@ -165,7 +165,7 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
     DrawSprite(XMFLOAT4(1.0f,1.0f,1.0f,1.0f),XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 
     // リセット
-    Shader_SetPixelOption(0.0f);
+    Shader_SetPixelOption(XMFLOAT4(1.0f,1.0f,1.0f,1.0f), 0.0f);
 
     return true;
 }
