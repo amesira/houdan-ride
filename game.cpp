@@ -12,6 +12,7 @@
 #include "factory.h"
 #include "particle_manager.h"
 
+#include "level_manager.h"
 
 //===================================================
 // ゲームシーン初期化処理
@@ -26,7 +27,7 @@ void GameScene::Initialize()
     
     // light
     GameObject* light = this->CreateGameObject();
-    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.9f,0.9f,0.9f,1.0f }, { 0.6f,0.6f,0.6f,1.0f });
+    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.9f,0.9f,0.9f,1.0f }, { 0.7f,0.7f,0.7f,1.0f });
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
@@ -34,17 +35,23 @@ void GameScene::Initialize()
     Factory::CreatePlayer_Chara(player);
 
     GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,-0.4f} ,{ 200.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
-    GameObject* cube = this->CreateGameObject();
+    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
+    /*GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
-    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,0.5f});
+    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,0.5f});*/
 
-    cube = this->CreateGameObject();
+    GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
 
     GameObject* enemy = this->CreateGameObject();
     Factory::CreateEnemy(enemy, { 5.0f,0.5f,0.0f });
+    enemy = this->CreateGameObject();
+    Factory::CreateEnemy(enemy, { 15.0f,0.5f,0.0f });
+    enemy = this->CreateGameObject();
+    Factory::CreateEnemy(enemy, { 5.0f,0.5f,5.0f });
+    enemy = this->CreateGameObject();
+    Factory::CreateEnemy(enemy, { 5.0f,0.5f,15.0f });
 
     // ui
     GameObject* uiText = this->CreateGameObject();
@@ -54,6 +61,8 @@ void GameScene::Initialize()
     GameObject* uiImage = this->CreateGameObject();
     uiImage->SetName("CameraImage");
     Factory::CreateUiImageWorld(uiImage, { -3.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
+
+    LevelM_Initialize(this);
 }
 
 //===================================================

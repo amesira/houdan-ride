@@ -221,7 +221,7 @@ void Direct3D_Finalize()
 void Direct3D_BeginScene()
 {
     // シーンバッファのクリア
-    float clear_color[4] = { 0.0f,0.0f,0.0f,1.0f }; // クリア色設定
+    float clear_color[4] = { 0.1f,0.7f,1.0f,1.0f }; // クリア色設定
     g_pDeviceContext->ClearRenderTargetView(g_pSceneRtv, clear_color);
     g_pDeviceContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 

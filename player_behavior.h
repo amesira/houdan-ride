@@ -36,6 +36,9 @@ private:
     // 回転
     XMVECTOR m_quaternion = XMQuaternionIdentity();
 
+    // 反発力
+    XMFLOAT3 m_bounceVelocity = { 0.0f,0.0f,0.0f };
+
 public:
     PlayerBehavior(GameObject* owner);
     ~PlayerBehavior();
@@ -55,6 +58,8 @@ private:
     void    UpdateCharacter(float deltaTime);
 
 public:
+    void    AddReflection(XMFLOAT3 mtv);
+
 };
 
 #endif

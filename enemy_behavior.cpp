@@ -18,6 +18,7 @@
 #include "image_component.h"
 
 #include "particle_manager.h"
+#include "player_behavior.h"
 
 EnemyBehavior::EnemyBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<EnemyBehavior>())
@@ -91,6 +92,13 @@ void EnemyBehavior::Update(IScene* pScene)
                     5.0f,
                     50
                 );
+
+                // プレイヤーへ反発処理を送る
+                PlayerBehavior* playerBehavior = otherObj->GetBehavior<PlayerBehavior>();
+                if (playerBehavior) {
+                    XMFLOAT3 mtv = collisionData.m_mtv;
+                    playerBehavior->AddReflection(mtv);
+                }
             }
         }
     }

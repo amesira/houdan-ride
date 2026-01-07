@@ -152,6 +152,12 @@
     <ClCompile Include="light_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
+    <ClCompile Include="particle_manager.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="level_manager.cpp">
+      <Filter>Sources\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -303,6 +309,10 @@
     </ClInclude>
     <ClInclude Include="light_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_manager.h" />
+    <ClInclude Include="level_manager.h">
+      <Filter>Sources\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
