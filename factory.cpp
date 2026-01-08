@@ -63,39 +63,24 @@ void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
 
     // component生成・登録
     TransformComponent* transform = player->AddComponent<TransformComponent>();
-    ModelComponent* modelComp = player->AddComponent<ModelComponent>();
-
     SphereColliderComponent* collider = player->AddComponent<SphereColliderComponent>();
     RigidbodyComponent* rigidbody = player->AddComponent<RigidbodyComponent>();
+    ImageComponent* imageComp = player->AddComponent<ImageComponent>();
 
     // component設定
     transform->SetPosition(position);
-    transform->SetScaling({ 1.0f, 1.0f, 1.0f });
+    transform->SetScaling({ 1.3f, 1.5f, 1.3f });
 
-    collider->SetRadius(1.0f);
+    collider->SetRadius(0.65f);
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
 
-    modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
+    imageComp->Load(L"asset\\Texture\\player.png");
+    imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
 
     // behavior生成・登録
     PlayerBehavior* playerBe = player->AddBehavior<PlayerBehavior>();
     SwitchSpriteBehavior* switchSpriteBe = player->AddBehavior<SwitchSpriteBehavior>();
-}
-
-void Factory::CreatePlayer_Chara(GameObject* player)
-{
-    player->SetName("Player_Chara");
-
-    // component生成・登録
-    TransformComponent* transform = player->AddComponent<TransformComponent>();
-    ImageComponent* imageComp = player->AddComponent<ImageComponent>();
-
-    // component設定
-    transform->SetPosition({ 0.0f,0.0f,0.0f });
-    transform->SetScaling({ 1.5f,2.0f,1.0f });
-    imageComp->Load(L"asset\\Texture\\player.png");
-    imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
 }
 
 void Factory::CreateBall(GameObject* obj, DirectX::XMFLOAT3 position)

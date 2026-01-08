@@ -33,6 +33,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_transform = owner->GetComponent<TransformComponent>();
     m_collider = owner->GetComponent<SphereColliderComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
+    m_image = owner->GetComponent<ImageComponent>();
 
     m_tpsCamera = nullptr;
 }
@@ -46,39 +47,18 @@ void PlayerBehavior::Update(IScene* pScene)
 {
     // 参考オブジェクト取得
     GetReferenceObjects(pScene);
-    if (!m_tpsCamera || !m_charaTransform) return;
-
-    // switch_sprite_behaviorへ設定
-    SwitchSpriteBehavior* switchSpriteBe = GetOwner()->GetBehavior<SwitchSpriteBehavior>();
-    if (switchSpriteBe) {
-        switchSpriteBe->SetImageComponent(m_charaImage);
-    }
+    if (!m_tpsCamera) return;
 
     // deltaTime取得
     float deltaTime = FPS_GetDeltaTime();
 
     // 移動処理更新
     UpdateMovement(deltaTime);
-
-    // ボール回転更新
-    UpdateBallRotation(deltaTime);
-
-    // キャラクター更新
-    UpdateCharacter(deltaTime);
 }
 
 // 参考オブジェクトの取得
 void PlayerBehavior::GetReferenceObjects(IScene* pScene)
 {
-    // charaの参照取得
-    if (!m_charaTransform) {
-        GameObject* charaObj = pScene->GetGameObjectByName("Player_Chara");
-        if (charaObj) {
-            m_charaTransform = charaObj->GetComponent<TransformComponent>();
-            m_charaImage = charaObj->GetComponent<ImageComponent>();
-        }
-    }
-
     // TPSカメラの参照取得
     if (!m_tpsCamera) {
         GameObject* cameraObj = pScene->GetGameObjectByName("TPSCamera");
@@ -145,92 +125,6 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
         velocity.y += 9.0f;
     }
 
-    velocity.x += m_bounceVelocity.x;
-    velocity.y += m_bounceVelocity.y;
-    velocity.z += m_bounceVelocity.z;
-    m_bounceVelocity = { 0.0f,0.0f,0.0f };
-
     // 適用処理
     m_rigidbody->SetVelocity(velocity);
-}
-
-// ボール回転の更新
-void PlayerBehavior::UpdateBallRotation(float deltaTime)
-{
-    XMFLOAT3 velocity = m_rigidbody->GetVelocity();
-    velocity.y = 0.0f;
-
-    // 回転量計算
-    XMFLOAT3 prevDiff = {
-        m_transform->GetPosition().x - m_transform->GetPrevPosition().x,
-        0.0f,
-        m_transform->GetPosition().z - m_transform->GetPrevPosition().z,
-    };
-    float speed = MiMath::Length(prevDiff) * 100.0f;
-
-    // 回転適用
-    if (speed > 0.1f) {
-        XMVECTOR quaternion = m_transform->GetRotation();
-
-        // 回転軸
-        XMVECTOR    vec1, vec2;
-        vec1 = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f); // 上方向
-        vec2 = XMLoadFloat3(&velocity);             // 進行方向
-        vec2 = XMVector3Normalize(vec2);
-        XMVECTOR axis = XMVector3Cross(vec1, vec2); // 外積で回転軸を求める
-        if (XMVectorGetX(XMVector3LengthSq(axis)) < 0.0001f) {
-            axis = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f); // 進行方向が上方向と同じ場合はX軸を回転軸にする
-        }
-
-        // 回転量
-        XMVECTOR    qu;
-        qu = XMQuaternionRotationAxis(
-            axis, XMConvertToRadians(speed));
-        quaternion = XMQuaternionMultiply(quaternion, qu);
-
-        m_transform->SetRotation(quaternion);
-    }
-}
-
-void PlayerBehavior::UpdateCharacter(float deltaTime)
-{
-    //-------------------------------
-    // キャラクターの位置更新
-    //-------------------------------
-    XMFLOAT3 charaPos = {
-        m_transform->GetPosition().x,
-        m_transform->GetPosition().y + 2.0f,
-        m_transform->GetPosition().z,
-    };
-    m_charaTransform->SetPosition(charaPos);
-}
-
-void PlayerBehavior::AddReflection(XMFLOAT3 mtv)
-{
-    XMFLOAT3 velocity = m_rigidbody->GetVelocity();
-
-    // 法線ベクトル計算
-    XMFLOAT3 normal = MiMath::Normalize(mtv);
-    //if (fabsf(normal.y) < 0.5f) return;
-
-    
-
-    // 速度ベクトルを法線ベクトルに投影
-    float velocityDotNormal = MiMath::Dot(velocity, normal);
-    if (velocityDotNormal < 0.0f) velocityDotNormal = -velocityDotNormal;
-    XMFLOAT3 projectedVelocity = {
-        normal.x * velocityDotNormal,
-        normal.y * velocityDotNormal,
-        normal.z * velocityDotNormal,
-    };
-    // 跳ね返りベクトル計算
-    XMFLOAT3 bounceVelocity = {
-        projectedVelocity.x * -3.5f,
-        projectedVelocity.y * -1.5f,
-        projectedVelocity.z * -3.5f,
-    };
-    // 速度に跳ね返りを加算
-    m_bounceVelocity.x += bounceVelocity.x;
-    m_bounceVelocity.y += bounceVelocity.y;
-    m_bounceVelocity.z += bounceVelocity.z;
 }

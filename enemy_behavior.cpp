@@ -19,6 +19,7 @@
 
 #include "particle_manager.h"
 #include "player_behavior.h"
+#include "ball_behavior.h"
 
 EnemyBehavior::EnemyBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<EnemyBehavior>())
@@ -68,7 +69,7 @@ void EnemyBehavior::Update(IScene* pScene)
 
         if(collisionData.GetCollisionEnter()) {
             GameObject* otherObj = collisionData.m_other->GetOwner();
-            if(otherObj->GetName() == "Player") {
+            if(otherObj->GetName() == "Ball") {
                 // ダメージ処理など
                 GetOwner()->Destroy();
 
@@ -93,11 +94,11 @@ void EnemyBehavior::Update(IScene* pScene)
                     50
                 );
 
-                // プレイヤーへ反発処理を送る
-                PlayerBehavior* playerBehavior = otherObj->GetBehavior<PlayerBehavior>();
-                if (playerBehavior) {
+                // ボールへ反発処理を送る
+                BallBehavior* ballBehavior = otherObj->GetBehavior<BallBehavior>();
+                if (ballBehavior) {
                     XMFLOAT3 mtv = collisionData.m_mtv;
-                    playerBehavior->AddReflection(mtv);
+                    ballBehavior->AddBounceVelocity(mtv);
                 }
             }
         }

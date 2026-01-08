@@ -24,20 +24,10 @@ private:
     TransformComponent* m_transform = nullptr;
     ColliderComponent* m_collider = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
-
-    // charaの参照
-    TransformComponent* m_charaTransform = nullptr;
-    ImageComponent*     m_charaImage = nullptr;
-    float               m_charaAnimTimer = 0.0f;
+    ImageComponent* m_image = nullptr;
 
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
-
-    // 回転
-    XMVECTOR m_quaternion = XMQuaternionIdentity();
-
-    // 反発力
-    XMFLOAT3 m_bounceVelocity = { 0.0f,0.0f,0.0f };
 
 public:
     PlayerBehavior(GameObject* owner);
@@ -51,14 +41,8 @@ private:
 
     // 移動処理の更新
     void    UpdateMovement(float deltaTime);
-    // ボール回転の更新
-    void    UpdateBallRotation(float deltaTime);
-
-    // キャラクター画像更新
-    void    UpdateCharacter(float deltaTime);
 
 public:
-    void    AddReflection(XMFLOAT3 mtv);
 
 };
 

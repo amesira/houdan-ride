@@ -20,7 +20,6 @@ namespace Factory {
     void CreateLight        (GameObject*, DirectX::XMFLOAT4 direction, DirectX::XMFLOAT4 diffuse, DirectX::XMFLOAT4 ambient);
 
     void CreatePlayer       (GameObject*, DirectX::XMFLOAT3 position);
-    void CreatePlayer_Chara (GameObject*);
 
     void CreateBall         (GameObject*, DirectX::XMFLOAT3 position);
 

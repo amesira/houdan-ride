@@ -31,8 +31,6 @@ void GameScene::Initialize()
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
-    player = this->CreateGameObject();
-    Factory::CreatePlayer_Chara(player);
 
     GameObject* ball = this->CreateGameObject();
     Factory::CreateBall(ball, { 0.0f,5.0f,5.0f });

@@ -26,7 +26,7 @@ private:
     XMFLOAT3    m_cameraAnchor; // カメラの注視点
     XMFLOAT3    m_cameraPos;    // カメラの相対位置
 
-    float       m_distance = 20.0f; // カメラと注視点の距離
+    float       m_distance = 15.0f; // カメラと注視点の距離
     float       m_angleX = 0.0f;   // カメラの水平角度
     float       m_angleY = 0.0f;  // カメラの垂直角度
 
