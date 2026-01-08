@@ -1,0 +1,46 @@
+//---------------------------------------------------
+// ball_behavior.h
+// 
+// Author：Miu Kitamura
+// Date  ：2026/01/08
+//---------------------------------------------------
+#ifndef BALL_BEHAVIOR_H
+#define BALL_BEHAVIOR_H
+#include "behavior.h"
+
+#include "direct3d.h"
+#include <DirectXMath.h>
+using namespace DirectX;
+
+class TransformComponent;
+class RigidbodyComponent;
+
+class BallBehavior : public Behavior{
+private:
+    TransformComponent* m_transform = nullptr;
+    RigidbodyComponent* m_rigidbody = nullptr;
+
+    XMFLOAT3 m_moveDirection = { 0.0f,0.0f,0.0f };
+    XMFLOAT3 m_bounceVelocity = { 0.0f,0.0f,0.0f };
+
+public:
+    BallBehavior(GameObject* owner);
+    ~BallBehavior();
+
+    void    Update(IScene* pScene) override;
+
+private:
+    // ボール回転の更新
+    void    UpdateBallRotation(float deltaTime);
+
+public:
+    // 移動方向設定
+    void    SetMoveDirection(XMFLOAT3 dir) { m_moveDirection = dir; }
+    // 跳ね返り速度追加
+    void    AddBounceVelocity(XMFLOAT3 velocity) {
+        m_bounceVelocity.x += velocity.x;
+        m_bounceVelocity.y += velocity.y;
+        m_bounceVelocity.z += velocity.z;
+    }
+};
+#endif // BALL_BEHAVIOR_H

@@ -145,36 +145,6 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
         velocity.y += 9.0f;
     }
 
-    //-------------------------------
-    // 跳ね返り
-    //-------------------------------
-    //for (int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
-    //    auto collisionData = m_collider->GetCollisionData(i);
-    //    if(collisionData.GetCollisionEnter()) {
-    //        XMFLOAT3 mtv = collisionData.m_mtv;
-    //        // 法線ベクトル計算
-    //        XMFLOAT3 normal = MiMath::Normalize(mtv);
-    //        //if (fabsf(normal.y) < 0.5f) continue; // 上方向への跳ね返りのみ処理
-
-    //        // 速度ベクトルを法線ベクトルに投影
-    //        float velocityDotNormal = MiMath::Dot(velocity, normal);
-    //        XMFLOAT3 projectedVelocity = {
-    //            normal.x * velocityDotNormal,
-    //            normal.y * velocityDotNormal,
-    //            normal.z * velocityDotNormal,
-    //        };
-    //        // 跳ね返りベクトル計算
-    //        XMFLOAT3 bounceVelocity = {
-    //            projectedVelocity.x * -3.5f,
-    //            projectedVelocity.y * -1.5f,
-    //            projectedVelocity.z * -3.5f,
-    //        };
-    //        // 速度に跳ね返りを加算
-    //        velocity.x += bounceVelocity.x;
-    //        velocity.y += bounceVelocity.y;
-    //        velocity.z += bounceVelocity.z;
-    //    }
-    //}
     velocity.x += m_bounceVelocity.x;
     velocity.y += m_bounceVelocity.y;
     velocity.z += m_bounceVelocity.z;

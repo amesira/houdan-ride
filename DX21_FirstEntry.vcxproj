@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="ball_behavior.cpp" />
     <ClCompile Include="camera_processor.cpp" />
     <ClCompile Include="collision_processor.cpp" />
     <ClCompile Include="debug_ostream.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="tps_camera_behavior.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ball_behavior.h" />
     <ClInclude Include="camera_component.h" />
     <ClInclude Include="camera_processor.h" />
     <ClInclude Include="collider_component.h" />

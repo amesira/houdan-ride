@@ -34,12 +34,12 @@ void GameScene::Initialize()
     player = this->CreateGameObject();
     Factory::CreatePlayer_Chara(player);
 
+    GameObject* ball = this->CreateGameObject();
+    Factory::CreateBall(ball, { 0.0f,5.0f,5.0f });
+
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
-    /*GameObject* cube = this->CreateGameObject();
-    cube->SetName("TestCube");
-    Factory::CreateBox(cube, { 0.0f,0.0f,0.0f }, {0.0f,0.0f,0.0f}, {1.0f,1.0f,1.0f}, {0.2f,1.0f,1.0f,0.5f});*/
-
+    
     GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
     Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
@@ -62,7 +62,6 @@ void GameScene::Initialize()
     uiImage->SetName("CameraImage");
     Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
 
-    //LevelM_Initialize(this);
 }
 
 //===================================================

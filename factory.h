@@ -22,6 +22,8 @@ namespace Factory {
     void CreatePlayer       (GameObject*, DirectX::XMFLOAT3 position);
     void CreatePlayer_Chara (GameObject*);
 
+    void CreateBall         (GameObject*, DirectX::XMFLOAT3 position);
+
     void CreateEnemy        (GameObject*, DirectX::XMFLOAT3 position);
 
     void CreateBox          (GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color);

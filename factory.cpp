@@ -23,6 +23,7 @@
 #include "tps_camera_behavior.h"
 #include "enemy_behavior.h"
 #include "switch_sprite_behavior.h"
+#include "ball_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -95,6 +96,30 @@ void Factory::CreatePlayer_Chara(GameObject* player)
     transform->SetScaling({ 1.5f,2.0f,1.0f });
     imageComp->Load(L"asset\\Texture\\player.png");
     imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
+}
+
+void Factory::CreateBall(GameObject* obj, DirectX::XMFLOAT3 position)
+{
+    obj->SetName("Ball");
+
+    // component生成・登録
+    TransformComponent* transform       = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp           = obj->AddComponent<ModelComponent>();
+    SphereColliderComponent* collider   = obj->AddComponent<SphereColliderComponent>();
+    RigidbodyComponent* rigidbody       = obj->AddComponent<RigidbodyComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetScaling({ 1.0f, 1.0f, 1.0f });
+
+    collider->SetRadius(1.0f);
+    rigidbody->SetMass(1.5f);
+    rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
+
+    modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
+
+    // behavior生成・登録
+    BallBehavior* ballBe = obj->AddBehavior<BallBehavior>();
 }
 
 void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
