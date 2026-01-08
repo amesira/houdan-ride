@@ -60,9 +60,9 @@ void GameScene::Initialize()
     // image
     GameObject* uiImage = this->CreateGameObject();
     uiImage->SetName("CameraImage");
-    Factory::CreateUiImageWorld(uiImage, { -3.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
+    Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
 
-    LevelM_Initialize(this);
+    //LevelM_Initialize(this);
 }
 
 //===================================================
