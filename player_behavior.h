@@ -18,6 +18,8 @@ class RigidbodyComponent;
 class ImageComponent;
 
 class TpsCameraBehavior;
+class BallBehavior;
+class SwitchSpriteBehavior;
 
 class PlayerBehavior :public Behavior {
 private:
@@ -26,8 +28,17 @@ private:
     RigidbodyComponent* m_rigidbody = nullptr;
     ImageComponent* m_image = nullptr;
 
+    SwitchSpriteBehavior* m_switchSprite = nullptr;
+
+    float m_freezeTimer = 0.0f;
+
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
+
+    // ボールの参照
+    GameObject*         m_ballObject = nullptr;
+    TransformComponent* m_ballTransform = nullptr;
+    BallBehavior*       m_ballBehavior = nullptr;
 
 public:
     PlayerBehavior(GameObject* owner);
@@ -41,6 +52,11 @@ private:
 
     // 移動処理の更新
     void    UpdateMovement(float deltaTime);
+
+    // ボールに乗る処理の更新
+    void    UpdateRideOnBall(float deltaTime);
+    // ボールを前に飛ばす処理の更新
+    void    UpdateThrowBall(float deltaTime);
 
 public:
 

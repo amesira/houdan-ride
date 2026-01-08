@@ -14,11 +14,13 @@ using namespace DirectX;
 
 class TransformComponent;
 class RigidbodyComponent;
+class SphereColliderComponent;
 
 class BallBehavior : public Behavior{
 private:
     TransformComponent* m_transform = nullptr;
     RigidbodyComponent* m_rigidbody = nullptr;
+    SphereColliderComponent* m_collider = nullptr;
 
     XMFLOAT3 m_moveDirection = { 0.0f,0.0f,0.0f };
     XMFLOAT3 m_bounceVelocity = { 0.0f,0.0f,0.0f };
@@ -32,6 +34,8 @@ public:
 private:
     // ボール回転の更新
     void    UpdateBallRotation(float deltaTime);
+    // 物体破壊の更新
+    void    UpdateBreakObjects();
 
 public:
     // 移動方向設定

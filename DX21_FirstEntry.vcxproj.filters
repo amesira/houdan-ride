@@ -152,11 +152,17 @@
     <ClCompile Include="light_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="particle_manager.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
     <ClCompile Include="level_manager.cpp">
       <Filter>Sources\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_manager.cpp">
+      <Filter>Sources\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ball_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="woodbox_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +316,17 @@
     <ClInclude Include="light_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="particle_manager.h" />
     <ClInclude Include="level_manager.h">
       <Filter>Sources\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_manager.h">
+      <Filter>Sources\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ball_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="woodbox_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

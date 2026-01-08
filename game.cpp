@@ -35,6 +35,10 @@ void GameScene::Initialize()
     GameObject* ball = this->CreateGameObject();
     Factory::CreateBall(ball, { 0.0f,5.0f,5.0f });
 
+    // 木箱
+    GameObject* woodbox = this->CreateGameObject();
+    Factory::CreateWoodbox(woodbox, { 3.0f,0.5f,0.0f });
+
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
     

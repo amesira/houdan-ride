@@ -22,11 +22,11 @@ public:
         Sphere,
     };
     struct CollisionData {
-        ColliderComponent*  m_other;    // 衝突相手
-        XMFLOAT3    m_mtv;      // 最小移動ベクトル
+        ColliderComponent*  m_other = nullptr;  // 衝突相手のコライダーコンポーネント
+        XMFLOAT3    m_mtv = { 0.0f,0.0f,0.0f }; // 最小移動ベクトル
 
-        bool    m_isCollision;          // 当たり判定フラグ
-        bool    m_wasCollision;         // 前フレームの当たり判定フラグ
+        bool    m_isCollision = false;  // 当たり判定フラグ
+        bool    m_wasCollision = false; // 前フレームの当たり判定フラグ
 
         bool    GetCollisionEnter() {
             if(m_other == nullptr)return false;
@@ -40,6 +40,16 @@ public:
             if (m_other == nullptr)return false;
             return !m_isCollision && m_wasCollision; 
         }
+
+        XMFLOAT3 GetHitPointOffset() {
+            if (m_other == nullptr) return { 0.0f,0.0f,0.0f };
+            XMFLOAT3 hitOffset = {
+                m_mtv.x * 5.0f,
+                m_mtv.y * 5.0f,
+                m_mtv.z * 5.0f
+            };
+            return hitOffset;
+        }
     };
 
     // 衝突情報の最大登録数
@@ -48,7 +58,7 @@ public:
 protected:
     Shape m_shape;
     DirectX::XMFLOAT3 m_center = { 0.0f,0.0f,0.0f };
-
+    
 private:
     CollisionData m_collisionData[MAX_COLLISION_DATA];
     
@@ -150,11 +160,10 @@ private:
     DirectX::XMFLOAT3   m_scale = { 1.0f,1.0f,1.0f };
 
 public:
-    BoxColliderComponent() { m_shape = ColliderComponent::Shape::Box; }
+    BoxColliderComponent() {  m_shape = ColliderComponent::Shape::Box; }
 
-    void    SetScale(DirectX::XMFLOAT3 scale) { m_scale = scale; }
+    void    SetScale(DirectX::XMFLOAT3 scale) {  m_scale = scale;}
     DirectX::XMFLOAT3   GetScale() { return m_scale; }
-
 };
 
 class SphereColliderComponent :public ColliderComponent {

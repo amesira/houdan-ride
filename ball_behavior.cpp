@@ -14,12 +14,16 @@
 
 #include "transform_component.h"
 #include "rigidbody_component.h"
+#include "collider_component.h"
+
+#include "woodbox_behavior.h"
 
 BallBehavior::BallBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<BallBehavior>())
 {
     m_transform = owner->GetComponent<TransformComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
+    m_collider = owner->GetComponent<SphereColliderComponent>();
 }
 
 BallBehavior::~BallBehavior()
@@ -34,22 +38,30 @@ void BallBehavior::Update(IScene* pScene)
     // 速度設定
     XMFLOAT3 velocity = m_rigidbody->GetVelocity();
 
-    m_moveDirection = MiMath::Normalize(m_moveDirection);
-    velocity.x += m_moveDirection.x * 20.0f * deltaTime;
-    velocity.z += m_moveDirection.z * 20.0f * deltaTime;
-    velocity.x = std::clamp(velocity.x, -6.0f, 6.0f);
-    velocity.z = std::clamp(velocity.z, -6.0f, 6.0f);
-
+    if(m_moveDirection.x != 0.0f || m_moveDirection.y != 0.0f || m_moveDirection.z != 0.0f) {
+        m_moveDirection = MiMath::Normalize(m_moveDirection);
+        velocity.x += m_moveDirection.x * 20.0f * deltaTime;
+        velocity.z += m_moveDirection.z * 20.0f * deltaTime;
+        velocity.x = std::clamp(velocity.x, -6.0f, 6.0f);
+        velocity.z = std::clamp(velocity.z, -6.0f, 6.0f);
+    }
+    
     // 跳ね返り
     velocity.x += m_bounceVelocity.x;
     velocity.y += m_bounceVelocity.y;
     velocity.z += m_bounceVelocity.z;
 
     m_rigidbody->SetVelocity(velocity);
+    m_moveDirection = { 0.0f,0.0f,0.0f };
     m_bounceVelocity = { 0.0f,0.0f,0.0f };
 
     // ボール回転更新
     UpdateBallRotation(deltaTime);
+
+    // 物体破壊更新
+    if(MiMath::Length(velocity) > 3.0f) {
+        UpdateBreakObjects();
+    }
 }
 
 // ボール回転の更新
@@ -87,5 +99,24 @@ void BallBehavior::UpdateBallRotation(float deltaTime)
         quaternion = XMQuaternionMultiply(quaternion, qu);
 
         m_transform->SetRotation(quaternion);
+    }
+}
+
+void BallBehavior::UpdateBreakObjects()
+{
+    for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
+        auto collisionData = m_collider->GetCollisionData(i);
+        if(!collisionData.GetCollisionStay()) continue;
+        GameObject* otherObj = collisionData.m_other->GetOwner();
+
+        // 木箱の場合
+        if(otherObj->GetName() == "Woodbox") {
+            WoodboxBehavior* woodboxBehavior = otherObj->GetBehavior<WoodboxBehavior>();
+            XMFLOAT3 hitPoint = woodboxBehavior->GetOwner()->GetComponent<TransformComponent>()->GetPosition();
+            hitPoint.x += collisionData.GetHitPointOffset().x;
+            hitPoint.y += collisionData.GetHitPointOffset().y;
+            hitPoint.z += collisionData.GetHitPointOffset().z;
+            woodboxBehavior->Break(hitPoint);
+        }
     }
 }

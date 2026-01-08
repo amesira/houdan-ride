@@ -166,6 +166,7 @@
     <ClCompile Include="switch_sprite_behavior.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tps_camera_behavior.cpp" />
+    <ClCompile Include="woodbox_behavior.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball_behavior.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="transform_component.h" />
     <ClInclude Include="type_id.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="woodbox_behavior.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader_pixel.hlsl">

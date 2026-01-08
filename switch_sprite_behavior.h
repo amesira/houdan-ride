@@ -32,6 +32,7 @@ public:
 
     // 外部設定用
     void    SetImageComponent(ImageComponent* image) { m_image = image; }
+    void    SetRigidbodyComponent(RigidbodyComponent* rigidbody) { m_rigidbody = rigidbody; }
 };
 
 #endif // SWITCH_SPRITE_BEHAVIOR_H

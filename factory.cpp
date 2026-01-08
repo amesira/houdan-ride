@@ -24,6 +24,7 @@
 #include "enemy_behavior.h"
 #include "switch_sprite_behavior.h"
 #include "ball_behavior.h"
+#include "woodbox_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -105,6 +106,26 @@ void Factory::CreateBall(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // behavior生成・登録
     BallBehavior* ballBe = obj->AddBehavior<BallBehavior>();
+}
+
+void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
+{
+    obj->SetName("Woodbox");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetScaling({ 1.0f,1.0f,1.0f });
+    collider->SetScale({ 1.0f,1.0f,1.0f });
+    modelComp->LoadModel("asset\\Model\\cube.fbx");
+    modelComp->SetColor({ 0.55f, 0.27f, 0.07f, 1.0f });
+
+    // behavior生成・登録
+    WoodboxBehavior* woodboxBe = obj->AddBehavior<WoodboxBehavior>();
 }
 
 void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
