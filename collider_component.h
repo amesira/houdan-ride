@@ -40,16 +40,6 @@ public:
             if (m_other == nullptr)return false;
             return !m_isCollision && m_wasCollision; 
         }
-
-        XMFLOAT3 GetHitPointOffset() {
-            if (m_other == nullptr) return { 0.0f,0.0f,0.0f };
-            XMFLOAT3 hitOffset = {
-                m_mtv.x * 5.0f,
-                m_mtv.y * 5.0f,
-                m_mtv.z * 5.0f
-            };
-            return hitOffset;
-        }
     };
 
     // 衝突情報の最大登録数

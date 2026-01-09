@@ -9,6 +9,8 @@
 #include "game_object.h"
 #include "type_id.h"
 
+#include "mi_math.h"
+
 #include "transform_component.h"
 #include "rigidbody_component.h"
 #include "collider_component.h"
@@ -37,15 +39,22 @@ void WoodboxBehavior::Update(IScene* pScene)
 
 }
 
-void WoodboxBehavior::Break(XMFLOAT3 hitPoint)
+void WoodboxBehavior::Break(XMFLOAT3 mtv)
 {
     if (m_isBroken)return;
     m_isBroken = true;
 
+    mtv = MiMath::Normalize(mtv);
+    XMFLOAT3 hitPoint = {
+        m_transform->GetPosition().x + mtv.x * m_transform->GetScaling().x / 2.0f,
+        m_transform->GetPosition().y + mtv.y * m_transform->GetScaling().y / 2.0f,
+        m_transform->GetPosition().z + mtv.z * m_transform->GetScaling().z / 2.0f,
+    };
+
     // 木箱破壊エフェクト
     Particle::Data data = {};
     data.color = m_model->GetColor();
-    data.scaling = { 0.5f,0.5f,0.5f };
+    data.scaling = { 0.3f,0.3f,0.3f };
 
     Particle::Settings settings = {};
     settings.gravity = { 0.0f,-9.8f,0.0f };
@@ -56,14 +65,14 @@ void WoodboxBehavior::Break(XMFLOAT3 hitPoint)
         for (int y = 0; y < 6; y++) {
             for (int z = 0; z < 6; z++) {
                 data.position = {
-                    m_transform->GetPosition().x + (x - 3) * 0.1f,
-                    m_transform->GetPosition().y + (y - 3) * 0.1f,
-                    m_transform->GetPosition().z + (z - 3) * 0.1f,
+                    m_transform->GetPosition().x + (3 - x) * m_transform->GetScaling().x / 6.0f,
+                    m_transform->GetPosition().y + (3 - y) * m_transform->GetScaling().y / 6.0f,
+                    m_transform->GetPosition().z + (3 - z) * m_transform->GetScaling().z / 6.0f,
                 };
                 settings.velocity = {
-                    (data.position.x - hitPoint.x) * 5.0f,
-                    (data.position.y - hitPoint.y) * 5.0f + 3.0f,
-                    (data.position.z - hitPoint.z) * 5.0f,
+                    (data.position.x - hitPoint.x) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
+                    (data.position.y - hitPoint.y) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
+                    (data.position.z - hitPoint.z) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
                 };
                 ParticleEmit::Emit("WoodboxBreak", data, settings, 10.0f);
             }

@@ -65,7 +65,7 @@ public:
             return pGameObject;
         }
 
-        GameObject* pGameObject = &m_gameObjects.emplace_back();
+        GameObject* pGameObject = &(m_gameObjects.emplace_back());
         pGameObject->SetID(m_gameObjectCount++);
         pGameObject->SetScene(this);
 

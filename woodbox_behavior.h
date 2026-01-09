@@ -31,7 +31,7 @@ public:
 
     void    Update(IScene* pScene) override;
 
-    void    Break(XMFLOAT3 hitPoint);
+    void    Break(XMFLOAT3 mtv);
 };
 
 #endif // woodbox_behavior.h

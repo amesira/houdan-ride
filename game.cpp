@@ -30,21 +30,23 @@ void GameScene::Initialize()
     Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.9f,0.9f,0.9f,1.0f }, { 0.7f,0.7f,0.7f,1.0f });
 
     GameObject* player = this->CreateGameObject();
-    Factory::CreatePlayer(player, { -2.0f,0.5f,0.0f });
+    Factory::CreatePlayer(player, { -2.0f,2.0f,-3.0f });
 
     GameObject* ball = this->CreateGameObject();
-    Factory::CreateBall(ball, { 0.0f,5.0f,5.0f });
+    Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
 
     // 木箱
     GameObject* woodbox = this->CreateGameObject();
     Factory::CreateWoodbox(woodbox, { 3.0f,0.5f,0.0f });
 
     GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 20.0f,1.0f,20.0f },{ 0.2f,0.2f,0.2f,1.0f });
+    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 5.0f,1.0f,10.0f },{ 0.2f,0.2f,0.2f,1.0f });
+    /*fieldCube = this->CreateGameObject();
+    Factory::CreateBox(fieldCube, { 0.0f,0.1f,3.0f }, { 0.0f,0.0f,0.0f }, { 4.8f,1.5f,4.0f }, { 0.2f,0.2f,0.8f,1.0f });
     
     GameObject* cube = this->CreateGameObject();
     cube->SetName("TestCube");
-    Factory::CreateBox(cube, { 0.0f,0.0f,5.0f }, { 0.0f,0.0f,0.25f }, { 10.0f,1.0f,4.0f }, { 0.8f,0.8f,0.2f,1.0f });
+    Factory::CreateBox(cube, { 0.0f,0.5f,1.0f }, { -0.15f,0.0f,0.0f }, { 4.8f,0.5f,4.5f }, { 0.8f,0.8f,0.2f,1.0f });*/
 
     GameObject* enemy = this->CreateGameObject();
     Factory::CreateEnemy(enemy, { 5.0f,0.5f,0.0f });
@@ -60,9 +62,9 @@ void GameScene::Initialize()
     Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
 
     // image
-    GameObject* uiImage = this->CreateGameObject();
+    /*GameObject* uiImage = this->CreateGameObject();
     uiImage->SetName("CameraImage");
-    Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });
+    Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });*/
 
 }
 

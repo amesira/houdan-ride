@@ -98,6 +98,10 @@ void EnemyBehavior::Update(IScene* pScene)
                 BallBehavior* ballBehavior = otherObj->GetBehavior<BallBehavior>();
                 if (ballBehavior) {
                     XMFLOAT3 mtv = collisionData.m_mtv;
+                    mtv = MiMath::Normalize(mtv);
+                    mtv.x *= -10.0f;
+                    mtv.y *= -10.0f;
+                    mtv.z *= -10.0f;
                     ballBehavior->AddBounceVelocity(mtv);
                 }
             }

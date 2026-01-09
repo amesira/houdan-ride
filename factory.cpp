@@ -120,7 +120,7 @@ void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
     // component設定
     transform->SetPosition(position);
     transform->SetScaling({ 1.0f,1.0f,1.0f });
-    collider->SetScale({ 1.0f,1.0f,1.0f });
+    collider->SetScale({ 2.0f,2.0f,2.0f });
     modelComp->LoadModel("asset\\Model\\cube.fbx");
     modelComp->SetColor({ 0.55f, 0.27f, 0.07f, 1.0f });
 
@@ -159,12 +159,12 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
     // component設定
     transform->SetPosition(position);
     transform->SetEulerRotation(rotation);
-    transform->SetScaling({
-        scaling.x * 0.5f,
-        scaling.y * 0.5f,
-        scaling.z * 0.5f
+    transform->SetScaling(scaling);
+    collider->SetScale({
+        scaling.x * 2.0f,
+        scaling.y * 2.0f,
+        scaling.z * 2.0f
         });
-    collider->SetScale(scaling);
     modelComp->LoadModel("asset\\Model\\cube.fbx");
     modelComp->SetColor(color);
 }

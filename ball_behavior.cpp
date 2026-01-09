@@ -40,8 +40,8 @@ void BallBehavior::Update(IScene* pScene)
 
     if(m_moveDirection.x != 0.0f || m_moveDirection.y != 0.0f || m_moveDirection.z != 0.0f) {
         m_moveDirection = MiMath::Normalize(m_moveDirection);
-        velocity.x += m_moveDirection.x * 20.0f * deltaTime;
-        velocity.z += m_moveDirection.z * 20.0f * deltaTime;
+        velocity.x += m_moveDirection.x * 30.0f * deltaTime;
+        velocity.z += m_moveDirection.z * 30.0f * deltaTime;
         velocity.x = std::clamp(velocity.x, -6.0f, 6.0f);
         velocity.z = std::clamp(velocity.z, -6.0f, 6.0f);
     }
@@ -112,11 +112,7 @@ void BallBehavior::UpdateBreakObjects()
         // 木箱の場合
         if(otherObj->GetName() == "Woodbox") {
             WoodboxBehavior* woodboxBehavior = otherObj->GetBehavior<WoodboxBehavior>();
-            XMFLOAT3 hitPoint = woodboxBehavior->GetOwner()->GetComponent<TransformComponent>()->GetPosition();
-            hitPoint.x += collisionData.GetHitPointOffset().x;
-            hitPoint.y += collisionData.GetHitPointOffset().y;
-            hitPoint.z += collisionData.GetHitPointOffset().z;
-            woodboxBehavior->Break(hitPoint);
+            woodboxBehavior->Break(collisionData.m_mtv);
         }
     }
 }
