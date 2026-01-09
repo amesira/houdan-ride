@@ -7,7 +7,7 @@
 #include "direct3d.h"
 
 #include "scene_interface.h"
-#include "fps.h"
+#include "mi_fps.h"
 
 #include "debug_renderer.h"
 

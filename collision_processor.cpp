@@ -256,7 +256,7 @@ void CollisionProcessor::DrawDebugCollider(IScene* pScene)
     }
 }
 
-#pragma region AABB境界情報の計算・判定
+#pragma region aabb bounds calculation
 
 // BoxColliderのAABB境界情報計算
 CollisionProcessor::Bounds CollisionProcessor::ConvertToBounds(
@@ -359,7 +359,7 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckAABB(Bounds a, Boun
     return result;
 }
 
-#pragma region 詳細な衝突判定
+#pragma region collision functions
 
 // Box同士の衝突判定
 CollisionProcessor::CollisionResult CollisionProcessor::CheckBoxToBox(TransformComponent* tA, BoxColliderComponent* cA, TransformComponent* tB, BoxColliderComponent* cB)

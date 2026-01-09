@@ -12,7 +12,7 @@
 #include "transform_component.h"
 #include "rigidbody_component.h"
 
-#include "fps.h"
+#include "mi_fps.h"
 
 void PhysicsProcessor::Initialize()
 {

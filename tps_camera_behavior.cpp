@@ -10,7 +10,7 @@
 #include "game_object.h"
 
 #include "mi_math.h"
-#include "fps.h"
+#include "mi_fps.h"
 #include "mouse.h"
 #include "keyboard.h"
 

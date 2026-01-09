@@ -41,12 +41,7 @@ void GameScene::Initialize()
 
     GameObject* fieldCube = this->CreateGameObject();
     Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 5.0f,1.0f,10.0f },{ 0.2f,0.2f,0.2f,1.0f });
-    /*fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,0.1f,3.0f }, { 0.0f,0.0f,0.0f }, { 4.8f,1.5f,4.0f }, { 0.2f,0.2f,0.8f,1.0f });
     
-    GameObject* cube = this->CreateGameObject();
-    cube->SetName("TestCube");
-    Factory::CreateBox(cube, { 0.0f,0.5f,1.0f }, { -0.15f,0.0f,0.0f }, { 4.8f,0.5f,4.5f }, { 0.8f,0.8f,0.2f,1.0f });*/
 
     GameObject* enemy = this->CreateGameObject();
     Factory::CreateEnemy(enemy, { 5.0f,0.5f,0.0f });
@@ -66,6 +61,7 @@ void GameScene::Initialize()
     uiImage->SetName("CameraImage");
     Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });*/
 
+    LevelM_Initialize(this);
 }
 
 //===================================================
@@ -87,6 +83,8 @@ void GameScene::Update()
     }
 
     ProcessorM_Update(this);
+
+    LevelM_Update(this);
 
     // 破棄予約されたGameObjectの収集
     this->CollectDestroyedGameObjects();

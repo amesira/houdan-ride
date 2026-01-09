@@ -5,7 +5,7 @@
 #include "type_id.h"
 using namespace DirectX;
 
-#include "fps.h"
+#include "mi_fps.h"
 #include "mi_math.h"
 #include "tps_camera_behavior.h"
 

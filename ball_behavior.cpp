@@ -10,7 +10,7 @@
 #include "type_id.h"
 
 #include "mi_math.h"
-#include "fps.h"
+#include "mi_fps.h"
 
 #include "transform_component.h"
 #include "rigidbody_component.h"

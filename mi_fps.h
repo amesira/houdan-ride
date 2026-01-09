@@ -4,8 +4,8 @@
 // Author：Miu Kitamura
 // Date  ：2025/11/20
 //----------------------------------------------------
-#ifndef FPS_H
-#define FPS_H
+#ifndef MI_FPS_H
+#define MI_FPS_H
 #include <windows.h>
 
 // FPS初期化・終了処理

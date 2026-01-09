@@ -122,7 +122,7 @@
     <ClCompile Include="stb_implementation.cpp">
       <Filter>リソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="fps.cpp">
+    <ClCompile Include="mi_fps.cpp">
       <Filter>Sources\System</Filter>
     </ClCompile>
     <ClCompile Include="fade.cpp">
@@ -162,6 +162,9 @@
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
     <ClCompile Include="woodbox_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="train_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
@@ -259,7 +262,7 @@
     <ClInclude Include="utility.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="fps.h">
+    <ClInclude Include="mi_fps.h">
       <Filter>Sources\System</Filter>
     </ClInclude>
     <ClInclude Include="component_pool.h">
@@ -326,6 +329,9 @@
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
     <ClInclude Include="woodbox_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="train_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>

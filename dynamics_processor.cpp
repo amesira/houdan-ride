@@ -15,7 +15,7 @@
 #include "collider_component.h"
 #include "rigidbody_component.h"
 
-#include "fps.h"
+#include "mi_fps.h"
 
 // 接地判定の閾値
 #define ON_GROUND_THRESHOLD (0.03f)

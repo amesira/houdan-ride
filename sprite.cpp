@@ -61,12 +61,12 @@ void LoadTexture(ID3D11ShaderResourceView** texture, const wchar_t* fileName) {
 
 	HRESULT hr = LoadFromWICFile(fileName, WIC_FLAGS_NONE, &metadata, image);
 	if (FAILED(hr)) {
-		hal::dout << "テクスチャ読み込み失敗" << std::endl;
+		hal::dout << "failed load texture" << std::endl;
 		return;
 	}
 	hr = CreateShaderResourceView(g_pDevice, image.GetImages(), image.GetImageCount(), metadata, texture);
 	if (FAILED(hr)) {
-		hal::dout << "シェーダーリソース生成失敗" << std::endl;
+		hal::dout << "failed create resource" << std::endl;
 		return;
 	}
 	assert(*texture); // 読み込み失敗時にダイアログを表示

@@ -90,6 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -122,6 +123,8 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +145,7 @@
     <ClCompile Include="enemy_behavior.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="fade.cpp" />
-    <ClCompile Include="fps.cpp" />
+    <ClCompile Include="mi_fps.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_object.h" />
     <ClCompile Include="keyboard.cpp" />
@@ -166,6 +169,7 @@
     <ClCompile Include="switch_sprite_behavior.cpp" />
     <ClCompile Include="title.cpp" />
     <ClCompile Include="tps_camera_behavior.cpp" />
+    <ClCompile Include="train_behavior.cpp" />
     <ClCompile Include="woodbox_behavior.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +185,7 @@
     <ClInclude Include="dynamics_processor.h" />
     <ClInclude Include="enemy_behavior.h" />
     <ClInclude Include="factory.h" />
-    <ClInclude Include="fps.h" />
+    <ClInclude Include="mi_fps.h" />
     <ClInclude Include="image_component.h" />
     <ClInclude Include="level_manager.h" />
     <ClInclude Include="light_component.h" />
@@ -219,6 +223,7 @@
     <ClInclude Include="text_component.h" />
     <ClInclude Include="title.h" />
     <ClInclude Include="tps_camera_behavior.h" />
+    <ClInclude Include="train_behavior.h" />
     <ClInclude Include="transform_component.h" />
     <ClInclude Include="type_id.h" />
     <ClInclude Include="utility.h" />
@@ -232,6 +237,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="shader_pixel_font.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -248,6 +254,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

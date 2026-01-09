@@ -4,10 +4,10 @@
 // Author：Miu Kitamura
 // Date  ：2025/11/20
 //===================================================
-#include "fps.h"
-
 #include <SDKDDKVer.h>      // 利用できる最も上位のWindowsプラットフォームが定義される
 #define WIN32_LEAN_AND_MEAN // 32bitアプリには不要な情報を抑止してコンパイル時間を短縮
+
+#include "mi_fps.h"
 
 #include <windows.h>
 #include <algorithm>
@@ -59,7 +59,7 @@ bool FPS_Update()
         g_dwExecLastTime = g_dwCurrentTime; // 現在のタイマー値を保存
 
         // ウィンドウキャプションへ現在のFPSを表示
-        wsprintf(g_DebugStr, "DX21 プロジェクト ");
+        wsprintf(g_DebugStr, "DX21 Project");
         wsprintf(&g_DebugStr[strlen(g_DebugStr)],
             "FPS : %d", g_CountFPS);
         SetWindowText(hWnd, g_DebugStr);

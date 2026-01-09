@@ -20,7 +20,8 @@
 
 #include "manager.h"
 
-#include "fps.h"
+#include "mi_fps.h"
+
 #include "model.h"
 
 //===================================================
@@ -126,7 +127,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
     MSG msg;
     ZeroMemory(&msg, sizeof(MSG));
 
-    // FPS初期化
+    // fps initialize
     FPS_Initialize(hWnd);
 
     //----------------------------------------------------
@@ -140,6 +141,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,  // このプログラムを表す情�
         }
         else {
             if(FPS_Update()){
+
                 // 更新処理
                 Manager_Update();
 

@@ -25,6 +25,7 @@
 #include "switch_sprite_behavior.h"
 #include "ball_behavior.h"
 #include "woodbox_behavior.h"
+#include "train_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -167,6 +168,15 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
         });
     modelComp->LoadModel("asset\\Model\\cube.fbx");
     modelComp->SetColor(color);
+
+    // behavior生成・登録
+    TrainBehavior* trainBe = cube->AddBehavior<TrainBehavior>();
+
+}
+
+void Factory::CreateTrain(GameObject* obj, DirectX::XMFLOAT3 position)
+{
+    obj->SetName("Train");
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)

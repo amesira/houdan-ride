@@ -26,7 +26,7 @@ using namespace DirectX;
 #include "ball_behavior.h"
 
 #include "keyboard.h"
-#include "fps.h"
+#include "mi_fps.h"
 
 PlayerBehavior::PlayerBehavior(GameObject* owner) 
     : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
