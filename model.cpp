@@ -13,6 +13,8 @@ static ID3D11DeviceContext* g_pContext = nullptr;
 
 static ID3D11ShaderResourceView* g_pTexture = nullptr;
 
+XMFLOAT4 IncreaseSaturation(const XMFLOAT4& c, float amount);
+
 void Model_Initialize()
 {
     g_pDevice = Direct3D_GetDevice();
@@ -62,6 +64,7 @@ MODEL* ModelLoad( const char *FileName )
 					AI_SUCCESS == aiGetMaterialColor(mat, AI_MATKEY_COLOR_DIFFUSE, &c))
 				{
 					baseColor = { c.r, c.g, c.b, c.a };
+                    baseColor = IncreaseSaturation(baseColor, 3.0f);
 				}
 
                 vertex[v].color = baseColor;
@@ -198,4 +201,22 @@ void ModelDraw(MODEL* model)
 }
 
 
+XMFLOAT4 IncreaseSaturation(const XMFLOAT4& c, float amount)
+{
+	// 輝度（NTSC係数）
+	float gray = c.x * 0.299f + c.y * 0.587f + c.z * 0.114f;
+
+	XMFLOAT4 result;
+	result.x = gray + (c.x - gray) * amount;
+	result.y = gray + (c.y - gray) * amount;
+	result.z = gray + (c.z - gray) * amount;
+	result.w = c.w;
+
+	// clamp
+	result.x = std::clamp(result.x, 0.0f, 1.0f);
+	result.y = std::clamp(result.y, 0.0f, 1.0f);
+	result.z = std::clamp(result.z, 0.0f, 1.0f);
+
+	return result;
+}
 

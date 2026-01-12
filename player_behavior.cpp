@@ -39,6 +39,8 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_switchSprite = owner->GetBehavior<SwitchSpriteBehavior>();
 
     m_tpsCamera = nullptr;
+
+    m_rigidbody->SetFriction({0.95f,1.0f,0.95f});
 }
 
 PlayerBehavior::~PlayerBehavior()
@@ -207,9 +209,9 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 
     // ボールを前に飛ばす
     m_ballBehavior->AddBounceVelocity({
-        m_tpsCamera->GetCameraFoward().x * 20.0f,
+        m_tpsCamera->GetCameraFoward().x * 40.0f,
         15.0f,
-        m_tpsCamera->GetCameraFoward().z * 20.0f
+        m_tpsCamera->GetCameraFoward().z * 40.0f
         });
 
     // switch sprite が参照する速度をプレイヤーの速度に戻す

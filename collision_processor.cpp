@@ -180,9 +180,9 @@ void CollisionProcessor::DrawDebugCollider(IScene* pScene)
         // 回転させる
         for(int i = 0; i < 8; i++) {
             verts[i] = MiMath::RotateVector(t->GetRotation(), verts[i]);
-            verts[i].x += t->GetPosition().x;
-            verts[i].y += t->GetPosition().y;
-            verts[i].z += t->GetPosition().z;
+            verts[i].x += t->GetPosition().x + c.GetCenter().x;
+            verts[i].y += t->GetPosition().y + c.GetCenter().y;
+            verts[i].z += t->GetPosition().z + c.GetCenter().z;
         }
 
         DrawLine(verts[0], verts[1], debugColor);

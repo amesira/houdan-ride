@@ -10,6 +10,7 @@
 
 #include "behavior.h"
 #include <DirectXMath.h>
+#include <vector>
 using namespace DirectX;
 
 class TransformComponent;
@@ -23,12 +24,26 @@ private:
     BoxColliderComponent*  m_collider;
     ModelComponent* m_model;
 
-    float   m_moveSpeed = 5.0f;
+    float   m_moveSpeed = 0.0f;
+
+    std::vector<TransformComponent*> m_childTransforms;
+    std::vector<BoxColliderComponent*> m_childColliders;
+
+    int m_rideCounter = 0;
+    TransformComponent* m_rideTransform[32];
+    int m_rideTimer[32];
 
 public:
     TrainBehavior(GameObject* owner);
     ~TrainBehavior();
     void    Update(IScene* pScene) override;
+
+private:
+    void    EntryRideObjects(BoxColliderComponent* col);
+
+public:
+    void    SetMoveSpeed(float speed) { m_moveSpeed = speed; }
+    void    AddChildCollider(GameObject* collider);
 };
 
 #endif // train_behavior.h

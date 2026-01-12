@@ -23,6 +23,13 @@ TrainBehavior::TrainBehavior(GameObject* owner)
     m_transform = owner->GetComponent<TransformComponent>();
     m_collider = owner->GetComponent<BoxColliderComponent>();
     m_model = owner->GetComponent<ModelComponent>();
+
+    m_childTransforms.clear();
+    m_childColliders.clear();
+
+    for(int i = 0; i < 32; i++) {
+        m_rideTransform[i] = nullptr;
+    }
 }
 
 TrainBehavior::~TrainBehavior()
@@ -39,9 +46,38 @@ void TrainBehavior::Update(IScene* pScene)
         m_transform->GetPosition().z + m_moveSpeed * FPS_GetDeltaTime(),
         });
 
+    // 乗っている物体を取得
+    EntryRideObjects(m_collider);
+    for (auto& childCol : m_childColliders) {
+        EntryRideObjects(childCol);
+    }
+
+    // 乗っている物体を同じ速度で動かす
+    for(int i = 0; i < 32; i++) {
+        if (m_rideTransform[i] == nullptr)continue;
+
+        m_rideTransform[i]->SetPosition({
+               m_rideTransform[i]->GetPosition().x,
+               m_rideTransform[i]->GetPosition().y,
+               m_rideTransform[i]->GetPosition().z + m_moveSpeed * FPS_GetDeltaTime(),
+            });
+        m_rideTimer[i] -= FPS_GetDeltaTime();
+        if (m_rideTimer[i] <= 0.0f){
+            m_rideTransform[i] = nullptr;
+        }
+    }
+
+    // 子オブジェクトを同じ位置へ
+    for (auto& childTransform : m_childTransforms) {
+        childTransform->SetPosition(m_transform->GetPosition());
+    }
+}
+
+void TrainBehavior::EntryRideObjects(BoxColliderComponent* col)
+{
     // 乗っている物体を取得して同じ速度で動かす
     for (int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
-        auto collisionData = m_collider->GetCollisionData(i);
+        auto collisionData = col->GetCollisionData(i);
         if (collisionData.GetCollisionStay()) {
             GameObject* otherObj = collisionData.m_other->GetOwner();
             auto* otherTransform = otherObj->GetComponent<TransformComponent>();
@@ -53,11 +89,30 @@ void TrainBehavior::Update(IScene* pScene)
                 continue;
             }
 
-            otherTransform->SetPosition({
-                otherTransform->GetPosition().x,
-                otherTransform->GetPosition().y,
-                otherTransform->GetPosition().z + m_moveSpeed * FPS_GetDeltaTime(),
-                });
+            // 乗っている物体リストに登録
+            bool alreadyRegistered = false;
+            for(int j = 0; j < 32; j++) {
+                if (m_rideTransform[j] == otherTransform) {
+                    alreadyRegistered = true;
+                }
+            }
+            if (alreadyRegistered)continue;
+
+            for(int i = 0; i < 32; i++) {
+                if (m_rideTransform[i] == nullptr) {
+                    m_rideTransform[i] = otherTransform;
+                    m_rideTimer[i] = 0.5f;
+                    break;
+                }
+            }
         }
     }
+}
+
+void TrainBehavior::AddChildCollider(GameObject* collider)
+{
+    BoxColliderComponent* colComp = collider->GetComponent<BoxColliderComponent>();
+    m_childColliders.push_back(colComp);
+    TransformComponent* childTransform = collider->GetComponent<TransformComponent>();
+    m_childTransforms.push_back(childTransform);
 }

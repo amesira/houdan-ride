@@ -115,6 +115,7 @@ void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // component生成・登録
     TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    RigidbodyComponent* rigidbody = obj->AddComponent<RigidbodyComponent>();
     BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
     ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
 
@@ -177,6 +178,37 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 void Factory::CreateTrain(GameObject* obj, DirectX::XMFLOAT3 position)
 {
     obj->SetName("Train");
+
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+    BoxColliderComponent* collider2 = obj->AddComponent<BoxColliderComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ 0.0f, XMConvertToRadians(180.0f), 0.0f });
+    transform->SetScaling({2.0f, 2.0f, 2.0f});
+    modelComp->LoadModel("asset\\Model\\ship.fbx");
+
+    collider->SetCenter({ 0.0f, 4.0f, -0.35f });
+    collider->SetScale({ 9.6f, 1.0f, 7.4f });
+
+    // behavior生成・登録
+    TrainBehavior* trainBe = obj->AddBehavior<TrainBehavior>();
+}
+
+void Factory::CreateBoxCollider(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rotation, DirectX::XMFLOAT3 center, DirectX::XMFLOAT3 size)
+{
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    BoxColliderComponent* boxCollider = obj->AddComponent<BoxColliderComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation(rotation);
+
+    boxCollider->SetCenter(center);
+    boxCollider->SetScale(size);
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)

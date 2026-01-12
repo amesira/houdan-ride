@@ -24,6 +24,9 @@ private:
     ModelComponent* m_model;
 
     bool   m_isBroken = false;
+
+    XMFLOAT3 m_breakMtv;
+    float m_breakTimer = 0.0f;
     
 public:
     WoodboxBehavior(GameObject* owner);

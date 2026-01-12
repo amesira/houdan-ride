@@ -145,6 +145,7 @@
     <ClCompile Include="enemy_behavior.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="liftup_behavior.cpp" />
     <ClCompile Include="mi_fps.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_object.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="dynamics_processor.h" />
     <ClInclude Include="enemy_behavior.h" />
     <ClInclude Include="factory.h" />
+    <ClInclude Include="liftup_behavior.h" />
     <ClInclude Include="mi_fps.h" />
     <ClInclude Include="image_component.h" />
     <ClInclude Include="level_manager.h" />

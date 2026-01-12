@@ -17,6 +17,8 @@ void DebugRenderer_Finalize();
 // 描画コマンドをバッファに追加
 void DebugRenderer_DrawFlush();
 
+void DebugRenderer_ResetBuffer();
+
 // ライン描画関数
 // ・ここで描画情報をバッファに追加しておき、フレームの最後にまとめて描画するイメージ
 void DrawLine(DirectX::XMFLOAT3 start, DirectX::XMFLOAT3 end, DirectX::XMFLOAT4 color);

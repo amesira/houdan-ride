@@ -164,7 +164,9 @@ void ProcessorM_Draw(IScene* pScene)
         SetBlendState(BLENDSTATE_ALFA);
         g_RendererImageProcessor->Process(pScene);
 
-        DebugRenderer_DrawFlush();
+        /*SetDepthState(DEPTHSTATE_DISABLE);
+        SetBlendState(BLENDSTATE_NONE);
+        DebugRenderer_DrawFlush();*/
 
         // スナップショット撮影
         g_CameraProcessor->SnapShotCamera(i);
@@ -179,7 +181,7 @@ void ProcessorM_Draw(IScene* pScene)
     const float w = (float)Direct3D_GetBackBufferWidth();
     const float h = (float)Direct3D_GetBackBufferHeight();
     g_CameraProcessor->DrawSnapshot(0, w / 2.0f, h / 2.0f, w, h);
-
+    DebugRenderer_DrawFlush();
     SetBlendState(BLENDSTATE_ALFA);
 
     // UI配置設定
@@ -189,6 +191,9 @@ void ProcessorM_Draw(IScene* pScene)
     // 各2D描画プロセッサーの実行
     g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
+
+    // デバッグ描画用バッファリセット
+    DebugRenderer_ResetBuffer();
 
     Direct3D_Present();
 }

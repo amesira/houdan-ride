@@ -80,6 +80,11 @@ void DebugRenderer_DrawFlush()
     // ポリゴン描画命令発行
     g_pContext->Draw(g_LineVertices.size(), 0);
 
+    
+}
+
+void DebugRenderer_ResetBuffer()
+{
     g_LineVertices.clear();
 }
 

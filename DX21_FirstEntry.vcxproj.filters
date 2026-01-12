@@ -167,6 +167,9 @@
     <ClCompile Include="train_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="liftup_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -332,6 +335,9 @@
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
     <ClInclude Include="train_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="liftup_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
