@@ -18,6 +18,7 @@ class RigidbodyComponent;
 class ImageComponent;
 class SliderComponent;
 class TextComponent;
+class RectTransformComponent;
 
 class TpsCameraBehavior;
 class BallBehavior;
@@ -58,8 +59,17 @@ private:
 
     // スコア
     TextComponent* m_scoreText = nullptr;
+    TextComponent* m_penaltyText = nullptr;
+    RectTransformComponent* m_penaltyRect = nullptr;
+    XMFLOAT3 m_penaltyStartPos = { 0.0f,0.0f,0.0f };
     float m_score = 0;
     float m_scoreBuffer = 0;
+
+    float m_penaltyTextTimer = 0.0f;
+
+    // リスボーン
+    TransformComponent* m_shipTransform = nullptr;
+    float m_respawnTimer = 0.0f;
 
 public:
     PlayerBehavior(GameObject* owner);

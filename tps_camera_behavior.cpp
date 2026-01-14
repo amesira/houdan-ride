@@ -64,6 +64,9 @@ void TpsCameraBehavior::Update(IScene* pScene)
     //-------------------------------
     XMFLOAT3 targetPos = m_targetTransform->GetPosition();
     targetPos.y += 1.0f; // 少し上を見るようにする
+    if(targetPos.y < 1.0f) {
+        targetPos.y = 1.0f; // 地面より下に行かないようにする
+    }
     m_cameraAnchor = MiMath::Lerp(m_cameraAnchor, targetPos, deltaTime * 3.0f);
 
     float grayRate = m_camera->GetShaderGrayRate();

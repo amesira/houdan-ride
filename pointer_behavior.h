@@ -19,7 +19,7 @@ private:
     TransformComponent* m_cameraTransform;
     CameraComponent* m_cameraComp;
 
-    float m_distanceFromCamera = 5.0f;
+    float m_distanceFromCamera = 20.0f;
 
 public:
     PointerBehavior(GameObject* owner);

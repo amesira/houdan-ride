@@ -36,6 +36,11 @@ void GameScene::Initialize()
     GameObject* uiText = this->CreateGameObject();
     Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"SCORE: 0000000", 50.0f, { 1.0f,1.0f,1.0f,1.0f },false);
     uiText->SetName("ScoreText");
+
+    uiText = this->CreateGameObject();
+    Factory::CreateUiText(uiText, { 350.0f, 50.0f, 0.0f }, u8"-500", 30.0f, { 1.0f,0.0f,0.0f,1.0f }, false);
+    uiText->SetName("PenaltyText");
+
     /*GameObject* uiImage = this->CreateGameObject();
     Factory::CreateUiImage(uiImage, { 400.0f, 50.0f, 0.0f }, 0.0f, { 200.0f,200.0f }, L"asset\\Texture\\map.png");
     */

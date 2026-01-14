@@ -21,6 +21,7 @@ using namespace DirectX;
 #include "rigidbody_component.h"
 #include "image_component.h"
 #include "slider_component.h"
+#include "rect_transform_component.h"
 
 #include "tps_camera_behavior.h"
 #include "switch_sprite_behavior.h"
@@ -94,10 +95,13 @@ void PlayerBehavior::Update(IScene* pScene)
     UpdateThrowBall(deltaTime);
 
     // スコアテキスト更新
-    if(m_scoreBuffer > 0.0f) {
+    {
         float buf = m_scoreBuffer * deltaTime * 5.0f;
         m_score += buf;
         m_scoreBuffer -= buf;
+        if (m_score < 0.0f) {
+            m_score = 0.0f;
+        }
 
         // スコアテキスト更新
         std::string s = "SCORE: ";
@@ -112,6 +116,76 @@ void PlayerBehavior::Update(IScene* pScene)
 
         std::u8string u8 = std::u8string(s.begin(), s.end());
         m_scoreText->SetText(u8);
+    }
+
+    // プレイヤーが落ちた
+    if (m_transform->GetPosition().y < -10.0f) {
+        m_transform->SetPosition({
+            m_shipTransform->GetPosition().x,
+            m_shipTransform->GetPosition().y + 10.0f,
+            m_shipTransform->GetPosition().z
+            });
+
+        // タイマーセット
+        m_respawnTimer = 2.0f;
+
+        // 速度リセット
+        m_rigidbody->SetVelocity({ 0.0f,0.0f,0.0f });
+        m_rigidbody->SetEnable(false);
+
+        // スコアがマイナス
+        m_scoreBuffer -= 500.0f;
+        m_penaltyText->SetText(u8"-500");
+        m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+        m_penaltyRect->SetPosition(m_penaltyStartPos);
+        m_penaltyTextTimer = 2.0f;
+
+        //----------------------------------------------------
+	    // 必要な処理を色々と
+	    //----------------------------------------------------
+        // switch sprite が参照する速度をプレイヤーの速度に戻す
+        m_switchSprite->SetRigidbodyComponent(m_rigidbody);
+
+        // 切り離し処理
+        m_ballObject = nullptr;
+        m_ballTransform = nullptr;
+        m_ballBehavior = nullptr;
+
+        // プレイヤーのレイヤーを元に戻す
+        m_collider->SetLayer(ColliderComponent::Layer::Player);
+        m_rigidbody->SetMass(1.5f);
+
+        // Freezeタイマーセット
+        m_freezeTimer = 0.5f;
+    }
+
+    // リスポーン処理
+    if(m_respawnTimer > 0.0f) {
+        m_transform->SetPosition({
+            m_shipTransform->GetPosition().x,
+            m_shipTransform->GetPosition().y + 10.0f,
+            m_shipTransform->GetPosition().z
+            });
+
+        float blend = (m_respawnTimer > 1.0f)? m_respawnTimer - 1.0f : m_respawnTimer;
+        m_image->SetColor({ 1.0f,1.0f - blend, 1.0f - blend  ,(1.0f - blend) * 2.0f });
+
+        m_respawnTimer -= deltaTime;
+        if(m_respawnTimer <= 0.0f) {
+            m_rigidbody->SetEnable(true);
+        }
+    }
+
+    // ペナルティテキストの更新
+    if(m_penaltyTextTimer > 0.0f) {
+        m_penaltyRect->SetPosition(MiMath::Lerp(m_penaltyRect->GetPosition(),
+            XMFLOAT3(m_penaltyStartPos.x, m_penaltyStartPos.y - 20.0f, m_penaltyStartPos.z),
+            deltaTime * 5.0f));
+        m_penaltyTextTimer -= deltaTime;
+
+        if (m_penaltyTextTimer < 1.0f) {
+            m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,m_penaltyTextTimer });
+        }
     }
 }
 
@@ -152,6 +226,26 @@ void PlayerBehavior::GetReferenceObjects(IScene* pScene)
         GameObject* scoreTextObj = pScene->GetGameObjectByName("ScoreText");
         if (scoreTextObj) {
             m_scoreText = scoreTextObj->GetComponent<TextComponent>();
+        }
+    }
+
+    // 船
+    if(!m_shipTransform) {
+        GameObject* shipObj = pScene->GetGameObjectByName("Train");
+        if (shipObj) {
+            m_shipTransform = shipObj->GetComponent<TransformComponent>();
+        }
+    }
+
+    // ペナルティテキスト取得
+    if (!m_penaltyText) {
+        GameObject* penaltyTextObj = pScene->GetGameObjectByName("PenaltyText");
+        if (penaltyTextObj) {
+            m_penaltyText = penaltyTextObj->GetComponent<TextComponent>();
+            m_penaltyRect = penaltyTextObj->GetComponent<RectTransformComponent>();
+
+            m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,0.0f });
+            m_penaltyStartPos = m_penaltyRect->GetPosition();
         }
     }
 }
