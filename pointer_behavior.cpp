@@ -12,6 +12,7 @@
 #include "transform_component.h"
 #include "image_component.h"
 #include "camera_component.h"
+#include "rect_transform_component.h"
 
 PointerBehavior::PointerBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<PointerBehavior>())
@@ -19,7 +20,9 @@ PointerBehavior::PointerBehavior(GameObject* owner)
     m_transform = owner->GetComponent<TransformComponent>();
     m_imageComp = owner->GetComponent<ImageComponent>();
 
-    m_cameraComp = nullptr; 
+    m_cameraComp = nullptr;
+    m_cameraTransform = nullptr;
+    m_sliderRectTransform = nullptr;
 }
 
 PointerBehavior::~PointerBehavior()
@@ -36,6 +39,13 @@ void PointerBehavior::Update(IScene* pScene)
             m_cameraTransform = cameraObj->GetComponent<TransformComponent>();
         }
         return;
+    }
+
+    if(m_sliderRectTransform == nullptr) {
+        GameObject* sliderObj = pScene->GetGameObjectByName("ThrowPowerSlider");
+        if (sliderObj) {
+            m_sliderRectTransform = sliderObj->GetComponent<RectTransformComponent>();
+        }
     }
 
     float deltaTime = FPS_GetDeltaTime();
@@ -73,7 +83,15 @@ void PointerBehavior::Update(IScene* pScene)
     // スムーズに移動
     m_transform->SetPosition(pos);
 
+    // スライダー位置調整
+    if(m_sliderRectTransform) {
+        XMFLOAT3 sliderPos;
+        sliderPos.x = mousePos.x + 40.0f;
+        sliderPos.y = mousePos.y;
+        m_sliderRectTransform->SetPosition(sliderPos);
+    }
+
     // マウスホイール
-    int wheelDelta = Mouse_GetScrollWheelValue();
-    m_distanceFromCamera += static_cast<float>(wheelDelta) * 0.01f;
+   /* int wheelDelta = Mouse_GetScrollWheelValue();
+    m_distanceFromCamera += static_cast<float>(wheelDelta) * 0.01f;*/
 }

@@ -7,6 +7,7 @@ using namespace DirectX;
 class TransformComponent;
 class ImageComponent;
 class CameraComponent;
+class RectTransformComponent;
 
 class TpsCameraBehavior;
 
@@ -19,7 +20,9 @@ private:
     TransformComponent* m_cameraTransform;
     CameraComponent* m_cameraComp;
 
-    float m_distanceFromCamera = 20.0f;
+    RectTransformComponent* m_sliderRectTransform;
+
+    float m_distanceFromCamera = 40.0f;
 
 public:
     PointerBehavior(GameObject* owner);

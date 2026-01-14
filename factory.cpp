@@ -301,7 +301,7 @@ void Factory::CreatePointer(GameObject* obj) {
     // component設定
     transform->SetPosition({ 0.0f, 0.0f, 0.0f });
     transform->SetScaling({ 3.0f, 3.0f, 1.0f });
-    imageComp->Load(L"asset\\Texture\\test.jpg");
+    imageComp->Load(L"asset\\Texture\\magic_03.png");
     imageComp->SetWorldSpaceType(WorldSpaceType::Billboard);
 
     // behavior生成・登録

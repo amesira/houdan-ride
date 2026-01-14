@@ -45,7 +45,7 @@ void GameScene::Initialize()
     Factory::CreateUiImage(uiImage, { 400.0f, 50.0f, 0.0f }, 0.0f, { 200.0f,200.0f }, L"asset\\Texture\\map.png");
     */
     GameObject* uiSlider = this->CreateGameObject();
-    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 90.0f, { 100.0f,30.0f });
+    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, -90.0f, { 100.0f,20.0f });
     uiSlider->SetName("ThrowPowerSlider");
 
 

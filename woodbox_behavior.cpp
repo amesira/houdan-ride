@@ -31,7 +31,7 @@ WoodboxBehavior::WoodboxBehavior(GameObject* owner)
     m_model = owner->GetComponent<ModelComponent>();
 
     if(g_pWoodboxBreakTexture == nullptr) {
-        LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\coin.png");
+        LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\star_01.png");
         ParticleM_RegisterEmitter("ExpEffect", g_pWoodboxBreakTexture);
     }
 }
@@ -57,8 +57,9 @@ void WoodboxBehavior::Update(IScene* pScene)
 
         // 木箱破壊エフェクト
         Particle::Data data = {};
-        data.color = { 1.0f, 1.0f,1.0f,1.0f };
-        data.scaling = { 0.3f,0.3f,0.3f };
+        data.color = { 1.0f, 1.0f,0.0f,1.0f };
+        data.scaling = { 1.0f,1.0f,1.0f };
+        data.uvRect = { 0.0f,0.0f,1.0f,1.0f };
 
         Particle::Settings settings = {};
         settings.gravity = { 0.0f,-9.8f,0.0f };
@@ -73,13 +74,13 @@ void WoodboxBehavior::Update(IScene* pScene)
                         m_transform->GetPosition().x + (2 - x) * m_transform->GetScaling().x / 4.0f,
                         m_transform->GetPosition().y + (2 - y) * m_transform->GetScaling().y / 4.0f,
                         m_transform->GetPosition().z + (2 - z) * m_transform->GetScaling().z / 4.0f,
-                    };
+                    };/*
                     data.uvRect = {
                         static_cast<float>(index % 2) * 0.5f,
                         static_cast<float>(index / 2) * 0.5f,
                         0.5f,
                         0.5f,
-                    };
+                    };*/
                     settings.velocity = {
                         (data.position.x - hitPoint.x) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
                         (data.position.y - hitPoint.y) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,

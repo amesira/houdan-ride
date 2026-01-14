@@ -72,7 +72,7 @@ void TpsCameraBehavior::Update(IScene* pScene)
     float grayRate = m_camera->GetShaderGrayRate();
 
     // 左クリック中のマウス移動でカメラ回転
-    if (Mouse_IsButtonDown(Mouse_Button::LEFT)) {
+    if (Mouse_IsButtonDown(Mouse_Button::RIGHT)) {
         float moveX = (float)Mouse_GetPositionX() - (float)Mouse_GetOldPositionX();
         float moveY = (float)Mouse_GetPositionY() - (float)Mouse_GetOldPositionY();
 

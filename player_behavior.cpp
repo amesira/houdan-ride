@@ -28,6 +28,7 @@ using namespace DirectX;
 #include "ball_behavior.h"
 
 #include "keyboard.h"
+#include "mouse.h"
 #include "mi_fps.h"
 
 #include "particle_manager.h"
@@ -388,7 +389,7 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
     }
     m_throwDirection = MiMath::Normalize(m_throwDirection);
     
-    if(Keyboard_IsKeyDown(KK_F)) {
+    if(Mouse_IsButtonDown(Mouse_Button::LEFT)) {
         m_tpsCamera->SetSlowMotion(true);
         m_throwPower += 30.0f * FPS_GetUnscaledDeltaTime();
         if (m_throwPower > m_throwPowerMax) {
@@ -400,7 +401,7 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 
         return;
     }
-    if(Keyboard_IsKeyUpTrigger(KK_F)){
+    if(Mouse_IsButtonUpTrigger(Mouse_Button::LEFT)){
         m_tpsCamera->SetSlowMotion(false);
 
         // ボールを前に飛ばす
