@@ -11,6 +11,7 @@
 #include "type_id.h"
 
 #include "mi_math.h"
+#include "mi_fps.h"
 
 #include "transform_component.h"
 #include "rigidbody_component.h"
@@ -48,6 +49,8 @@ void EnemyBehavior::Update(IScene* pScene)
         return;
     }
 
+    float deltaTime = FPS_GetDeltaTime();
+
     // プレイヤー方向
     XMFLOAT3 dirToPlayer = {
         m_playerTransform->GetPosition().x - m_transform->GetPosition().x,
@@ -56,12 +59,20 @@ void EnemyBehavior::Update(IScene* pScene)
     };
     dirToPlayer = MiMath::Normalize(dirToPlayer);
 
-    XMFLOAT3 velocity = {
-        dirToPlayer.x * 2.0f,
-        m_rigidbody->GetVelocity().y,
-        dirToPlayer.z * 2.0f
-    };
+    XMFLOAT3 velocity = m_rigidbody->GetVelocity();
+    velocity.x += dirToPlayer.x * 20.0f * deltaTime;
+    velocity.z += dirToPlayer.z * 20.0f * deltaTime;
+    velocity.x = std::clamp(velocity.x, -3.0f, 3.0f);
+    velocity.z = std::clamp(velocity.z, -3.0f, 3.0f);
+
+    velocity.x += m_force.x;
+    velocity.y += m_force.y;
+    velocity.z += m_force.z;
+
     m_rigidbody->SetVelocity(velocity);
+
+    // 力をリセットする
+    m_force = { 0.0f,0.0f,0.0f };
 
     // プレイヤーに触れた場合
     for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {

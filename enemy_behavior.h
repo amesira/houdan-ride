@@ -25,11 +25,18 @@ private:
 
     TransformComponent* m_playerTransform = nullptr;
 
+    XMFLOAT3 m_force = { 0.0f, 0.0f, 0.0f };
+
 public:
     EnemyBehavior(GameObject* owner);
     ~EnemyBehavior();
     void    Update(IScene* pScene) override;
 
+    void    AddForce(XMFLOAT3 force) {
+        m_force.x += force.x;
+        m_force.y += force.y;
+        m_force.z += force.z;
+    }
 };
 
 #endif // ENEMY_BEHAVIOR_H

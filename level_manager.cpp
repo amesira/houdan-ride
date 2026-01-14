@@ -10,6 +10,7 @@
 #include "train_behavior.h"
 #include "liftup_behavior.h"
 #include "ball_behavior.h"
+#include "enemy_behavior.h"
 
 #include "transform_component.h"
 #include "image_component.h"
@@ -86,6 +87,11 @@ void LevelM_Update(SceneBase* pScene)
         }
         else if (r == 1) {
             LevelObjects::CreateWoodboxes2(pScene, pos);
+
+            pos = g_MainShip_TrainBehavior->GetPosition();
+            pos.x -= 4.0f;
+            pos.z += 7.0f;
+            LevelObjects::CreateEnemyGroup1(pScene, pos);
         }
 
         g_SpawnIntervalZ += 20.0f;
@@ -257,4 +263,26 @@ void LevelObjects::CreateWoodboxes2(SceneBase* pScene, XMFLOAT3 position)
     woodbox = pScene->CreateGameObject();
     woodboxPos.x = position.x + 1.0f;
     Factory::CreateWoodbox(woodbox, woodboxPos);
+}
+
+void LevelObjects::CreateEnemyGroup1(SceneBase* pScene, XMFLOAT3 position)
+{
+    // 2もしくは3体の敵を生成
+    int enemyCount = (rand() % 2) + 2;
+
+    for (int i = 0; i < enemyCount; i++) {
+        GameObject* enemy = pScene->CreateGameObject();
+        XMFLOAT3 enemyPos = {
+            position.x + static_cast<float>(rand() % 5 - 2),
+            position.y,
+            position.z + static_cast<float>(rand() % 5 - 2),
+        };
+        Factory::CreateEnemy(enemy, enemyPos);
+        EnemyBehavior* enemyBe = enemy->GetBehavior<EnemyBehavior>();
+        enemyBe->AddForce(XMFLOAT3(
+            6.0f,
+            15.0f,
+            0.0f
+        ));
+    }
 }

@@ -140,6 +140,8 @@ void PlayerBehavior::Update(IScene* pScene)
         m_penaltyRect->SetPosition(m_penaltyStartPos);
         m_penaltyTextTimer = 2.0f;
 
+        // パーティクル飛び散るように
+
         //----------------------------------------------------
 	    // 必要な処理を色々と
 	    //----------------------------------------------------
