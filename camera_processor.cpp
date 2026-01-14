@@ -126,7 +126,7 @@ bool CameraProcessor::SnapShotCamera(int index)
     return true;
 }
 
-bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, float height)
+bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, float height, bool usePixelOption)
 {
     // コンポーネント取得
     CameraComponent* camera = m_cameraObjects[index];
@@ -142,8 +142,10 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
     ID3D11ShaderResourceView* srv = camera->GetSnapshot();
     g_pDeviceContext->PSSetShaderResources(0, 1, &srv);
 
-    // シェーダー
-    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), camera->GetShaderGrayRate());
+    if(usePixelOption){
+        // シェーダー
+        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), camera->GetShaderGrayRate());
+     }
 
     // スプライト描画
     XMMATRIX scaleMatrix = XMMatrixScaling(width, height, 1.0f);

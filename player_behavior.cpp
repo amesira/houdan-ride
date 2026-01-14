@@ -20,6 +20,7 @@ using namespace DirectX;
 #include "collider_component.h"
 #include "rigidbody_component.h"
 #include "image_component.h"
+#include "slider_component.h"
 
 #include "tps_camera_behavior.h"
 #include "switch_sprite_behavior.h"
@@ -27,6 +28,9 @@ using namespace DirectX;
 
 #include "keyboard.h"
 #include "mi_fps.h"
+
+#include "particle_manager.h"
+#include "text_component.h"
 
 PlayerBehavior::PlayerBehavior(GameObject* owner) 
     : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
@@ -41,6 +45,10 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_tpsCamera = nullptr;
 
     m_rigidbody->SetFriction({0.95f,1.0f,0.95f});
+
+    m_throwPowerSlider = nullptr;
+
+    ParticleM_SetPlayer(m_transform, this);
 }
 
 PlayerBehavior::~PlayerBehavior()
@@ -68,7 +76,7 @@ void PlayerBehavior::Update(IScene* pScene)
         m_groundCheckTimer -= deltaTime;
     }
     else {
-        if (m_collider->GetMaxMtv().y > 0.003f) {
+        if (m_collider->GetMaxMtv().y > 0.005f) {
             m_isGrounded = true;
         }
         else {
@@ -84,6 +92,27 @@ void PlayerBehavior::Update(IScene* pScene)
 
     // ボールを前に投げる処理更新
     UpdateThrowBall(deltaTime);
+
+    // スコアテキスト更新
+    if(m_scoreBuffer > 0.0f) {
+        float buf = m_scoreBuffer * deltaTime * 5.0f;
+        m_score += buf;
+        m_scoreBuffer -= buf;
+
+        // スコアテキスト更新
+        std::string s = "SCORE: ";
+        int value = static_cast<int>(m_score);
+        for(int i = 0; i < 6; i++) {
+            value /= 10;
+            if(value == 0) {
+                s += "0";
+            }
+        }
+        s += std::to_string(static_cast<int>(m_score));
+
+        std::u8string u8 = std::u8string(s.begin(), s.end());
+        m_scoreText->SetText(u8);
+    }
 }
 
 // 参考オブジェクトの取得
@@ -100,6 +129,30 @@ void PlayerBehavior::GetReferenceObjects(IScene* pScene)
     // switch sprite behavior取得
     if (!m_switchSprite) {
         m_switchSprite = GetOwner()->GetBehavior<SwitchSpriteBehavior>();
+    }
+
+    // 投げるパワースライダー取得
+    if (!m_throwPowerSlider) {
+        GameObject* sliderObj = pScene->GetGameObjectByName("ThrowPowerSlider");
+        if (sliderObj) {
+            m_throwPowerSlider = sliderObj->GetComponent<SliderComponent>();
+        }
+    }
+
+    // ポインターの参照取得
+    if (!m_pointerTransform) {
+        GameObject* pointerObj = pScene->GetGameObjectByName("Pointer");
+        if (pointerObj) {
+            m_pointerTransform = pointerObj->GetComponent<TransformComponent>();
+        }
+    }
+
+    // スコアテキスト取得
+    if (!m_scoreText) {
+        GameObject* scoreTextObj = pScene->GetGameObjectByName("ScoreText");
+        if (scoreTextObj) {
+            m_scoreText = scoreTextObj->GetComponent<TextComponent>();
+        }
     }
 }
 
@@ -230,8 +283,25 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 {
     if (!m_ballObject) return;
 
+    m_throwDirection = m_pointerTransform->GetPosition();
+    {
+        XMFLOAT3 playerPos = m_transform->GetPosition();
+        m_throwDirection.x -= playerPos.x;
+        m_throwDirection.y -= playerPos.y;
+        m_throwDirection.z -= playerPos.z;
+    }
+    m_throwDirection = MiMath::Normalize(m_throwDirection);
+    
     if(Keyboard_IsKeyDown(KK_F)) {
         m_tpsCamera->SetSlowMotion(true);
+        m_throwPower += 30.0f * FPS_GetUnscaledDeltaTime();
+        if (m_throwPower > m_throwPowerMax) {
+            m_throwPower = 0;
+        }
+        if (m_throwPowerSlider) {
+            m_throwPowerSlider->SetValue(m_throwPower / m_throwPowerMax);
+        }
+
         return;
     }
     if(Keyboard_IsKeyUpTrigger(KK_F)){
@@ -239,9 +309,9 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 
         // ボールを前に飛ばす
         m_ballBehavior->AddBounceVelocity({
-            m_tpsCamera->GetCameraFoward().x * 40.0f,
-            15.0f,
-            m_tpsCamera->GetCameraFoward().z * 40.0f
+            m_throwDirection.x* m_throwPower,
+            m_throwDirection.y* m_throwPower,
+            m_throwDirection.z* m_throwPower,
             });
 
         // switch sprite が参照する速度をプレイヤーの速度に戻す
@@ -259,4 +329,9 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
         // Freezeタイマーセット
         m_freezeTimer = 0.5f;
     }
+}
+
+void PlayerBehavior::AddScore(int score)
+{
+    m_scoreBuffer += score;
 }

@@ -27,6 +27,7 @@
 #include "ball_behavior.h"
 #include "woodbox_behavior.h"
 #include "train_behavior.h"
+#include "pointer_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -58,6 +59,24 @@ void Factory::CreateLight(GameObject* obj, DirectX::XMFLOAT4 direction, DirectX:
     lightComp->SetDirection(direction);
     lightComp->SetDiffuse(diffuse);
     lightComp->SetAmbient(ambient);
+}
+
+void Factory::CreateMapCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
+{
+    obj->SetName("MapCamera");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    CameraComponent* camera = obj->AddComponent<CameraComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+
+    camera->SetAtPosition(atPosition);
+    camera->SetFov(60.0f);
+    camera->SetAspect(9.0f/ 16.0f);
+    camera->SetNearClip(0.1f);
+    camera->SetFarClip(100.0f);
 }
 
 void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
@@ -256,4 +275,35 @@ void Factory::CreateUiSlider(GameObject* obj, XMFLOAT3 position,float rotation, 
     sliderComp->SetValue(0.3f);
     sliderComp->SetBgColor({ 1.0f,1.0f,1.0f,1.0f });
     sliderComp->SetFillColor({ 0.0f,0.5f,1.0f,1.0f });
+}
+
+void Factory::CreateUiImage(GameObject* obj, XMFLOAT3 position, float rotation, XMFLOAT2 size, const wchar_t* texturePath)
+{
+    // component生成・登録
+    RectTransformComponent* rectTransform = obj->AddComponent<RectTransformComponent>();
+    ImageComponent* imageComp = obj->AddComponent<ImageComponent>();
+
+    // component設定
+    rectTransform->SetPosition(position);
+    rectTransform->SetRotation({ 0.0f, 0.0f, rotation });
+    rectTransform->SetScaling({ size.x, size.y, 1.0f });
+    imageComp->Load(texturePath);
+    imageComp->SetWorldSpaceType(WorldSpaceType::None);
+}
+
+void Factory::CreatePointer(GameObject* obj) {
+    obj->SetName("Pointer");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ImageComponent* imageComp = obj->AddComponent<ImageComponent>();
+
+    // component設定
+    transform->SetPosition({ 0.0f, 0.0f, 0.0f });
+    transform->SetScaling({ 3.0f, 3.0f, 1.0f });
+    imageComp->Load(L"asset\\Texture\\test.jpg");
+    imageComp->SetWorldSpaceType(WorldSpaceType::Billboard);
+
+    // behavior生成・登録
+    PointerBehavior* pointerBe = obj->AddBehavior<PointerBehavior>();
 }

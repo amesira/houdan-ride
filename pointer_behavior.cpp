@@ -1,0 +1,79 @@
+#include "pointer_behavior.h"
+#include "scene_interface.h"
+#include "game_object.h"
+#include "type_id.h"
+
+#include "mi_fps.h"
+#include "mouse.h"
+
+#include "mi_math.h"
+#include "debug_ostream.h"
+
+#include "transform_component.h"
+#include "image_component.h"
+#include "camera_component.h"
+
+PointerBehavior::PointerBehavior(GameObject* owner)
+    : Behavior(BehaviorTypeID::getTypeID<PointerBehavior>())
+{
+    m_transform = owner->GetComponent<TransformComponent>();
+    m_imageComp = owner->GetComponent<ImageComponent>();
+
+    m_cameraComp = nullptr; 
+}
+
+PointerBehavior::~PointerBehavior()
+{
+
+}
+
+void PointerBehavior::Update(IScene* pScene)
+{
+    if (m_cameraComp == nullptr) {
+        GameObject* cameraObj = pScene->GetGameObjectByName("TPSCamera");
+        if (cameraObj) {
+            m_cameraComp = cameraObj->GetComponent<CameraComponent>();
+            m_cameraTransform = cameraObj->GetComponent<TransformComponent>();
+        }
+        return;
+    }
+
+    float deltaTime = FPS_GetDeltaTime();
+
+    // マウスのスクリーン座標取得
+    XMFLOAT2 mousePos = {Mouse_GetPositionX(), Mouse_GetPositionY()};
+
+    // mouseX, mouseY : スクリーン座標（ピクセル）
+    float ndcX = (mousePos.x / Direct3D_GetBackBufferWidth()) * 2.0f - 1.0f;
+    float ndcY = 1.0f - (mousePos.y / Direct3D_GetBackBufferHeight()) * 2.0f;
+
+    hal::dout << "mousePos: " << mousePos.x << ", " << mousePos.y << std::endl;
+
+    XMVECTOR pNear = XMVectorSet(ndcX, ndcY, 0.0f, 1.0f);
+    XMVECTOR pFar = XMVectorSet(ndcX, ndcY, 1.0f, 1.0f);
+
+    XMMATRIX invProj = XMMatrixInverse(nullptr, m_cameraComp->GetProjectionMatrix());
+    XMMATRIX invView = XMMatrixInverse(nullptr, m_cameraComp->GetViewMatrix());
+
+    XMVECTOR vNear = XMVector3TransformCoord(pNear, invProj);
+    XMVECTOR vFar = XMVector3TransformCoord(pFar, invProj);
+
+    XMVECTOR wNear = XMVector3TransformCoord(vNear, invView);
+    XMVECTOR wFar = XMVector3TransformCoord(vFar, invView);
+
+    XMVECTOR rayOrigin = wNear;
+    XMVECTOR rayDir = XMVector3Normalize(wFar - wNear);
+
+    // 位置決定
+    XMVECTOR targetPos = rayOrigin + rayDir * m_distanceFromCamera; // 適当な距離（10.0f）先
+    XMFLOAT3 pos;
+
+    XMStoreFloat3(&pos, targetPos);
+    
+    // スムーズに移動
+    m_transform->SetPosition(pos);
+
+    // マウスホイール
+    int wheelDelta = Mouse_GetScrollWheelValue();
+    m_distanceFromCamera += static_cast<float>(wheelDelta) * 0.01f;
+}

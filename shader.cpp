@@ -41,9 +41,11 @@ static ID3D11PixelShader* g_pPixelShader = nullptr;	// ピクセルシェーダ�
 static ID3D11Buffer* g_pOptionCB = nullptr;			// オプション用定数バッファ
 struct OptionBuffer {
 	XMFLOAT4	colorRate;
+	XMFLOAT4	alphaColor;
     float	grayRate;  // グレースケール率
 	float	padding[3]; // 16バイトアライメント用パディング
 };
+static OptionBuffer g_OptionData;
 
 // カスタムシェーダー
 static ID3D11PixelShader* g_pFontShader = nullptr; // フォント用ピクセルシェーダー
@@ -63,6 +65,10 @@ bool    LoadPixelShader(const char* filename, ID3D11PixelShader** ppPixelShader)
 bool Shader_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
 	HRESULT hr; // 戻り値格納用
+
+    g_OptionData.colorRate = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    g_OptionData.alphaColor = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+    g_OptionData.grayRate = 0.0f;
 
 	// デバイスとデバイスコンテキストのチェック
 	if (!pDevice || !pContext) {
@@ -203,12 +209,19 @@ void Shader_SetLightEnable(int index, bool enable)
 void Shader_SetPixelOption(const XMFLOAT4& colorRate, float grayRate)
 {
 	// オプション設定
-	OptionBuffer optionBuffer;
-    optionBuffer.colorRate = colorRate;
-    optionBuffer.grayRate = grayRate;
+    g_OptionData.colorRate = colorRate;
+    g_OptionData.grayRate = grayRate;
 
     // 定数バッファにオプションをセット
-    g_pContext->UpdateSubresource(g_pOptionCB, 0, nullptr, &optionBuffer, 0, 0);
+    g_pContext->UpdateSubresource(g_pOptionCB, 0, nullptr, &g_OptionData, 0, 0);
+}
+
+void Shader_SetPixelOptionAlphaRate(const XMFLOAT4& alphaColor)
+{
+    g_OptionData.alphaColor = alphaColor;
+
+	// 定数バッファにオプションをセット
+    g_pContext->UpdateSubresource(g_pOptionCB, 0, nullptr, &g_OptionData, 0, 0);
 }
 
 void Shader_Begin(ShaderBeginMode mode)

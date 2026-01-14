@@ -159,6 +159,7 @@
     <ClCompile Include="particle_manager.cpp" />
     <ClCompile Include="physics_processor.cpp" />
     <ClCompile Include="player_behavior.cpp" />
+    <ClCompile Include="pointer_behavior.cpp" />
     <ClCompile Include="processor_manager.cpp" />
     <ClCompile Include="renderer_3dcube_processor.cpp" />
     <ClCompile Include="renderer_3dmodel_processor.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="particle_manager.h" />
     <ClInclude Include="physics_processor.h" />
     <ClInclude Include="player_behavior.h" />
+    <ClInclude Include="pointer_behavior.h" />
     <ClInclude Include="processor_manager.h" />
     <ClInclude Include="rect_transform_component.h" />
     <ClInclude Include="renderer_3dcube_processor.h" />

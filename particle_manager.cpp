@@ -11,10 +11,16 @@
 #include "shader.h"
 #include "direct3d.h"
 
+#include "transform_component.h"
+#include "player_behavior.h"
+
 static ID3D11ShaderResourceView* g_defaultTexture = nullptr;
 static std::vector<Emitter>  g_emitters;
 
 static ID3D11DeviceContext* g_pDeviceContext = nullptr;
+
+static TransformComponent* g_playerTransform = nullptr;
+static PlayerBehavior* g_playerBehavior = nullptr;
 
 void ParticleM_Initialize()
 {
@@ -35,9 +41,36 @@ void ParticleM_Update(float dt)
             if(particle.enabled) {
                 // ライフタイム更新
                 particle.lifeTime -= dt;
+                particle.accumTime += dt;
                 if(particle.lifeTime <= 0.0f) {
                     particle.enabled = false;
                     continue;
+                }
+
+                // ExpEffect専用の挙動
+                if(emitter.name == "ExpEffect" && g_playerTransform != nullptr) {
+                    particle.lifeTime += dt; // ライフタイム減少停止
+                    if(particle.accumTime > 0.8f){
+                        particle.settings.velocity = { 0.0f, 0.0f, 0.0f };
+                        particle.settings.gravity = { 0.0f, 0.0f, 0.0f };
+
+                        particle.data.position = MiMath::Lerp(
+                            particle.data.position,
+                            g_playerTransform->GetPosition(),
+                            dt * 7.0f
+                        );
+
+                        float diff = MiMath::Distance(
+                            particle.data.position,
+                            g_playerTransform->GetPosition()
+                        );
+                        if(diff < 0.5f) {
+                            particle.enabled = false;
+                            if(g_playerBehavior) {
+                                g_playerBehavior->AddScore(10);
+                            }
+                        }
+                    }
                 }
 
                 // 位置更新
@@ -138,6 +171,13 @@ void ParticleM_RegisterEmitter(const std::string& emitterName, ID3D11ShaderResou
     g_emitters.push_back(newEmitter);
 }
 
+void ParticleM_SetPlayer(TransformComponent* transform, PlayerBehavior* playerBehavior)
+{
+    g_playerTransform = transform;
+    g_playerBehavior = playerBehavior;
+}
+
+
 bool ParticleEmit::Emit(const std::string& emitterName, Particle::Data data, Particle::Settings settings, float lifeTime)
 {
     Emitter* targetEmitter = nullptr; // 対象のエミッターを探す
@@ -158,6 +198,7 @@ bool ParticleEmit::Emit(const std::string& emitterName, Particle::Data data, Par
             particle.lifeTime = lifeTime;
             particle.data = data;
             particle.settings = settings;
+            particle.accumTime = 0.0f;
             return true;
         }
     }
@@ -169,6 +210,7 @@ bool ParticleEmit::Emit(const std::string& emitterName, Particle::Data data, Par
         newParticle.lifeTime = lifeTime;
         newParticle.data = data;
         newParticle.settings = settings;
+        newParticle.accumTime = 0.0f;
         targetEmitter->particles.push_back(newParticle);
         return true;
     }

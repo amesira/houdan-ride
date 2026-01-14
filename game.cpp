@@ -34,9 +34,20 @@ void GameScene::Initialize()
 
     // ui
     GameObject* uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+    Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"SCORE: 0000000", 50.0f, { 1.0f,1.0f,1.0f,1.0f },false);
+    uiText->SetName("ScoreText");
+    /*GameObject* uiImage = this->CreateGameObject();
+    Factory::CreateUiImage(uiImage, { 400.0f, 50.0f, 0.0f }, 0.0f, { 200.0f,200.0f }, L"asset\\Texture\\map.png");
+    */
     GameObject* uiSlider = this->CreateGameObject();
     Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 90.0f, { 100.0f,30.0f });
+    uiSlider->SetName("ThrowPowerSlider");
+
+
+
+    // pointer
+    GameObject* pointer = this->CreateGameObject();
+    Factory::CreatePointer(pointer);
 
     LevelM_Initialize(this);
 }

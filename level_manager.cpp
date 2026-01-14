@@ -13,6 +13,7 @@
 
 #include "transform_component.h"
 #include "image_component.h"
+#include "camera_component.h"
 
 #include "mi_math.h"
 
@@ -21,6 +22,11 @@ static float g_SpawnIntervalZ = 20.0f;
 
 static TrainBehavior* g_MainShip_TrainBehavior = nullptr;
 static BallBehavior* g_MainBall_BallBehavior = nullptr;
+
+static TransformComponent* g_MapCamera_Transform = nullptr;
+static CameraComponent* g_MapCamera_CameraComp = nullptr;
+
+static TransformComponent* g_Water_Transform = nullptr;
 
 void LevelM_Initialize(SceneBase* pScene)
 {
@@ -31,17 +37,24 @@ void LevelM_Initialize(SceneBase* pScene)
     water->SetName("Water");
     Factory::CreateUiImageWorld(water, XMFLOAT3(0.0f, -3.0f, 0.0f), XMFLOAT3(XMConvertToRadians(-90.0f), 0.0f, 0.0f), XMFLOAT3(100.0f, 200.0f, 1.0f));
     ImageComponent* imageComp = water->GetComponent<ImageComponent>();
-    imageComp->Load(L"asset\\Texture\\white.bmp");
-    imageComp->SetColor(XMFLOAT4(0.0f, 0.5f, 1.0f, 0.7f));
+    imageComp->Load(L"asset\\Texture\\water.png");
+    imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+    g_Water_Transform = water->GetComponent<TransformComponent>();
 
     // 船を生成
     LevelObjects::CreateMainShip(pScene, XMFLOAT3(0.0f, -5.0f, -2.0f));
-
     g_MainShip_TrainBehavior->SetMoveSpeed(1.5f);
 
+    // ボールを生成
     GameObject* ball = pScene->CreateGameObject();
     Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
     g_MainBall_BallBehavior = ball->GetBehavior<BallBehavior>();
+
+    // マップカメラ
+    GameObject* camera = pScene->CreateGameObject();
+    Factory::CreateMapCamera(camera, { 0.0f,20.0f,0.0f }, { 0.0f,0.0f,0.0f });
+    g_MapCamera_Transform = camera->GetComponent<TransformComponent>();
+    g_MapCamera_CameraComp = camera->GetComponent<CameraComponent>();
 }
 
 void LevelM_Finalize()
@@ -95,6 +108,21 @@ void LevelM_Update(SceneBase* pScene)
             g_MainBall_BallBehavior->AddBounceVelocity(XMFLOAT3(0.0f, 5.0f, 3.0f));
         }
     }
+
+    // マップカメラ追従
+    g_MapCamera_Transform->SetPosition(XMFLOAT3(
+        g_MainShip_TrainBehavior->GetPosition().x,
+        g_MainShip_TrainBehavior->GetPosition().y + 60.0f,
+        g_MainShip_TrainBehavior->GetPosition().z - 30.0f
+    ));
+    g_MapCamera_CameraComp->SetAtPosition(g_MainShip_TrainBehavior->GetPosition());
+
+    // 水面
+    g_Water_Transform->SetPosition(XMFLOAT3(
+        g_MainShip_TrainBehavior->GetPosition().x,
+        g_Water_Transform->GetPosition().y,
+        g_MainShip_TrainBehavior->GetPosition().z
+    ));
 }
 
 void LevelObjects::CreateMainShip(SceneBase* pScene, XMFLOAT3 position)

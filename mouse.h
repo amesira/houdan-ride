@@ -97,6 +97,9 @@ float Mouse_GetPositionY();
 float Mouse_GetOldPositionX();
 float Mouse_GetOldPositionY();
 
+// マウススクロール量取得（OldStateからの移動量）
+int Mouse_GetScrollWheelValue();
+
 // 導入方法
 //
 // 対象のウィンドウが生成されたらそのウィンドウハンドルを引数に初期化関数を呼ぶ

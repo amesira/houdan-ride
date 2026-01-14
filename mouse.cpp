@@ -439,6 +439,11 @@ float Mouse_GetOldPositionY()
     return gOldState.y;
 }
 
+int Mouse_GetScrollWheelValue()
+{
+    return gState.scrollWheelValue - gOldState.scrollWheelValue;
+}
+
 void clipToWindow(void)
 {
     assert(gWindow != NULL);

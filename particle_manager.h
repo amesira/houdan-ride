@@ -15,6 +15,9 @@ using namespace DirectX;
 
 #define MAX_PARTICLES (1024)
 
+class TransformComponent;
+class PlayerBehavior;
+
 // パーティクル構造体
 struct Particle {
     struct Data { // パーティクルデータ
@@ -33,6 +36,8 @@ struct Particle {
     float       lifeTime;
     Data        data;
     Settings    settings;
+
+    float       accumTime = 0.0f; // 内部用：累積時間
 };
 
 // エミッター構造体
@@ -52,6 +57,8 @@ void ParticleM_RegisterEmitter(
     const std::string& emitterName,
     ID3D11ShaderResourceView* texture = nullptr
 );
+
+void ParticleM_SetPlayer(TransformComponent* transform, PlayerBehavior* playerBehavior);
 
 // パーティクル発生用名前空間
 namespace ParticleEmit {

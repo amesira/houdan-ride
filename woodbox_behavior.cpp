@@ -32,7 +32,7 @@ WoodboxBehavior::WoodboxBehavior(GameObject* owner)
 
     if(g_pWoodboxBreakTexture == nullptr) {
         LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\coin.png");
-        ParticleM_RegisterEmitter("WoodboxBreak", g_pWoodboxBreakTexture);
+        ParticleM_RegisterEmitter("ExpEffect", g_pWoodboxBreakTexture);
     }
 }
 
@@ -85,7 +85,7 @@ void WoodboxBehavior::Update(IScene* pScene)
                         (data.position.y - hitPoint.y) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
                         (data.position.z - hitPoint.z) * static_cast<float>(rand() % 100) / 100.0f * 10.0f,
                     };
-                    ParticleEmit::Emit("WoodboxBreak", data, settings, 10.0f);
+                    ParticleEmit::Emit("ExpEffect", data, settings, 10.0f);
 
                     index++;
                     if(index >= 4) {

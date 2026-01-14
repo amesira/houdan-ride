@@ -6,6 +6,8 @@
 #include <DirectXMath.h>
 #include "direct3d.h"
 
+#include "shader.h"
+
 #include "scene_interface.h"
 #include "mi_fps.h"
 
@@ -24,6 +26,9 @@
 #include "light_processor.h"
 #include "renderer_slider_processor.h"
 
+#include "game_object.h"
+#include "image_component.h"
+
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
 
@@ -37,6 +42,8 @@ static RendererSliderProcessor* g_RendererSliderProcessor = nullptr;
 
 static CameraProcessor* g_CameraProcessor = nullptr;
 static LightProcessor* g_LightProcessor = nullptr;
+
+static ImageComponent* g_waterImageComp = nullptr;
 
 void ProcessorM_Initialize()
 {
@@ -138,6 +145,13 @@ void ProcessorM_Update(IScene* pScene)
 
     // パーティクル更新
     ParticleM_Update(FPS_GetDeltaTime());
+
+    if (g_waterImageComp == nullptr) {
+        GameObject* waterObj = pScene->GetGameObjectByName("Water");
+        if(waterObj) {
+            g_waterImageComp = waterObj->GetComponent<ImageComponent>();
+        }
+    }
 }
 
 void ProcessorM_Draw(IScene* pScene)
@@ -145,18 +159,24 @@ void ProcessorM_Draw(IScene* pScene)
     // カメラ設定
     g_CameraProcessor->Process(pScene);
 
-    // ライト設定
-    g_LightProcessor->Process(pScene);
-
     // ワールド配置設定
     g_RendererImageProcessor->SetDrawWorldImages(true);
     g_RendererImageProcessor->SetDrawUiImages(false);
 
     for(int i = 0; i < g_CameraProcessor->GetCameraCount(); i++) {
+        if (i == 0) {
+            g_waterImageComp->SetEnable(true);
+        }
+        else {
+            g_waterImageComp->SetEnable(false);
+        }
 
         // バッファのクリアとシーン描画用RTVのセット
         Direct3D_BeginScene();
         g_CameraProcessor->BindMatrix(i);
+
+        // ライト設定
+        g_LightProcessor->Process(pScene);
 
         // 各3D描画プロセッサーの実行
         SetDepthState(DEPTHSTATE_ENABLE);
@@ -169,6 +189,7 @@ void ProcessorM_Draw(IScene* pScene)
         // world配置
         // -ワールド配置のUIは、必ず前面に描画される-
         SetBlendState(BLENDSTATE_ALFA);
+        g_LightProcessor->SetUiLight();
         g_RendererImageProcessor->Process(pScene);
 
         // スナップショット撮影
@@ -197,6 +218,16 @@ void ProcessorM_Draw(IScene* pScene)
     g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
     g_RendererSliderProcessor->Process(pScene);
+
+    // マップUI描画
+    SetBlendState(BLENDSTATE_ALFA);
+    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f), 1.0f);
+    Shader_SetPixelOptionAlphaRate(XMFLOAT4(0.1f, 0.7f, 1.0f, 0.0f));
+
+    g_CameraProcessor->DrawSnapshot(1, 120.0f, 280.0f, 30.0f * 9.0f, 30.0f * 16.0f, false);
+
+    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+    Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();

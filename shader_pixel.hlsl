@@ -10,6 +10,7 @@ SamplerState g_SamplerState : register(s0);
 cbuffer Option : register(b0)
 {
     float4 colorRate;
+    float4 alphaColor;
     float  grayRate; // 0.0 = 通常, 1.0 = 完全グレー
 };
 
@@ -29,7 +30,19 @@ float4 main(PS_INPUT ps_in) : SV_TARGET
     
     // テクスチャの色を取得
     col = g_Texture.Sample(g_SamplerState, ps_in.texcoord);
-    col *= ps_in.color * colorRate;
+    col *= ps_in.color;
+    
+    // アルファカラーと近い色を透明にする
+    if (alphaColor.a < 0.01f)
+    {
+        float alphaDiff = length(col.rgb - alphaColor.rgb);
+        if (alphaDiff < 0.1f)
+        {
+            col.a = 0.0f;
+        }
+    }
+    
+    col *= colorRate;
     
     // グレースケール化
     float gray = dot(col.rgb, float3(0.299, 0.587, 0.114));

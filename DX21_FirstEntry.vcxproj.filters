@@ -173,6 +173,9 @@
     <ClCompile Include="renderer_slider_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
+    <ClCompile Include="pointer_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -348,6 +351,9 @@
     </ClInclude>
     <ClInclude Include="renderer_slider_processor.h">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
+    </ClInclude>
+    <ClInclude Include="pointer_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -62,6 +62,7 @@ void Shader_SetLight(int index,
 void Shader_SetLightEnable(int index, bool enable);
 
 void Shader_SetPixelOption(const XMFLOAT4& colorRate, float grayRate);
+void Shader_SetPixelOptionAlphaRate(const XMFLOAT4& alphaColor);
 
 void Shader_Begin(ShaderBeginMode mode = ShaderBeginMode::Default);
 

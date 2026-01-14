@@ -31,6 +31,6 @@ public:
     bool    BindMatrix(int index);
     bool    SnapShotCamera(int index);
 
-    bool    DrawSnapshot(int index, float x, float y, float width, float height);
+    bool    DrawSnapshot(int index, float x, float y, float width, float height, bool usePixelOption = true);
 };
 #endif // CAMERA_PROCESSOR_H
