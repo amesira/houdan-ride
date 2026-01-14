@@ -44,6 +44,8 @@ private:
 public:
     void    SetMoveSpeed(float speed) { m_moveSpeed = speed; }
     void    AddChildCollider(GameObject* collider);
+
+    XMFLOAT3   GetPosition() const;
 };
 
 #endif // train_behavior.h

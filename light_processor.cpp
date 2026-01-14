@@ -53,16 +53,8 @@ void LightProcessor::Process(IScene* pScene)
 
 void LightProcessor::SetUiLight()
 {
-    // デフォルトライト設定
-    Shader_SetLight(
-        0,
-        XMFLOAT4{ 0.0f, -1.0f, 0.0f, 0.0f },
-        XMFLOAT4{ 1.0f, 1.0f, 1.0f, 1.0f },
-        XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f }
-    );
-
-    // 残りのライトを無効化
-    for (int i = 1; i < MAX_LIGHT; i++) {
-        Shader_SetLightEnable(i, false);
+    // 全ライト無効化
+    for (int i = 0; i < MAX_LIGHT; i++) {
+        Shader_SetLightEnable(i , false);
     }
 }

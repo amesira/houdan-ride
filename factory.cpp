@@ -17,6 +17,7 @@
 #include "model_component.h"
 #include "camera_component.h"
 #include "light_component.h"
+#include "slider_component.h"
 
 // behavior
 #include "player_behavior.h"
@@ -72,7 +73,7 @@ void Factory::CreatePlayer(GameObject* player, DirectX::XMFLOAT3 position)
     // component設定
     transform->SetPosition(position);
     transform->SetScaling({ 1.3f, 1.5f, 1.3f });
-
+    collider->SetLayer(ColliderComponent::Layer::Player);
     collider->SetRadius(0.65f);
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
@@ -98,7 +99,7 @@ void Factory::CreateBall(GameObject* obj, DirectX::XMFLOAT3 position)
     // component設定
     transform->SetPosition(position);
     transform->SetScaling({ 1.0f, 1.0f, 1.0f });
-
+    collider->SetLayer(ColliderComponent::Layer::Ball);
     collider->SetRadius(1.0f);
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
@@ -141,6 +142,7 @@ void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
     // component設定
     transform->SetPosition(position);
     transform->SetScaling({ 1.0f,1.0f,1.0f });
+    collider->SetLayer(ColliderComponent::Layer::Enemy);
     collider->SetRadius(0.5f);
     imageComp->Load(L"asset\\Texture\\enemy1.png");
     imageComp->SetWorldSpaceType(WorldSpaceType::HD2D);
@@ -239,4 +241,19 @@ void Factory::CreateUiImageWorld(GameObject* obj, XMFLOAT3 position, XMFLOAT3 eu
     transform->SetScaling(scale);
     imageComp->Load(texturePath);
     imageComp->SetWorldSpaceType(WorldSpaceType::None);
+}
+
+void Factory::CreateUiSlider(GameObject* obj, XMFLOAT3 position,float rotation, XMFLOAT2 size)
+{
+    // component生成・登録
+    RectTransformComponent* rectTransform = obj->AddComponent<RectTransformComponent>();
+    SliderComponent* sliderComp = obj->AddComponent<SliderComponent>();
+
+    // component設定
+    rectTransform->SetPosition(position);
+    rectTransform->SetRotation({ 0.0f, 0.0f, rotation });
+    rectTransform->SetScaling({ size.x, size.y, 1.0f });
+    sliderComp->SetValue(0.3f);
+    sliderComp->SetBgColor({ 1.0f,1.0f,1.0f,1.0f });
+    sliderComp->SetFillColor({ 0.0f,0.5f,1.0f,1.0f });
 }

@@ -22,6 +22,7 @@
 #include "renderer_image_processor.h"
 #include "camera_processor.h"
 #include "light_processor.h"
+#include "renderer_slider_processor.h"
 
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
@@ -32,6 +33,7 @@ static DynamicsProcessor* g_DynamicsProcessor = nullptr;
 
 static RendererFontProcessor* g_RendererFontProcessor = nullptr;
 static RendererImageProcessor* g_RendererImageProcessor = nullptr;
+static RendererSliderProcessor* g_RendererSliderProcessor = nullptr;
 
 static CameraProcessor* g_CameraProcessor = nullptr;
 static LightProcessor* g_LightProcessor = nullptr;
@@ -51,6 +53,7 @@ void ProcessorM_Initialize()
 
     g_RendererFontProcessor = new RendererFontProcessor();
     g_RendererImageProcessor = new RendererImageProcessor();
+    g_RendererSliderProcessor = new RendererSliderProcessor();
 
     g_CameraProcessor = new CameraProcessor();
     g_LightProcessor = new LightProcessor();
@@ -68,6 +71,7 @@ void ProcessorM_Initialize()
     {   // 2D描画系プロセッサー初期化
         g_RendererFontProcessor->Initialize();
         g_RendererImageProcessor->Initialize();
+        g_RendererSliderProcessor->Initialize();
     }
     {   // カメラ・ライト系プロセッサー初期化
         g_CameraProcessor->Initialize();
@@ -105,11 +109,14 @@ void ProcessorM_Finalize()
     {
         g_RendererFontProcessor->Finalize();
         g_RendererImageProcessor->Finalize();
+        g_RendererSliderProcessor->Finalize();
 
         delete g_RendererFontProcessor;
         g_RendererFontProcessor = nullptr;
         delete g_RendererImageProcessor;
         g_RendererImageProcessor = nullptr;
+        delete g_RendererSliderProcessor;
+        g_RendererSliderProcessor = nullptr;
     }
     {
         g_CameraProcessor->Finalize();
@@ -164,10 +171,6 @@ void ProcessorM_Draw(IScene* pScene)
         SetBlendState(BLENDSTATE_ALFA);
         g_RendererImageProcessor->Process(pScene);
 
-        /*SetDepthState(DEPTHSTATE_DISABLE);
-        SetBlendState(BLENDSTATE_NONE);
-        DebugRenderer_DrawFlush();*/
-
         // スナップショット撮影
         g_CameraProcessor->SnapShotCamera(i);
     }
@@ -177,11 +180,13 @@ void ProcessorM_Draw(IScene* pScene)
     SetBlendState(BLENDSTATE_NONE);
     SetDepthState(DEPTHSTATE_DISABLE);
 
+    g_LightProcessor->SetUiLight();
+
     // カメラからのスナップショットをフルスクリーンに描画
     const float w = (float)Direct3D_GetBackBufferWidth();
     const float h = (float)Direct3D_GetBackBufferHeight();
     g_CameraProcessor->DrawSnapshot(0, w / 2.0f, h / 2.0f, w, h);
-    DebugRenderer_DrawFlush();
+    //DebugRenderer_DrawFlush();
     SetBlendState(BLENDSTATE_ALFA);
 
     // UI配置設定
@@ -191,6 +196,7 @@ void ProcessorM_Draw(IScene* pScene)
     // 各2D描画プロセッサーの実行
     g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
+    g_RendererSliderProcessor->Process(pScene);
 
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();

@@ -41,6 +41,16 @@ public:
             return !m_isCollision && m_wasCollision; 
         }
     };
+    enum class Layer {
+        Default = 0,
+        Field,
+        Player,
+        PlayerOnBall,
+        Ball,
+        Enemy,
+
+        MAX,
+    };
 
     // 衝突情報の最大登録数
     static const int MAX_COLLISION_DATA = 8;
@@ -48,8 +58,9 @@ public:
 protected:
     Shape m_shape;
     DirectX::XMFLOAT3 m_center = { 0.0f,0.0f,0.0f };
-    
+
 private:
+    Layer m_layer = Layer::Default;
     CollisionData m_collisionData[MAX_COLLISION_DATA];
     
 public:
@@ -60,6 +71,9 @@ public:
 
     void    SetCenter(DirectX::XMFLOAT3 center) { m_center = center; }
     DirectX::XMFLOAT3   GetCenter()const { return m_center; }
+
+    void    SetLayer(Layer layer) { m_layer = layer; }
+    Layer   GetLayer()const { return m_layer; }
 
     CollisionData GetCollisionData(int index) const {
         if (index < 0 || index >= MAX_COLLISION_DATA) {

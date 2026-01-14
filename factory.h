@@ -36,6 +36,7 @@ namespace Factory {
     // ui
     void CreateUiText       (GameObject*, XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter = false);
     void CreateUiImageWorld (GameObject*, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale, const wchar_t* texturePath = L"asset\\Texture\\test.jpg");
+    void CreateUiSlider     (GameObject*, XMFLOAT3 position, float rotation, XMFLOAT2 size);
 }
 
 #endif

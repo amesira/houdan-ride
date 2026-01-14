@@ -170,6 +170,9 @@
     <ClCompile Include="liftup_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="renderer_slider_processor.cpp">
+      <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -339,6 +342,12 @@
     </ClInclude>
     <ClInclude Include="liftup_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="slider_component.h">
+      <Filter>Sources\GameParts\Component\UiComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer_slider_processor.h">
+      <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

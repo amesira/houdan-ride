@@ -17,6 +17,18 @@
 
 using namespace DirectX;
 
+// 衝突判定マトリクス
+constexpr bool COLLISION_MATRIX[(int)ColliderComponent::Layer::MAX][(int)ColliderComponent::Layer::MAX] = {
+    //                 Default    Field      Player     PlayerOnBall    Ball        Enemy
+    /*Default   */   { true,      true,      true,      true,           true,       true},
+    /*Field     */   { true,      false,     true,      true,           false,      true},
+    /*Player    */   { true,      true,      true,      false,          true,       true},
+    /*PlayerOnBall*/{ true,      true,      false,     false,          false,       true},
+    /*Ball      */   { true,      true,     true,      false,           true,       true},
+    /*Enemy     */   { true,      true,      true,      true,           true,       true},
+
+};
+
 void CollisionProcessor::Initialize()
 {
     
@@ -63,6 +75,9 @@ void CollisionProcessor::Process(IScene* pScene)
             if (colliderB == nullptr || transformB == nullptr) continue;
             if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
 
+            // レイヤーマスクによる当たり判定スキップ
+            if (!COLLISION_MATRIX[(int)colliderA->GetLayer()][(int)colliderB->GetLayer()]) continue;
+
             // 詳細な衝突判定
             CollisionResult result = CheckBoxToBox(
                 transformA, colliderA,
@@ -94,6 +109,9 @@ void CollisionProcessor::Process(IScene* pScene)
             if (colliderB == nullptr || transformB == nullptr) continue;
             if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
 
+            // レイヤーマスクによる当たり判定スキップ
+            if (!COLLISION_MATRIX[(int)colliderA->GetLayer()][(int)colliderB->GetLayer()]) continue;
+
             CollisionResult result = CheckBoxToSphere(
                 transformA, colliderA,
                 transformB, colliderB);
@@ -123,6 +141,9 @@ void CollisionProcessor::Process(IScene* pScene)
 
             if (colliderB == nullptr || transformB == nullptr) continue;
             if (!colliderB->GetEnable() || !transformB->GetEnable()) continue;
+
+            // レイヤーマスクによる当たり判定スキップ
+            if (!COLLISION_MATRIX[(int)colliderA->GetLayer()][(int)colliderB->GetLayer()]) continue;
 
             // 詳細な衝突判定
             CollisionResult result = CheckSphereToSphere(

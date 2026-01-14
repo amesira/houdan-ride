@@ -33,6 +33,8 @@ private:
     // 投影面に映し出すImageComponent
     ImageComponent* m_cameraImageComp;
 
+    bool    m_isSlowMotion = false;
+
 public:
     TpsCameraBehavior(GameObject* owner);
     ~TpsCameraBehavior();
@@ -43,6 +45,7 @@ private:
 
 public:
     XMFLOAT3    GetCameraFoward();
+    void    SetSlowMotion(bool isSlow) { m_isSlowMotion = isSlow; }
 
 };
 

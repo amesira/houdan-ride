@@ -63,6 +63,19 @@ void PlayerBehavior::Update(IScene* pScene)
         return;
     }
 
+    // 設置確認
+    if(m_groundCheckTimer > 0.0f) {
+        m_groundCheckTimer -= deltaTime;
+    }
+    else {
+        if (m_collider->GetMaxMtv().y > 0.003f) {
+            m_isGrounded = true;
+        }
+        else {
+            m_isGrounded = false;
+        }
+    }
+
     // 移動処理更新
     UpdateMovement(deltaTime);
 
@@ -130,6 +143,12 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
 
     if (m_ballBehavior) {
         m_ballBehavior->SetMoveDirection(moveDir);
+
+        // ジャンプ
+        if (Keyboard_IsKeyDownTrigger(KK_SPACE) && m_ballBehavior->IsGrounded() && m_groundCheckTimer <= 0.0f) {
+            m_ballBehavior->AddBounceVelocity({ 0.0f,9.0f,0.0f });
+            m_groundCheckTimer = 0.8f;
+        }
     }
     else {
         //-------------------------------
@@ -147,8 +166,9 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
         }
 
         // ジャンプ
-        if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
+        if (Keyboard_IsKeyDownTrigger(KK_SPACE) && m_isGrounded) {
             velocity.y += 9.0f;
+            m_groundCheckTimer = 0.8f;
         }
 
         // 適用処理
@@ -164,7 +184,7 @@ void PlayerBehavior::UpdateRideOnBall(float deltaTime)
         XMFLOAT3 ballPos = m_ballTransform->GetPosition();
         m_transform->SetPosition({
             ballPos.x,
-            ballPos.y + 1.1f,
+            ballPos.y + 1.7f,
             ballPos.z
             });
         return;
@@ -197,6 +217,10 @@ void PlayerBehavior::UpdateRideOnBall(float deltaTime)
             // switch sprite が参照する速度をボールの速度に変更
             m_switchSprite->SetRigidbodyComponent(m_ballObject->GetComponent<RigidbodyComponent>());
 
+            // プレイヤーのレイヤーを変更
+            m_collider->SetLayer(ColliderComponent::Layer::PlayerOnBall);
+            m_rigidbody->SetMass(0.0f); // 軽くする
+
             break;
         }
     }
@@ -205,23 +229,34 @@ void PlayerBehavior::UpdateRideOnBall(float deltaTime)
 void PlayerBehavior::UpdateThrowBall(float deltaTime)
 {
     if (!m_ballObject) return;
-    if (!Keyboard_IsKeyDownTrigger(KK_F)) return;
 
-    // ボールを前に飛ばす
-    m_ballBehavior->AddBounceVelocity({
-        m_tpsCamera->GetCameraFoward().x * 40.0f,
-        15.0f,
-        m_tpsCamera->GetCameraFoward().z * 40.0f
-        });
+    if(Keyboard_IsKeyDown(KK_F)) {
+        m_tpsCamera->SetSlowMotion(true);
+        return;
+    }
+    if(Keyboard_IsKeyUpTrigger(KK_F)){
+        m_tpsCamera->SetSlowMotion(false);
 
-    // switch sprite が参照する速度をプレイヤーの速度に戻す
-    m_switchSprite->SetRigidbodyComponent(m_rigidbody);
+        // ボールを前に飛ばす
+        m_ballBehavior->AddBounceVelocity({
+            m_tpsCamera->GetCameraFoward().x * 40.0f,
+            15.0f,
+            m_tpsCamera->GetCameraFoward().z * 40.0f
+            });
 
-    // 切り離し処理
-    m_ballObject = nullptr;
-    m_ballTransform = nullptr;
-    m_ballBehavior = nullptr;
+        // switch sprite が参照する速度をプレイヤーの速度に戻す
+        m_switchSprite->SetRigidbodyComponent(m_rigidbody);
 
-    // Freezeタイマーセット
-    m_freezeTimer = 0.5f;
+        // 切り離し処理
+        m_ballObject = nullptr;
+        m_ballTransform = nullptr;
+        m_ballBehavior = nullptr;
+
+        // プレイヤーのレイヤーを元に戻す
+        m_collider->SetLayer(ColliderComponent::Layer::Player);
+        m_rigidbody->SetMass(1.5f);
+
+        // Freezeタイマーセット
+        m_freezeTimer = 0.5f;
+    }
 }

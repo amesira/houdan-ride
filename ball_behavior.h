@@ -25,6 +25,10 @@ private:
     XMFLOAT3 m_moveDirection = { 0.0f,0.0f,0.0f };
     XMFLOAT3 m_bounceVelocity = { 0.0f,0.0f,0.0f };
 
+    float   m_destroyTimer = 0.0f;
+
+    bool m_isGrounded = false;
+
 public:
     BallBehavior(GameObject* owner);
     ~BallBehavior();
@@ -46,5 +50,11 @@ public:
         m_bounceVelocity.y += velocity.y;
         m_bounceVelocity.z += velocity.z;
     }
+
+    XMFLOAT3   GetPosition() const;
+    void    SetDestroyTimer(float time) { m_destroyTimer = time; }
+
+    bool    IsGrounded() const { return m_isGrounded; }
+
 };
 #endif // BALL_BEHAVIOR_H

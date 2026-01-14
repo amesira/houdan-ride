@@ -9,13 +9,18 @@
 
 #include "train_behavior.h"
 #include "liftup_behavior.h"
+#include "ball_behavior.h"
 
+#include "transform_component.h"
 #include "image_component.h"
+
+#include "mi_math.h"
 
 static float g_LevelM_Timer = 0.0f;
 static float g_SpawnIntervalZ = 20.0f;
 
 static TrainBehavior* g_MainShip_TrainBehavior = nullptr;
+static BallBehavior* g_MainBall_BallBehavior = nullptr;
 
 void LevelM_Initialize(SceneBase* pScene)
 {
@@ -33,6 +38,10 @@ void LevelM_Initialize(SceneBase* pScene)
     LevelObjects::CreateMainShip(pScene, XMFLOAT3(0.0f, -5.0f, -2.0f));
 
     g_MainShip_TrainBehavior->SetMoveSpeed(1.5f);
+
+    GameObject* ball = pScene->CreateGameObject();
+    Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
+    g_MainBall_BallBehavior = ball->GetBehavior<BallBehavior>();
 }
 
 void LevelM_Finalize()
@@ -42,31 +51,49 @@ void LevelM_Finalize()
 
 void LevelM_Update(SceneBase* pScene)
 {
-    g_LevelM_Timer += FPS_GetDeltaTime();
+    float shipPosZ = g_MainShip_TrainBehavior->GetPosition().z;
 
-    if (g_LevelM_Timer >= 3.0f) {
-        g_LevelM_Timer = 0.0f;
+    // 一定間隔で木箱を生成
+    if (g_SpawnIntervalZ < shipPosZ + 50.0f){
 
-        // 木箱生成
-       // GameObject* woodbox = pScene->CreateGameObject();
-        
+        // ランダムな位置を生成
         XMFLOAT3 pos = {
             static_cast<float>(rand() % 20 - 10),
-            -4.0f -static_cast<float>(rand() % 3),
+            -4.0f - static_cast<float>(rand() % 3),
             g_SpawnIntervalZ
         };
 
-        if (pos.x < 0.0f) {
-            pos.x -= 7.5f;
-        }
-        else {
-            pos.x += 7.5f;
-        }
-        //Factory::CreateWoodbox(woodbox, pos);
+        if (pos.x < 0.0f) pos.x -= 7.5f;
+        else pos.x += 7.5f;
 
-        LevelObjects::CreateWoodboxes2(pScene, pos);
+        // ランダムで木箱を生成
+        int r = rand() % 2;
+        if (r == 0) {
+            LevelObjects::CreateWoodboxes1(pScene, pos);
+        }
+        else if (r == 1) {
+            LevelObjects::CreateWoodboxes2(pScene, pos);
+        }
 
         g_SpawnIntervalZ += 20.0f;
+    }
+
+    // ボール処理
+    if (g_MainBall_BallBehavior) {
+        XMFLOAT3 ballPos = g_MainBall_BallBehavior->GetPosition();
+        float diff = MiMath::Distance(
+            g_MainShip_TrainBehavior->GetPosition(),
+            ballPos
+        );
+
+        if (diff > 30.0f) {
+            g_MainBall_BallBehavior->SetDestroyTimer(3.0f);
+
+            GameObject* newBall = pScene->CreateGameObject();
+            Factory::CreateBall(newBall, XMFLOAT3(0.0f, -0.5f, shipPosZ - 0.6f));
+            g_MainBall_BallBehavior = newBall->GetBehavior<BallBehavior>();
+            g_MainBall_BallBehavior->AddBounceVelocity(XMFLOAT3(0.0f, 5.0f, 3.0f));
+        }
     }
 }
 
@@ -151,7 +178,10 @@ void LevelObjects::CreateWoodboxes1(SceneBase* pScene, XMFLOAT3 position)
 {
     // 土台を作る
     GameObject* base = pScene->CreateGameObject();
-    Factory::CreateBox(base, position, XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(2.0f, 3.0f, 2.0f), XMFLOAT4(0.5f, 0.35f, 0.05f, 1.0f));
+    Factory::CreateBox(base, position, 
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(2.0f, 3.0f, 2.0f), 
+        XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f));
     LiftupBehavior* liftBe = base->AddBehavior<LiftupBehavior>();
 
     // 木箱を積む（縦に3つ）
@@ -176,7 +206,10 @@ void LevelObjects::CreateWoodboxes2(SceneBase* pScene, XMFLOAT3 position)
 {
     // 土台を作る
     GameObject* base = pScene->CreateGameObject();
-    Factory::CreateBox(base, position, XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(2.0f, 3.0f, 2.0f), XMFLOAT4(0.5f, 0.35f, 0.05f, 1.0f));
+    Factory::CreateBox(base, position, 
+        XMFLOAT3(0.0f, 0.0f, 0.0f), 
+        XMFLOAT3(2.0f, 3.0f, 2.0f), 
+        XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f));
     LiftupBehavior* liftBe = base->AddBehavior<LiftupBehavior>();
 
     // 木箱を積む（縦に3つ）

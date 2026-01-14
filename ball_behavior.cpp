@@ -24,6 +24,8 @@ BallBehavior::BallBehavior(GameObject* owner)
     m_transform = owner->GetComponent<TransformComponent>();
     m_rigidbody = owner->GetComponent<RigidbodyComponent>();
     m_collider = owner->GetComponent<SphereColliderComponent>();
+
+    m_destroyTimer = -1.0f;
 }
 
 BallBehavior::~BallBehavior()
@@ -34,6 +36,23 @@ BallBehavior::~BallBehavior()
 void BallBehavior::Update(IScene* pScene)
 {
     float deltaTime = FPS_GetDeltaTime();
+
+    // 自動破棄タイマー
+    if(m_destroyTimer > 0.0f) {
+        m_destroyTimer -= deltaTime;
+        if(m_destroyTimer <= 0.0f) {
+            GetOwner()->Destroy();
+            return;
+        }
+    }
+
+    // 設置確認
+    if (m_collider->GetMaxMtv().y > 0.003f) {
+        m_isGrounded = true;
+    }
+    else {
+        m_isGrounded = false;
+    }
 
     // 速度設定
     XMFLOAT3 velocity = m_rigidbody->GetVelocity();
@@ -79,7 +98,7 @@ void BallBehavior::UpdateBallRotation(float deltaTime)
     float speed = MiMath::Length(prevDiff) * 100.0f;
 
     // 回転適用
-    if (speed > 0.1f) {
+    if (speed > 0.1f && MiMath::Length(m_rigidbody->GetVelocity()) > 2.0f) {
         XMVECTOR quaternion = m_transform->GetRotation();
 
         // 回転軸
@@ -115,4 +134,12 @@ void BallBehavior::UpdateBreakObjects()
             woodboxBehavior->Break(collisionData.m_mtv);
         }
     }
+}
+
+XMFLOAT3 BallBehavior::GetPosition() const
+{
+    if (m_transform) {
+        return m_transform->GetPosition();
+    }
+    return { 0.0f,0.0f,0.0f };
 }

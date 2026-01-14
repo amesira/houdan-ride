@@ -79,7 +79,7 @@ void TpsCameraBehavior::Update(IScene* pScene)
     }
 
     // スローモーション
-    if (Keyboard_IsKeyDown(KK_LEFTSHIFT)) {
+    if (m_isSlowMotion) {
         FPS_SetTimeScale(0.3f);
         grayRate = MiMath::Lerp(grayRate, 1.0f, deltaTime * 5.0f);
     }

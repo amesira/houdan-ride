@@ -80,6 +80,8 @@ void TrainBehavior::EntryRideObjects(BoxColliderComponent* col)
         auto collisionData = col->GetCollisionData(i);
         if (collisionData.GetCollisionStay()) {
             GameObject* otherObj = collisionData.m_other->GetOwner();
+            if (otherObj->GetName() == "Train" || otherObj->GetName() == "TrainChildCollider")continue; // 自分自身は無視
+
             auto* otherTransform = otherObj->GetComponent<TransformComponent>();
 
             // 乗っている物体を列車と同じ速度で動かす
@@ -94,6 +96,7 @@ void TrainBehavior::EntryRideObjects(BoxColliderComponent* col)
             for(int j = 0; j < 32; j++) {
                 if (m_rideTransform[j] == otherTransform) {
                     alreadyRegistered = true;
+                    m_rideTimer[j] = 0.5f; // タイマーリセット
                 }
             }
             if (alreadyRegistered)continue;
@@ -115,4 +118,11 @@ void TrainBehavior::AddChildCollider(GameObject* collider)
     m_childColliders.push_back(colComp);
     TransformComponent* childTransform = collider->GetComponent<TransformComponent>();
     m_childTransforms.push_back(childTransform);
+
+    collider->SetName("TrainChildCollider");
+}
+
+XMFLOAT3 TrainBehavior::GetPosition() const
+{
+    return m_transform->GetPosition();
 }

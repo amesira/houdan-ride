@@ -32,6 +32,9 @@ private:
 
     float m_freezeTimer = 0.0f;
 
+    bool m_isGrounded = false;
+    float m_groundCheckTimer = 0.0f;
+
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;
 

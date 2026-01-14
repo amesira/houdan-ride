@@ -27,43 +27,16 @@ void GameScene::Initialize()
     
     // light
     GameObject* light = this->CreateGameObject();
-    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.9f,0.9f,0.9f,1.0f }, { 0.7f,0.7f,0.7f,1.0f });
+    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 0.1f,0.1f,0.1f,1.0f }, { 0.7f,0.7f,0.7f,1.0f });
 
     GameObject* player = this->CreateGameObject();
     Factory::CreatePlayer(player, { -2.0f,2.0f,-3.0f });
 
-    GameObject* ball = this->CreateGameObject();
-    Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
-
-    // 木箱
-   /* GameObject* woodbox = this->CreateGameObject();
-    Factory::CreateWoodbox(woodbox, { 3.0f,0.5f,0.0f });*/
-
-    /*GameObject* fieldCube = this->CreateGameObject();
-    Factory::CreateBox(fieldCube, { 0.0f,-1.0f,0.0f },{0.0f,0.0f,0.0f} ,{ 5.0f,1.0f,10.0f },{ 0.2f,0.2f,0.2f,1.0f });
-    */
-
-
-   /* GameObject* enemy = this->CreateGameObject();
-    Factory::CreateEnemy(enemy, { 5.0f,0.5f,0.0f });
-    enemy = this->CreateGameObject();
-    Factory::CreateEnemy(enemy, { 15.0f,0.5f,0.0f });
-    enemy = this->CreateGameObject();
-    Factory::CreateEnemy(enemy, { 5.0f,0.5f,5.0f });
-    enemy = this->CreateGameObject();
-    Factory::CreateEnemy(enemy, { 5.0f,0.5f,15.0f });*/
-
-   /* GameObject* train = this->CreateGameObject();
-    Factory::CreateTrain(train, { 0.0f,-5.0f,0.0f });*/
-
     // ui
     GameObject* uiText = this->CreateGameObject();
     Factory::CreateUiText(uiText, { 800.0f, 500.0f, 0.0f }, u8"ようこそ!", 40.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
-
-    // image
-    /*GameObject* uiImage = this->CreateGameObject();
-    uiImage->SetName("CameraImage");
-    Factory::CreateUiImageWorld(uiImage, { -30.0f,3.0f,20.0f }, { 0.0f,2.8f,0.0f }, { 16.0f,9.0f,1.0f });*/
+    GameObject* uiSlider = this->CreateGameObject();
+    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 90.0f, { 100.0f,30.0f });
 
     LevelM_Initialize(this);
 }
