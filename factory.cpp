@@ -29,6 +29,7 @@
 #include "train_behavior.h"
 #include "pointer_behavior.h"
 #include "liftup_behavior.h"
+#include "field_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -150,6 +151,7 @@ void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // behavior生成・登録
     WoodboxBehavior* woodboxBe = obj->AddBehavior<WoodboxBehavior>();
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
 }
 
 void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
@@ -197,7 +199,7 @@ void Factory::CreateBox(GameObject* cube, DirectX::XMFLOAT3 position, DirectX::X
 
     // behavior生成・登録
     TrainBehavior* trainBe = cube->AddBehavior<TrainBehavior>();
-
+    FieldBehavior* fieldBe = cube->AddBehavior<FieldBehavior>();
 }
 
 void Factory::CreateTrain(GameObject* obj, DirectX::XMFLOAT3 position)
@@ -240,6 +242,7 @@ void Factory::CreateDodai(GameObject* obj, DirectX::XMFLOAT3 position)
     collider->SetLayer(ColliderComponent::Layer::Field);
 
     LiftupBehavior* liftBe = obj->AddBehavior<LiftupBehavior>();
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
 }
 
 void Factory::CreateBoxCollider(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rotation, DirectX::XMFLOAT3 center, DirectX::XMFLOAT3 size)

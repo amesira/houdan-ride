@@ -120,4 +120,9 @@ void EnemyBehavior::Update(IScene* pScene)
             }
         }
     }
+
+    // 落下したら
+    if(m_transform->GetPosition().y < -10.0f) {
+        GetOwner()->Destroy();
+    }
 }
