@@ -27,6 +27,9 @@ TpsCameraBehavior::TpsCameraBehavior(GameObject* owner)
     m_targetTransform = nullptr;
 
     m_cameraImageComp = nullptr;
+
+    m_angleX = 0.0f; // 初期角度は後ろ向き
+    m_angleY = 0.7f;
 }
 
 TpsCameraBehavior::~TpsCameraBehavior()
@@ -71,14 +74,16 @@ void TpsCameraBehavior::Update(IScene* pScene)
 
     float grayRate = m_camera->GetShaderGrayRate();
 
-    // 左クリック中のマウス移動でカメラ回転
-    if (Mouse_IsButtonDown(Mouse_Button::RIGHT)) {
-        float moveX = (float)Mouse_GetPositionX() - (float)Mouse_GetOldPositionX();
-        float moveY = (float)Mouse_GetPositionY() - (float)Mouse_GetOldPositionY();
+    if(!m_isFreeze){
+        // 左クリック中のマウス移動でカメラ回転
+        if (Mouse_IsButtonDown(Mouse_Button::RIGHT)) {
+            float moveX = (float)Mouse_GetPositionX() - (float)Mouse_GetOldPositionX();
+            float moveY = (float)Mouse_GetPositionY() - (float)Mouse_GetOldPositionY();
 
-        m_angleX += moveX * deltaTime * 0.1f;
-        m_angleY += moveY * deltaTime * 0.1f;
+            m_angleX += moveX * deltaTime * 0.1f;
+            m_angleY += moveY * deltaTime * 0.1f;
 
+        }
     }
 
     // スローモーション
@@ -108,9 +113,9 @@ void TpsCameraBehavior::Update(IScene* pScene)
     
     // 補間してなめらかに移動
     XMFLOAT3 desiredCameraPos = {
-        m_cameraAnchor.x + offset.x,
-        m_cameraAnchor.y + offset.y,
-        m_cameraAnchor.z + offset.z,
+        m_cameraAnchor.x + offset.x + m_cameraPosOffset.x,
+        m_cameraAnchor.y + offset.y + m_cameraPosOffset.y,
+        m_cameraAnchor.z + offset.z + m_cameraPosOffset.z,
     };
     m_cameraPos = MiMath::Lerp(m_cameraPos, desiredCameraPos, deltaTime * 4.0f);
 

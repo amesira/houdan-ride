@@ -26,10 +26,12 @@ void Manager_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     if (!g_pDevice)g_pDevice = pDevice;
     if (!g_pContext)g_pContext = pContext;
 
+    g_SceneInstance[SCENE::SCENE_NONE] = nullptr;
+    g_SceneInstance[SCENE::SCENE_TITLE] = new TitleScene();
     g_SceneInstance[SCENE::SCENE_GAME] = new GameScene();
 
     Fade_Initialize(pDevice, pContext);
-    SetScene(SCENE::SCENE_GAME);
+    SetScene(SCENE::SCENE_TITLE);
 }
 
 //===================================================
@@ -57,6 +59,9 @@ void Manager_Draw()
 {
     g_SceneInstance[g_Scene]->Draw();
     Fade_Draw();
+
+
+    Direct3D_Present();
 }
 
 void SetScene(SCENE scene)

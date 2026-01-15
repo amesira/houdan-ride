@@ -32,8 +32,9 @@ WoodboxBehavior::WoodboxBehavior(GameObject* owner)
 
     if(g_pWoodboxBreakTexture == nullptr) {
         LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\white.bmp");
-        ParticleM_RegisterEmitter("ExpEffect", g_pWoodboxBreakTexture);
     }
+
+    ParticleM_RegisterEmitter("ExpEffect", g_pWoodboxBreakTexture);
 }
 
 WoodboxBehavior::~WoodboxBehavior()
@@ -43,6 +44,10 @@ WoodboxBehavior::~WoodboxBehavior()
 
 void WoodboxBehavior::Update(IScene* pScene)
 {
+    if(m_transform->GetPosition().y < -20.0f) {
+        GetOwner()->Destroy();
+    }
+
     if (m_isBroken) {
         m_breakTimer += FPS_GetDeltaTime();
 

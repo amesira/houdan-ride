@@ -63,6 +63,10 @@ void GameScene::Initialize()
 void GameScene::Finalize()
 {
     ProcessorM_Finalize();
+    std::vector<GameObject>& gameObjects = this->GetGameObjects();
+    for (GameObject& obj : gameObjects) {
+        obj.Destroy();
+    }
 }
 
 //===================================================

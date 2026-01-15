@@ -83,8 +83,9 @@ void PlayerBehavior::Update(IScene* pScene)
         m_groundCheckTimer -= deltaTime;
     }
     else {
-        if (m_collider->GetMaxMtv().y > 0.005f) {
+        if(m_collider->GetMaxMtv().y > 0.005f) {
             m_isGrounded = true;
+            m_groundCheckTimer = 0.2f;
         }
         else {
             m_isGrounded = false;
@@ -101,7 +102,7 @@ void PlayerBehavior::Update(IScene* pScene)
     UpdateThrowBall(deltaTime);
 
     // スコアテキスト更新
-    {
+    if(m_scoreText){
         float buf = m_scoreBuffer * deltaTime * 5.0f;
         m_score += buf;
         m_scoreBuffer -= buf;
@@ -140,11 +141,13 @@ void PlayerBehavior::Update(IScene* pScene)
         m_rigidbody->SetEnable(false);
 
         // スコアがマイナス
-        m_scoreBuffer -= 500.0f;
-        m_penaltyText->SetText(u8"-500");
-        m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
-        m_penaltyRect->SetPosition(m_penaltyStartPos);
-        m_penaltyTextTimer = 2.0f;
+        if(m_penaltyText && m_penaltyRect){
+            m_scoreBuffer -= 500.0f;
+            m_penaltyText->SetText(u8"-500");
+            m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+            m_penaltyRect->SetPosition(m_penaltyStartPos);
+            m_penaltyTextTimer = 2.0f;
+        }
 
         // パーティクル飛び散るように
 
@@ -185,7 +188,7 @@ void PlayerBehavior::Update(IScene* pScene)
     }
 
     // ペナルティテキストの更新
-    if(m_penaltyTextTimer > 0.0f) {
+    if(m_penaltyTextTimer > 0.0f && m_penaltyText && m_penaltyRect) {
         m_penaltyRect->SetPosition(MiMath::Lerp(m_penaltyRect->GetPosition(),
             XMFLOAT3(m_penaltyStartPos.x, m_penaltyStartPos.y - 20.0f, m_penaltyStartPos.z),
             deltaTime * 5.0f));
@@ -229,11 +232,13 @@ void PlayerBehavior::Update(IScene* pScene)
                         50
                     );
 
-                    m_scoreBuffer -= 50.0f;
-                    m_penaltyText->SetText(u8"-50");
-                    m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
-                    m_penaltyRect->SetPosition(m_penaltyStartPos);
-                    m_penaltyTextTimer = 2.0f;
+                    if (m_penaltyRect && m_penaltyText) {
+                        m_scoreBuffer -= 50.0f;
+                        m_penaltyText->SetText(u8"-50");
+                        m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+                        m_penaltyRect->SetPosition(m_penaltyStartPos);
+                        m_penaltyTextTimer = 2.0f;
+                    }
 
                     m_damageTimer = 1.0f;
                 }
@@ -369,6 +374,7 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
         if (Keyboard_IsKeyDownTrigger(KK_SPACE) && m_isGrounded) {
             velocity.y += 9.0f;
             m_groundCheckTimer = 0.8f;
+            m_isGrounded = false;
         }
 
         // 適用処理
@@ -430,6 +436,8 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 {
     if (!m_ballObject) return;
 
+    if(!m_pointerTransform)return;
+
     m_throwDirection = m_pointerTransform->GetPosition();
     {
         XMFLOAT3 playerPos = m_transform->GetPosition();
@@ -456,9 +464,9 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
 
         // ボールを前に飛ばす
         m_ballBehavior->AddBounceVelocity({
-            m_throwDirection.x* m_throwPower,
-            m_throwDirection.y* m_throwPower,
-            m_throwDirection.z* m_throwPower,
+            m_throwDirection.x* (m_throwPower + 10.0f),
+            m_throwDirection.y* (m_throwPower + 10.0f),
+            m_throwDirection.z* (m_throwPower + 10.0f),
             });
 
         // switch sprite が参照する速度をプレイヤーの速度に戻す

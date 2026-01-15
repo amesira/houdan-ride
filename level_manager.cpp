@@ -31,8 +31,12 @@ static CameraComponent* g_MapCamera_CameraComp = nullptr;
 
 static TransformComponent* g_Water_Transform = nullptr;
 
-void LevelM_Initialize(SceneBase* pScene)
+static bool g_isTitle = false;
+
+void LevelM_Initialize(SceneBase* pScene, bool isTitle)
 {
+    g_isTitle = isTitle;
+
     srand(time(NULL));
 
     // 水面を生成
@@ -53,16 +57,24 @@ void LevelM_Initialize(SceneBase* pScene)
     Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
     g_MainBall_BallBehavior = ball->GetBehavior<BallBehavior>();
 
-    // マップカメラ
-    GameObject* camera = pScene->CreateGameObject();
-    Factory::CreateMapCamera(camera, { 0.0f,20.0f,0.0f }, { 0.0f,0.0f,0.0f });
-    g_MapCamera_Transform = camera->GetComponent<TransformComponent>();
-    g_MapCamera_CameraComp = camera->GetComponent<CameraComponent>();
+    if(!g_isTitle){
+        // マップカメラ
+        GameObject* camera = pScene->CreateGameObject();
+        Factory::CreateMapCamera(camera, { 0.0f,20.0f,0.0f }, { 0.0f,0.0f,0.0f });
+        g_MapCamera_Transform = camera->GetComponent<TransformComponent>();
+        g_MapCamera_CameraComp = camera->GetComponent<CameraComponent>();
+    }
 }
 
 void LevelM_Finalize()
 {
+    g_MainShip_TrainBehavior = nullptr;
+    g_MainBall_BallBehavior = nullptr;
 
+    g_MapCamera_Transform = nullptr;
+    g_MapCamera_CameraComp = nullptr;
+
+    g_Water_Transform = nullptr;
 }
 
 void LevelM_Update(SceneBase* pScene)
@@ -122,13 +134,15 @@ void LevelM_Update(SceneBase* pScene)
         }
     }
 
-    // マップカメラ追従
-    g_MapCamera_Transform->SetPosition(XMFLOAT3(
-        g_MainShip_TrainBehavior->GetPosition().x,
-        g_MainShip_TrainBehavior->GetPosition().y + 60.0f,
-        g_MainShip_TrainBehavior->GetPosition().z - 30.0f
-    ));
-    g_MapCamera_CameraComp->SetAtPosition(g_MainShip_TrainBehavior->GetPosition());
+    if(!g_isTitle){
+        // マップカメラ追従
+        g_MapCamera_Transform->SetPosition(XMFLOAT3(
+            g_MainShip_TrainBehavior->GetPosition().x,
+            g_MainShip_TrainBehavior->GetPosition().y + 60.0f,
+            g_MainShip_TrainBehavior->GetPosition().z - 30.0f
+        ));
+        g_MapCamera_CameraComp->SetAtPosition(g_MainShip_TrainBehavior->GetPosition());
+    }
 
     // 水面
     g_Water_Transform->SetPosition(XMFLOAT3(

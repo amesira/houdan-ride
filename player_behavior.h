@@ -43,8 +43,8 @@ private:
     // ボール投げパラメータ
     SliderComponent* m_throwPowerSlider = nullptr;
     XMFLOAT3 m_throwDirection = { 0.0f,0.0f,0.0f };
-    float m_throwPower = 20.0f;
-    float m_throwPowerMax = 50.0f;
+    float m_throwPower = 0.0f;
+    float m_throwPowerMax = 60.0f;
 
     // TPSカメラの参照
     TpsCameraBehavior* m_tpsCamera = nullptr;

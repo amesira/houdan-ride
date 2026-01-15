@@ -50,7 +50,7 @@ void Renderer3DCubeProcessor::Process(IScene* pScene)
         TransformComponent* transform = transformPool->GetByGameObjectID(c.GetOwner()->GetID());
 
         // コンポーネントが無効ならスキップ
-        if (!transform || !&cubemesh)continue;
+        if (!transform)continue;
         if (!transform->GetEnable() || !cubemesh->GetEnable())continue;
 
         // 3Dキューブ描画

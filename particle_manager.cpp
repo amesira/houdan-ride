@@ -25,6 +25,8 @@ static PlayerBehavior* g_playerBehavior = nullptr;
 void ParticleM_Initialize()
 {
     g_pDeviceContext = Direct3D_GetDeviceContext();
+    g_playerBehavior = nullptr;
+    g_playerTransform = nullptr;
 
     LoadTexture(&g_defaultTexture, L"asset\\Texture\\white.bmp");
 }

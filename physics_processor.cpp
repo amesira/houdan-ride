@@ -30,6 +30,7 @@ void PhysicsProcessor::Process(IScene* pScene)
 
     auto* rigidbodyPool = pScene->GetComponentPool<RigidbodyComponent>();
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    if (rigidbodyPool == nullptr || transformPool == nullptr)return;
 
     auto& rigidbodyList = rigidbodyPool->GetList();
 

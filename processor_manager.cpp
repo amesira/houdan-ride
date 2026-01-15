@@ -29,6 +29,8 @@
 #include "game_object.h"
 #include "image_component.h"
 
+#include "fade.h"
+
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;
 
@@ -134,6 +136,8 @@ void ProcessorM_Finalize()
         delete g_LightProcessor;
         g_LightProcessor = nullptr;
     }
+
+    g_waterImageComp = nullptr;
 }
 
 void ProcessorM_Update(IScene* pScene)
@@ -164,13 +168,14 @@ void ProcessorM_Draw(IScene* pScene)
     g_RendererImageProcessor->SetDrawUiImages(false);
 
     for(int i = 0; i < g_CameraProcessor->GetCameraCount(); i++) {
-        if (i == 0) {
-            g_waterImageComp->SetEnable(true);
+        if(g_waterImageComp){
+            if (i == 0) {
+                g_waterImageComp->SetEnable(true);
+            }
+            else {
+                g_waterImageComp->SetEnable(false);
+            }
         }
-        else {
-            g_waterImageComp->SetEnable(false);
-        }
-
         // バッファのクリアとシーン描画用RTVのセット
         Direct3D_BeginScene();
         g_CameraProcessor->BindMatrix(i);
@@ -216,19 +221,21 @@ void ProcessorM_Draw(IScene* pScene)
     g_RendererImageProcessor->SetDrawUiImages(true);
 
     // 各2D描画プロセッサーの実行
-    g_RendererFontProcessor->Process(pScene);
     g_RendererImageProcessor->Process(pScene);
     g_RendererSliderProcessor->Process(pScene);
+    g_RendererFontProcessor->Process(pScene);
 
     // マップUI描画
-    SetBlendState(BLENDSTATE_ALFA);
-    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f), 1.0f);
-    Shader_SetPixelOptionAlphaRate(XMFLOAT4(0.1f, 0.7f, 1.0f, 0.0f));
+    if (g_CameraProcessor->GetCameraCount() > 1) {
+        SetBlendState(BLENDSTATE_ALFA);
+        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f), 1.0f);
+        Shader_SetPixelOptionAlphaRate(XMFLOAT4(0.1f, 0.7f, 1.0f, 0.0f));
 
-    g_CameraProcessor->DrawSnapshot(1, 120.0f, 280.0f, 30.0f * 9.0f, 30.0f * 16.0f, false);
+        g_CameraProcessor->DrawSnapshot(1, 120.0f, 280.0f, 30.0f * 9.0f, 30.0f * 16.0f, false);
 
-    Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
-    Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+        Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+    }
 
     /*g_CameraProcessor->BindMatrix(0);
     DebugRenderer_DrawFlush();*/
@@ -236,5 +243,5 @@ void ProcessorM_Draw(IScene* pScene)
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();
 
-    Direct3D_Present();
+    //Direct3D_Present();
 }

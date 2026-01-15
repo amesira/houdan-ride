@@ -52,6 +52,7 @@ void RendererImageProcessor::Process(IScene* pScene)
     auto* imagePool = pScene->GetComponentPool<ImageComponent>();
     auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    if(imagePool == nullptr)return;
 
     auto& imageList = imagePool->GetList();
 
@@ -66,6 +67,7 @@ void RendererImageProcessor::Process(IScene* pScene)
         if (!pRect && !pTransform) continue;
         if (pRect && (!pRect->GetEnable() || !m_drawUiImages)) continue;
         if (pTransform && (!pTransform->GetEnable() || !m_drawWorldImages)) continue;
+        if (image.GetOwner()->GetActive() == false) continue;
 
         // ワールド座標計算
         XMMATRIX scaleMatrix, rotMatrix, transMatrix;

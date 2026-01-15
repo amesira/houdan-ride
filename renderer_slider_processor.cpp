@@ -55,6 +55,7 @@ void RendererSliderProcessor::Process(IScene* pScene)
     auto* sliderComponentPool = pScene->GetComponentPool<SliderComponent>();
     auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
+    if (sliderComponentPool == nullptr)return;
 
     auto& sliderList = sliderComponentPool->GetList();
 

@@ -83,6 +83,10 @@ void RendererFontProcessor::Finalize()
 
 void RendererFontProcessor::Process(IScene* pScene)
 {
+	auto* textPool = pScene->GetComponentPool<TextComponent>();
+	auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
+    if (textPool == nullptr || rectTransformPool == nullptr)return;
+
 	Shader_Begin(ShaderBeginMode::TrueTypeFont);
 
     const float screenWidth = (float)Direct3D_GetBackBufferWidth();
@@ -97,9 +101,6 @@ void RendererFontProcessor::Process(IScene* pScene)
 		0.0f,
 		1.0f));
 
-    auto* textPool = pScene->GetComponentPool<TextComponent>();
-    auto* rectTransformPool = pScene->GetComponentPool<RectTransformComponent>();
-
     auto& textList = textPool->GetList();
 
 	for(TextComponent& t : textList) {
@@ -109,6 +110,7 @@ void RendererFontProcessor::Process(IScene* pScene)
         // コンポーネントが無効ならスキップ
         if (!pRect || !pText) continue;
         if (!pRect->GetEnable() || !pText->GetEnable()) continue;
+        if (t.GetOwner()->GetActive() == false) continue;
 
         int fontType = (int)pText->GetFontType();
 

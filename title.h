@@ -1,22 +1,32 @@
 //----------------------------------------------------
-// title.h [ƒ^ƒCƒgƒ‹ƒV[ƒ“§Œä]
+// title.h [ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³åˆ¶å¾¡]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/09/05
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/09/05
 //----------------------------------------------------
 #ifndef TITLE_H
 #define TITLE_H
 
-// directx
-#include <d3d11.h>
-#include "direct3d.h"
-#include <DirectXMath.h>
-using namespace DirectX;
+#include "scene_base.h"
+#include <vector>
 
-// ƒƒCƒ“ˆ—
-void Title_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-void Title_Finalize();
-void Title_Update();
-void Title_Draw();
+class ButtonBehavior;
+
+// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
+class TitleScene : public SceneBase {
+private:
+    bool m_isSelectScene = false;
+    std::vector<GameObject*> m_titleUiObjects;
+    std::vector<GameObject*> m_selectUiObjects;
+
+    ButtonBehavior* m_startButtonMorningSeaBe = nullptr;
+
+public:
+    void    Initialize() override;
+    void    Finalize() override;
+
+    void    Update() override;
+    void    Draw() override;
+};
 
 #endif

@@ -19,6 +19,7 @@ namespace Factory {
     void CreateTpsCamera    (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
     void CreateLight        (GameObject*, DirectX::XMFLOAT4 direction, DirectX::XMFLOAT4 diffuse, DirectX::XMFLOAT4 ambient);
     void CreateMapCamera(GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
+    void CreateNormalCamera(GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);
 
     void CreatePlayer       (GameObject*, DirectX::XMFLOAT3 position);
 
@@ -41,6 +42,7 @@ namespace Factory {
     void CreateUiImageWorld (GameObject*, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale, const wchar_t* texturePath = L"asset\\Texture\\test.jpg");
     void CreateUiSlider     (GameObject*, XMFLOAT3 position, float rotation, XMFLOAT2 size);
     void CreateUiImage(GameObject*, XMFLOAT3 position, float rotation, XMFLOAT2 size, const wchar_t* texturePath);
+    void CreateUiButton(GameObject*, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
 
     void CreatePointer(GameObject*);
 }

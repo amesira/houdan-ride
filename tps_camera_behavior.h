@@ -35,6 +35,9 @@ private:
 
     bool    m_isSlowMotion = false;
 
+    XMFLOAT3 m_cameraPosOffset = {0.0f,0.0f,0.0f};
+    bool    m_isFreeze = false;
+
 public:
     TpsCameraBehavior(GameObject* owner);
     ~TpsCameraBehavior();
@@ -47,6 +50,8 @@ public:
     XMFLOAT3    GetCameraFoward();
     void    SetSlowMotion(bool isSlow) { m_isSlowMotion = isSlow; }
 
+    void    SetFreeze(bool isFreeze) { m_isFreeze = isFreeze; }
+    void    SetCameraPosOffset(XMFLOAT3 offset) { m_cameraPosOffset = offset; }
 };
 
 #endif // tps_camera_behavior.h

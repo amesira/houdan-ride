@@ -41,34 +41,40 @@ void DynamicsProcessor::Process(IScene* pScene)
     auto* rigidbodyPool = pScene->GetComponentPool<RigidbodyComponent>();
     auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
     auto* sphereColliderPool = pScene->GetComponentPool<SphereColliderComponent>();
+    if (transformPool == nullptr || rigidbodyPool == nullptr)return;
 
-    auto& boxColliderList = boxColliderPool->GetList();
-    auto& sphereColliderList = sphereColliderPool->GetList();
+    if(boxColliderPool){
+        auto& boxColliderList = boxColliderPool->GetList();
 
-    for (BoxColliderComponent& c : boxColliderList) {
-        BoxColliderComponent* collider = &c;
-        RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
-        TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
+        for (BoxColliderComponent& c : boxColliderList) {
+            BoxColliderComponent* collider = &c;
+            RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
+            TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
 
-        // コンポーネントが無効ならスキップ
-        if (!transform || !collider || !rigidbody)continue;
-        if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
+            // コンポーネントが無効ならスキップ
+            if (!transform || !collider || !rigidbody)continue;
+            if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
 
-        // 物理演算補正適用
-        ApplyDynamics(transform, collider, rigidbody, deltaTime);
+            // 物理演算補正適用
+            ApplyDynamics(transform, collider, rigidbody, deltaTime);
+        }
     }
 
-    for(SphereColliderComponent& c : sphereColliderList) {
-        SphereColliderComponent* collider = &c;
-        RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
-        TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
+    if(sphereColliderPool){
+        auto& sphereColliderList = sphereColliderPool->GetList();
 
-        // コンポーネントが無効ならスキップ
-        if (!transform || !collider || !rigidbody)continue;
-        if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
+        for(SphereColliderComponent& c : sphereColliderList) {
+            SphereColliderComponent* collider = &c;
+            RigidbodyComponent* rigidbody = rigidbodyPool->GetByGameObjectID(collider->GetOwner()->GetID());
+            TransformComponent* transform = transformPool->GetByGameObjectID(collider->GetOwner()->GetID());
 
-        // 物理演算補正適用
-        ApplyDynamics(transform, collider, rigidbody, deltaTime);
+            // コンポーネントが無効ならスキップ
+            if (!transform || !collider || !rigidbody)continue;
+            if (!transform->GetEnable() || !collider->GetEnable() || !rigidbody->GetEnable())continue;
+
+            // 物理演算補正適用
+            ApplyDynamics(transform, collider, rigidbody, deltaTime);
+        }
     }
 }
 

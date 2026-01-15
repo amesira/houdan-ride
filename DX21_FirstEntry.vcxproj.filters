@@ -176,6 +176,12 @@
     <ClCompile Include="pointer_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="field_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="button_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -353,6 +359,12 @@
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClInclude>
     <ClInclude Include="pointer_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="field_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="button_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>

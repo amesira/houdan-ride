@@ -30,6 +30,7 @@
 #include "pointer_behavior.h"
 #include "liftup_behavior.h"
 #include "field_behavior.h"
+#include "button_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -77,6 +78,24 @@ void Factory::CreateMapCamera(GameObject* obj, DirectX::XMFLOAT3 position, Direc
     camera->SetAtPosition(atPosition);
     camera->SetFov(60.0f);
     camera->SetAspect(9.0f/ 16.0f);
+    camera->SetNearClip(0.1f);
+    camera->SetFarClip(100.0f);
+}
+
+void Factory::CreateNormalCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
+{
+    obj->SetName("Camera");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    CameraComponent* camera = obj->AddComponent<CameraComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+
+    camera->SetAtPosition(atPosition);
+    camera->SetFov(60.0f);
+    camera->SetAspect(16.0f / 9.0f);
     camera->SetNearClip(0.1f);
     camera->SetFarClip(100.0f);
 }
@@ -219,6 +238,7 @@ void Factory::CreateTrain(GameObject* obj, DirectX::XMFLOAT3 position)
 
     collider->SetCenter({ 0.0f, 4.0f, -0.35f });
     collider->SetScale({ 9.6f, 1.0f, 7.4f });
+    collider->SetLayer(ColliderComponent::Layer::Field);
 
     // behavior生成・登録
     TrainBehavior* trainBe = obj->AddBehavior<TrainBehavior>();
@@ -318,6 +338,24 @@ void Factory::CreateUiImage(GameObject* obj, XMFLOAT3 position, float rotation, 
     imageComp->SetWorldSpaceType(WorldSpaceType::None);
 }
 
+void Factory::CreateUiButton(GameObject* obj, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color)
+{
+    // component生成・登録
+    RectTransformComponent* rectTransform = obj->AddComponent<RectTransformComponent>();
+    ImageComponent* imageComp = obj->AddComponent<ImageComponent>();
+
+    // component設定
+    rectTransform->SetPosition({ position.x, position.y, 0.0f });
+    rectTransform->SetScaling({ size.x, size.y, 1.0f });
+    imageComp->Load(L"asset\\Texture\\white.bmp");
+    imageComp->SetColor(color);
+    imageComp->SetWorldSpaceType(WorldSpaceType::None);
+
+    // behavior生成・登録
+    ButtonBehavior* buttonBe = obj->AddBehavior<ButtonBehavior>();
+    buttonBe->SetBaseColor(color);
+}
+
 void Factory::CreatePointer(GameObject* obj) {
     obj->SetName("Pointer");
 
@@ -328,7 +366,7 @@ void Factory::CreatePointer(GameObject* obj) {
     // component設定
     transform->SetPosition({ 0.0f, 0.0f, 0.0f });
     transform->SetScaling({ 3.0f, 3.0f, 1.0f });
-    imageComp->Load(L"asset\\Texture\\magic_03.png");
+    imageComp->Load(L"asset\\Texture\\pointer.png");
     imageComp->SetWorldSpaceType(WorldSpaceType::Billboard);
 
     // behavior生成・登録

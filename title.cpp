@@ -16,80 +16,135 @@
 #include "manager.h"
 #include "fade.h"
 
-static ID3D11Device* g_pDevice = nullptr;
-static ID3D11DeviceContext* g_pContext = nullptr;
+#include "Audio.h"
+#include "processor_manager.h"
+#include "factory.h"
 
-static ID3D11ShaderResourceView* g_Texture;
+#include "mouse.h"
 
-//===================================================
-// タイトルシーン初期化処理
-//===================================================
-void Title_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+#include "image_component.h"
+#include "level_manager.h"
+#include "tps_camera_behavior.h"
+#include "button_behavior.h"
+
+void TitleScene::Initialize()
 {
-	// デバイスとデバイスコンテキストの保存
-	g_pDevice = pDevice;
-	g_pContext = pContext;
+    ProcessorM_Initialize();
 
-	// テクスチャ画像読み込み
-	LoadTexture(&g_Texture, L"asset\\Texture\\Title.png");
+    // 初期化
+    m_isSelectScene = false;
+    m_titleUiObjects.clear();
+    m_selectUiObjects.clear();
+
+    // camera
+    GameObject* camera = this->CreateGameObject();
+    Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,0.0f,0.0f });
+    TpsCameraBehavior* tpsCameraBe = camera->GetBehavior<TpsCameraBehavior>();
+    tpsCameraBe->SetFreeze(true);
+
+    // light
+    GameObject* light = this->CreateGameObject();
+    Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, { 0.65f,0.65f,0.65f,1.0f });
+
+    // player
+    GameObject* player = this->CreateGameObject();
+    Factory::CreatePlayer(player, { -2.0f,2.0f,-3.0f });
+
+    // Title ui
+    {
+        GameObject* titleLogo = this->CreateGameObject();
+        Factory::CreateUiImage(titleLogo, { 1280.0f / 2.0f, 80.0f, 0.0f }, 0.0f, { 400.0f,400.0f }, L"asset\\Texture\\Title.png");
+        titleLogo->SetName("TitleLogo");
+        m_titleUiObjects.push_back(titleLogo);
+
+        GameObject* uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 170.0f, 0.0f }, u8"画面をクリック！", 30.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        uiText->SetName("ClickText");
+        m_titleUiObjects.push_back(uiText);
+    }
+
+    // Select ui
+    {
+        GameObject* uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 100.0f, 0.0f }, u8"朝の海", 70.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        m_selectUiObjects.push_back(uiText);
+        
+        uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 150.0f, 0.0f }, u8"比較的穏やかな朝の海。海賊モンスターも少なめで、砂金が集めやすいぞ。", 30.0f, { 1.0f,1.0f,0.8f,1.0f }, true);
+        m_selectUiObjects.push_back(uiText);
+
+        GameObject* uiButton = this->CreateGameObject();
+        Factory::CreateUiButton(uiButton, { 1280.0f / 2.0f, 600.0f }, { 300.0f,80.0f },{0.5f, 0.8f, 0.8f,1.0f});
+        uiButton->SetName("StartButton_MorningSea");
+        m_selectUiObjects.push_back(uiButton);
+        m_startButtonMorningSeaBe = uiButton->GetBehavior<ButtonBehavior>();
+
+        uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 610.0f, 0.0f }, u8"スタート！", 50.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        m_selectUiObjects.push_back(uiText);
+    }
+    for (auto& ui : m_selectUiObjects) {
+        ui->SetActive(false);
+    }
+
+    LevelM_Initialize(this, true);
+
+    m_isSelectScene = false;
 }
 
-//===================================================
-// タイトルシーン終了処理
-//===================================================
-void Title_Finalize()
+void TitleScene::Finalize()
 {
-	SAFE_RELEASE(g_Texture);
+    ProcessorM_Finalize();
+    std::vector<GameObject>& gameObjects = this->GetGameObjects();
+    for (GameObject& obj : gameObjects) {
+        obj.Destroy();
+    }
+
+    m_titleUiObjects.clear();
+    m_selectUiObjects.clear();
+
+    LevelM_Finalize();
 }
 
-//===================================================
-// タイトルシーン更新処理
-//===================================================
-void Title_Update()
+void TitleScene::Update()
 {
-	if (Keyboard_IsKeyDownTrigger(KK_SPACE)) {
-		SetFade(
-			20.0f, 
-			DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-			FADE_STATE::FADE_OUT, 
-			SCENE::SCENE_GAME);
-	}
+    std::vector<GameObject>& gameObjects = this->GetGameObjects();
+    for (GameObject& obj : gameObjects) {
+        obj.Update();
+    }
+
+    ProcessorM_Update(this);
+
+    LevelM_Update(this);
+
+    if (Mouse_IsButtonDownTrigger(Mouse_Button::LEFT)) {
+        if(m_isSelectScene == false) {
+            m_isSelectScene = true;
+
+            GameObject* tpsCamera = this->GetGameObjectByName("TPSCamera");
+            TpsCameraBehavior* tpsCameraBe = tpsCamera->GetBehavior<TpsCameraBehavior>();
+            tpsCameraBe->SetCameraPosOffset({ 30.0f,0.0f,0.0f });
+
+            // UI切り替え
+            for(auto& ui : m_titleUiObjects) {
+                ui->SetActive(false);
+            }
+            for(auto& ui : m_selectUiObjects) {
+                ui->SetActive(true);
+            }
+        }
+
+        // 
+        if (m_startButtonMorningSeaBe->GetIsPressed()) {
+            SetFade(60, { 0.0f,1.0f,1.0f,1.0f }, FADE_STATE::FADE_OUT, SCENE::SCENE_GAME);
+        }
+    }
+
+    // 破棄予約されたGameObjectの収集
+    this->CollectDestroyedGameObjects();
 }
 
-//===================================================
-// タイトルシーン描画処理
-//===================================================
-void Title_Draw()
+void TitleScene::Draw()
 {
-	// シェーダーを描画パイプラインに設定
-	Shader_Begin();
-
-	// 画面サイズ取得
-	const float SCREEN_WIDTH = (float)Direct3D_GetBackBufferWidth();
-	const float SCREEN_HEIGHT = (float)Direct3D_GetBackBufferHeight();
-
-	//----------------------------------------------------
-	// 描画前の設定処理
-	//----------------------------------------------------
-	// 頂点シェーダーに変換行列を設定
-	Shader_SetMatrix(XMMatrixOrthographicOffCenterLH(
-		0.0f,
-		SCREEN_WIDTH,
-		SCREEN_HEIGHT,
-		0.0f,
-		0.0f,
-		1.0f));
-
-	// テクスチャ使用設定
-	g_pContext->PSSetShaderResources(0, 1, &g_Texture);
-
-	//----------------------------------------------------
-	// 画面サイズのスプライトを描画
-	//----------------------------------------------------
-	SetBlendState(BLENDSTATE_NONE);
-
-	/*DrawSprite(
-		{ SCREEN_WIDTH / 2.0f,SCREEN_HEIGHT / 2.0f },
-		{ SCREEN_WIDTH,SCREEN_HEIGHT },
-		{ 1.0f,1.0f,1.0f,1.0f });*/
+    ProcessorM_Draw(this);
 }

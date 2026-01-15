@@ -33,6 +33,8 @@ private:
     TransformComponent* m_rideTransform[32];
     int m_rideTimer[32];
 
+    float m_timer = 0;
+
 public:
     TrainBehavior(GameObject* owner);
     ~TrainBehavior();

@@ -39,13 +39,22 @@ TrainBehavior::~TrainBehavior()
 
 void TrainBehavior::Update(IScene* pScene)
 {
-    // 列車を前進させる
-    m_transform->SetPosition({
-        m_transform->GetPosition().x,
-        m_transform->GetPosition().y,
-        m_transform->GetPosition().z + m_moveSpeed * FPS_GetDeltaTime(),
-        });
+    float deltaTime = FPS_GetDeltaTime();
 
+    XMFLOAT3 addPos = { 0.0f,0.0f,0.0f };
+    // 列車を前進させる
+    addPos.z += m_moveSpeed * deltaTime;
+    
+    // 上下させる
+    m_timer += deltaTime;
+    addPos.y += std::sinf(m_timer * 3.0f) * 0.5f * deltaTime;
+
+    m_transform->SetPosition({
+        m_transform->GetPosition().x + addPos.x,
+        m_transform->GetPosition().y + addPos.y,
+        m_transform->GetPosition().z + addPos.z,
+        });
+    
     // 乗っている物体を取得
     EntryRideObjects(m_collider);
     for (auto& childCol : m_childColliders) {
@@ -57,9 +66,9 @@ void TrainBehavior::Update(IScene* pScene)
         if (m_rideTransform[i] == nullptr)continue;
 
         m_rideTransform[i]->SetPosition({
-               m_rideTransform[i]->GetPosition().x,
-               m_rideTransform[i]->GetPosition().y,
-               m_rideTransform[i]->GetPosition().z + m_moveSpeed * FPS_GetDeltaTime(),
+            m_rideTransform[i]->GetPosition().x + addPos.x,
+            m_rideTransform[i]->GetPosition().y + addPos.y,
+            m_rideTransform[i]->GetPosition().z + addPos.z,
             });
         m_rideTimer[i] -= FPS_GetDeltaTime();
         if (m_rideTimer[i] <= 0.0f){

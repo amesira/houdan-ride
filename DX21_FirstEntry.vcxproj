@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="ball_behavior.cpp" />
+    <ClCompile Include="button_behavior.cpp" />
     <ClCompile Include="camera_processor.cpp" />
     <ClCompile Include="collision_processor.cpp" />
     <ClCompile Include="debug_ostream.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="enemy_behavior.cpp" />
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="fade.cpp" />
+    <ClCompile Include="field_behavior.cpp" />
     <ClCompile Include="liftup_behavior.cpp" />
     <ClCompile Include="mi_fps.cpp" />
     <ClCompile Include="game.cpp" />
@@ -177,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball_behavior.h" />
+    <ClInclude Include="button_behavior.h" />
     <ClInclude Include="camera_component.h" />
     <ClInclude Include="camera_processor.h" />
     <ClInclude Include="collider_component.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="dynamics_processor.h" />
     <ClInclude Include="enemy_behavior.h" />
     <ClInclude Include="factory.h" />
+    <ClInclude Include="field_behavior.h" />
     <ClInclude Include="liftup_behavior.h" />
     <ClInclude Include="mi_fps.h" />
     <ClInclude Include="image_component.h" />
