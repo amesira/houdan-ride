@@ -28,6 +28,7 @@
 #include "woodbox_behavior.h"
 #include "train_behavior.h"
 #include "pointer_behavior.h"
+#include "liftup_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -117,13 +118,13 @@ void Factory::CreateBall(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // component設定
     transform->SetPosition(position);
-    transform->SetScaling({ 1.0f, 1.0f, 1.0f });
+    transform->SetScaling({ 3.0f, 3.0f, 3.0f });
     collider->SetLayer(ColliderComponent::Layer::Ball);
     collider->SetRadius(1.0f);
     rigidbody->SetMass(1.5f);
     rigidbody->SetFriction({ 0.98f, 1.0f, 0.98f });
 
-    modelComp->LoadModel("asset\\Model\\ico_sphere.fbx");
+    modelComp->LoadModel("asset\\Model\\cannon_ball.fbx");
 
     // behavior生成・登録
     BallBehavior* ballBe = obj->AddBehavior<BallBehavior>();
@@ -141,10 +142,11 @@ void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // component設定
     transform->SetPosition(position);
-    transform->SetScaling({ 1.0f,1.0f,1.0f });
-    collider->SetScale({ 2.0f,2.0f,2.0f });
-    modelComp->LoadModel("asset\\Model\\cube.fbx");
-    modelComp->SetColor({ 0.55f, 0.27f, 0.07f, 1.0f });
+    transform->SetScaling({ 2.0f,2.0f,2.0f });
+    collider->SetCenter({ 0.0f, 1.0f, 0.0f });
+    collider->SetScale({ 2.0f,2.4f,2.0f });
+    modelComp->LoadModel("asset\\Model\\barrel.fbx");
+    modelComp->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 
     // behavior生成・登録
     WoodboxBehavior* woodboxBe = obj->AddBehavior<WoodboxBehavior>();
@@ -152,6 +154,8 @@ void Factory::CreateWoodbox(GameObject* obj, DirectX::XMFLOAT3 position)
 
 void Factory::CreateEnemy(GameObject* enemy, DirectX::XMFLOAT3 position)
 {
+    enemy->SetName("Enemy");
+
     // component生成・登録
     TransformComponent* transform = enemy->AddComponent<TransformComponent>();
     SphereColliderComponent* collider = enemy->AddComponent<SphereColliderComponent>();
@@ -216,6 +220,26 @@ void Factory::CreateTrain(GameObject* obj, DirectX::XMFLOAT3 position)
 
     // behavior生成・登録
     TrainBehavior* trainBe = obj->AddBehavior<TrainBehavior>();
+}
+
+void Factory::CreateDodai(GameObject* obj, DirectX::XMFLOAT3 position)
+{
+    obj->SetName("Dodai");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetScaling({ 2.0f,3.0f,2.0f });
+    modelComp->LoadModel("asset\\Model\\dodai.fbx");
+    collider->SetCenter({ 0.0f, 3.0f, 0.0f });
+    collider->SetScale({ 4.0f, 7.0f, 4.0f });
+    collider->SetLayer(ColliderComponent::Layer::Field);
+
+    LiftupBehavior* liftBe = obj->AddBehavior<LiftupBehavior>();
 }
 
 void Factory::CreateBoxCollider(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rotation, DirectX::XMFLOAT3 center, DirectX::XMFLOAT3 size)

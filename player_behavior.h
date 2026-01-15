@@ -71,6 +71,9 @@ private:
     TransformComponent* m_shipTransform = nullptr;
     float m_respawnTimer = 0.0f;
 
+    // ダメージ
+    float m_damageTimer = 0.0f;
+
 public:
     PlayerBehavior(GameObject* owner);
     ~PlayerBehavior();

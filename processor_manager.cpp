@@ -183,13 +183,15 @@ void ProcessorM_Draw(IScene* pScene)
         g_Renderer3DModelProcessor->Process(pScene);
         g_Renderer3DCubeProcessor->Process(pScene);
 
+        // UI用ライト設定
+        g_LightProcessor->SetUiLight();
+
         // パーティクル
         ParticleM_Draw();
 
         // world配置
         // -ワールド配置のUIは、必ず前面に描画される-
         SetBlendState(BLENDSTATE_ALFA);
-        g_LightProcessor->SetUiLight();
         g_RendererImageProcessor->Process(pScene);
 
         // スナップショット撮影
@@ -207,7 +209,6 @@ void ProcessorM_Draw(IScene* pScene)
     const float w = (float)Direct3D_GetBackBufferWidth();
     const float h = (float)Direct3D_GetBackBufferHeight();
     g_CameraProcessor->DrawSnapshot(0, w / 2.0f, h / 2.0f, w, h);
-    //DebugRenderer_DrawFlush();
     SetBlendState(BLENDSTATE_ALFA);
 
     // UI配置設定
@@ -228,6 +229,9 @@ void ProcessorM_Draw(IScene* pScene)
 
     Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
     Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+
+    /*g_CameraProcessor->BindMatrix(0);
+    DebugRenderer_DrawFlush();*/
 
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();

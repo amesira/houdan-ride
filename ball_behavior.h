@@ -29,6 +29,8 @@ private:
 
     bool m_isGrounded = false;
 
+    float m_radius = 0.5f;
+
 public:
     BallBehavior(GameObject* owner);
     ~BallBehavior();
@@ -55,6 +57,8 @@ public:
     void    SetDestroyTimer(float time) { m_destroyTimer = time; }
 
     bool    IsGrounded() const { return m_isGrounded; }
+
+    void    AddRadius(float deltaRadius);
 
 };
 #endif // BALL_BEHAVIOR_H

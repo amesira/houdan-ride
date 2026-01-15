@@ -114,6 +114,8 @@ void EnemyBehavior::Update(IScene* pScene)
                     mtv.y *= -10.0f;
                     mtv.z *= -10.0f;
                     ballBehavior->AddBounceVelocity(mtv);
+
+                    ballBehavior->AddRadius(0.1f);
                 }
             }
         }

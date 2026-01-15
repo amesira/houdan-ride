@@ -31,7 +31,7 @@ WoodboxBehavior::WoodboxBehavior(GameObject* owner)
     m_model = owner->GetComponent<ModelComponent>();
 
     if(g_pWoodboxBreakTexture == nullptr) {
-        LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\star_01.png");
+        LoadTexture(&g_pWoodboxBreakTexture, L"asset\\Texture\\white.bmp");
         ParticleM_RegisterEmitter("ExpEffect", g_pWoodboxBreakTexture);
     }
 }
@@ -58,7 +58,7 @@ void WoodboxBehavior::Update(IScene* pScene)
         // 木箱破壊エフェクト
         Particle::Data data = {};
         data.color = { 1.0f, 1.0f,0.0f,1.0f };
-        data.scaling = { 1.0f,1.0f,1.0f };
+        data.scaling = { 0.6f, 0.6f, 0.6f };
         data.uvRect = { 0.0f,0.0f,1.0f,1.0f };
 
         Particle::Settings settings = {};

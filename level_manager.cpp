@@ -15,6 +15,8 @@
 #include "transform_component.h"
 #include "image_component.h"
 #include "camera_component.h"
+#include "model_component.h"
+#include "collider_component.h"
 
 #include "mi_math.h"
 
@@ -84,6 +86,11 @@ void LevelM_Update(SceneBase* pScene)
         int r = rand() % 2;
         if (r == 0) {
             LevelObjects::CreateWoodboxes1(pScene, pos);
+
+            pos = g_MainShip_TrainBehavior->GetPosition();
+            pos.x += 4.0f;
+            pos.z += 7.0f;
+            LevelObjects::CreateEnemyGroup1(pScene, pos);
         }
         else if (r == 1) {
             LevelObjects::CreateWoodboxes2(pScene, pos);
@@ -129,6 +136,8 @@ void LevelM_Update(SceneBase* pScene)
         g_Water_Transform->GetPosition().y,
         g_MainShip_TrainBehavior->GetPosition().z
     ));
+
+
 }
 
 void LevelObjects::CreateMainShip(SceneBase* pScene, XMFLOAT3 position)
@@ -212,11 +221,7 @@ void LevelObjects::CreateWoodboxes1(SceneBase* pScene, XMFLOAT3 position)
 {
     // 土台を作る
     GameObject* base = pScene->CreateGameObject();
-    Factory::CreateBox(base, position, 
-        XMFLOAT3(0.0f, 0.0f, 0.0f),
-        XMFLOAT3(2.0f, 3.0f, 2.0f), 
-        XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f));
-    LiftupBehavior* liftBe = base->AddBehavior<LiftupBehavior>();
+    Factory::CreateDodai(base, { position.x, position.y - 5.0f, position.z });
 
     // 木箱を積む（縦に3つ）
     GameObject* woodbox = pScene->CreateGameObject();
@@ -240,11 +245,7 @@ void LevelObjects::CreateWoodboxes2(SceneBase* pScene, XMFLOAT3 position)
 {
     // 土台を作る
     GameObject* base = pScene->CreateGameObject();
-    Factory::CreateBox(base, position, 
-        XMFLOAT3(0.0f, 0.0f, 0.0f), 
-        XMFLOAT3(2.0f, 3.0f, 2.0f), 
-        XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f));
-    LiftupBehavior* liftBe = base->AddBehavior<LiftupBehavior>();
+    Factory::CreateDodai(base, { position.x, position.y - 5.0f, position.z });
 
     // 木箱を積む（縦に3つ）
     GameObject* woodbox = pScene->CreateGameObject();

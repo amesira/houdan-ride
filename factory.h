@@ -31,6 +31,8 @@ namespace Factory {
     void CreateBox          (GameObject* cube, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 rotation, DirectX::XMFLOAT3 scaling, DirectX::XMFLOAT4 color);
     void CreateTrain        (GameObject*, DirectX::XMFLOAT3 position);
 
+    void CreateDodai(GameObject*, DirectX::XMFLOAT3 position);
+
     // component
     void CreateBoxCollider  (GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, DirectX::XMFLOAT3 center, DirectX::XMFLOAT3 size);
 

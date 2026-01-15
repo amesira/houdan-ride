@@ -34,6 +34,8 @@ using namespace DirectX;
 #include "particle_manager.h"
 #include "text_component.h"
 
+static ID3D11ShaderResourceView* s_playerDamageTexture = nullptr;
+
 PlayerBehavior::PlayerBehavior(GameObject* owner) 
     : Behavior(BehaviorTypeID::getTypeID<PlayerBehavior>())
 {
@@ -51,6 +53,9 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
     m_throwPowerSlider = nullptr;
 
     ParticleM_SetPlayer(m_transform, this);
+
+    LoadTexture(&s_playerDamageTexture, L"asset\\Texture\\white.bmp");
+    ParticleM_RegisterEmitter("PlayerDamage", s_playerDamageTexture);
 }
 
 PlayerBehavior::~PlayerBehavior()
@@ -188,6 +193,51 @@ void PlayerBehavior::Update(IScene* pScene)
 
         if (m_penaltyTextTimer < 1.0f) {
             m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,m_penaltyTextTimer });
+        }
+    }
+
+    // 敵に触れた
+    if (m_damageTimer > 0.0f) {
+        float blend = (m_damageTimer > 0.5f) ? (m_damageTimer - 0.5f) * 2.0f : m_damageTimer * 2.0f;
+        m_image->SetColor({ 1.0f,1.0f - blend,1.0f - blend,1.0f });
+        m_damageTimer -= deltaTime;
+    }
+    else{
+        for(int i = 0; i < ColliderComponent::MAX_COLLISION_DATA; i++) {
+            auto collisionData = m_collider->GetCollisionData(i);
+            if(collisionData.GetCollisionEnter()) {
+                GameObject* otherObj = collisionData.m_other->GetOwner();
+                if(otherObj->GetName() == "Enemy") {
+                    // パーティクル発生(test)
+                    Particle::Data particleData = {};
+                    particleData.position = m_transform->GetPosition();
+                    particleData.scaling = { 0.1f,0.1f,0.1f };
+                    particleData.color = { 1.0f, 1.0f, 0.5f, 1.0f };
+                    particleData.uvRect = { 0.0f, 0.0f, 1.0f, 1.0f };
+
+                    Particle::Settings particleSettings = {};
+                    particleSettings.velocity = { 0.0f, 5.0f, 0.0f };
+                    particleSettings.gravity = { 0.0f, -9.8f, 0.0f };
+                    particleSettings.fadeSize = true;
+                    particleSettings.fadeAlpha = false;
+
+                    ParticleEmit::EmitExplosion(
+                        "PlayerDamage",
+                        particleData,
+                        particleSettings,
+                        5.0f,
+                        50
+                    );
+
+                    m_scoreBuffer -= 50.0f;
+                    m_penaltyText->SetText(u8"-50");
+                    m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
+                    m_penaltyRect->SetPosition(m_penaltyStartPos);
+                    m_penaltyTextTimer = 2.0f;
+
+                    m_damageTimer = 1.0f;
+                }
+            }
         }
     }
 }
@@ -334,7 +384,7 @@ void PlayerBehavior::UpdateRideOnBall(float deltaTime)
         XMFLOAT3 ballPos = m_ballTransform->GetPosition();
         m_transform->SetPosition({
             ballPos.x,
-            ballPos.y + 1.7f,
+            ballPos.y + 1.7f * m_ballTransform->GetScaling().x / 3.0f,
             ballPos.z
             });
         return;

@@ -54,6 +54,9 @@ void BallBehavior::Update(IScene* pScene)
         m_isGrounded = false;
     }
 
+    m_radius = m_collider->GetRadius();
+    m_transform->SetScaling({ m_radius * 3.0f, m_radius * 3.0f, m_radius * 3.0f });
+
     // 速度設定
     XMFLOAT3 velocity = m_rigidbody->GetVelocity();
 
@@ -142,4 +145,12 @@ XMFLOAT3 BallBehavior::GetPosition() const
         return m_transform->GetPosition();
     }
     return { 0.0f,0.0f,0.0f };
+}
+
+void BallBehavior::AddRadius(float deltaRadius)
+{
+    m_radius = m_collider->GetRadius() + deltaRadius;
+    if (m_radius > 2.0f)m_radius = 2.0f;
+
+    m_collider->SetRadius(m_radius);
 }
