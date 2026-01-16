@@ -40,9 +40,10 @@ public:
 
     // Euler角での操作
     void    SetEulerRotation(DirectX::XMFLOAT3 euler) {
-        m_rotation = DirectX::XMQuaternionRotationRollPitchYaw(
+        m_rotation = XMQuaternionRotationRollPitchYaw(
             euler.x, euler.y, euler.z
         );
+        m_rotation = XMQuaternionNormalize(m_rotation);
     }
     DirectX::XMFLOAT3   GetEulerRotation()const {
         // 念のため正規化（安全策）

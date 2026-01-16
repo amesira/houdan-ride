@@ -19,6 +19,9 @@ static ID3D11DeviceContext* g_pContext = nullptr;
 static IScene* g_SceneInstance[SCENE::SCENE_MAX];
 static SCENE g_Scene = SCENE::SCENE_NONE;
 
+static GameScene* g_pGameScene = nullptr;
+static ResultScene* g_pResultScene = nullptr;
+
 //===================================================
 // スコア初期化処理
 //===================================================
@@ -29,11 +32,15 @@ void Manager_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 
     g_SceneInstance[SCENE::SCENE_NONE] = nullptr;
     g_SceneInstance[SCENE::SCENE_TITLE] = new TitleScene();
-    g_SceneInstance[SCENE::SCENE_GAME] = new GameScene();
-    g_SceneInstance[SCENE::SCENE_RESULT] = new ResultScene();
+
+    g_pGameScene = new GameScene();
+    g_SceneInstance[SCENE::SCENE_GAME] = g_pGameScene;
+
+    g_pResultScene = new ResultScene();
+    g_SceneInstance[SCENE::SCENE_RESULT] = g_pResultScene;
 
     Fade_Initialize(pDevice, pContext);
-    SetScene(SCENE::SCENE_RESULT);
+    SetScene(SCENE::SCENE_TITLE);
 }
 
 //===================================================
@@ -64,6 +71,17 @@ void Manager_Draw()
 
 
     Direct3D_Present();
+}
+
+void Manager_SetGameLevel(int level)
+{
+    g_pGameScene->SetGameLevel(level);
+    g_pResultScene->SetLevelID(level);
+}
+
+void Manager_SendScore(int score)
+{
+    g_pResultScene->SetScore(score);
 }
 
 void SetScene(SCENE scene)

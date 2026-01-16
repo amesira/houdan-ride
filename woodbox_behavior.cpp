@@ -63,7 +63,7 @@ void WoodboxBehavior::Update(IScene* pScene)
         // 木箱破壊エフェクト
         Particle::Data data = {};
         data.color = { 1.0f, 1.0f,0.0f,1.0f };
-        data.scaling = { 0.6f, 0.6f, 0.6f };
+        data.scaling = { 0.2f, 0.2f, 0.2f };
         data.uvRect = { 0.0f,0.0f,1.0f,1.0f };
 
         Particle::Settings settings = {};

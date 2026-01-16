@@ -69,7 +69,7 @@ void ParticleM_Update(float dt)
                         if(diff < 0.5f) {
                             particle.enabled = false;
                             if(g_playerBehavior) {
-                                g_playerBehavior->AddScore(10);
+                                g_playerBehavior->AddScore(50);
                             }
                         }
                     }

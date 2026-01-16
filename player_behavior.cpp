@@ -34,6 +34,8 @@ using namespace DirectX;
 #include "particle_manager.h"
 #include "text_component.h"
 
+#include "manager.h"
+
 static ID3D11ShaderResourceView* s_playerDamageTexture = nullptr;
 
 PlayerBehavior::PlayerBehavior(GameObject* owner) 
@@ -60,7 +62,7 @@ PlayerBehavior::PlayerBehavior(GameObject* owner)
 
 PlayerBehavior::~PlayerBehavior()
 {
-
+    
 }
 
 void PlayerBehavior::Update(IScene* pScene)
@@ -143,8 +145,8 @@ void PlayerBehavior::Update(IScene* pScene)
 
         // スコアがマイナス
         if(m_penaltyText && m_penaltyRect){
-            m_scoreBuffer -= 500.0f;
-            m_penaltyText->SetText(u8"-500");
+            m_scoreBuffer -= 5000.0f;
+            m_penaltyText->SetText(u8"-5000");
             m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
             m_penaltyRect->SetPosition(m_penaltyStartPos);
             m_penaltyTextTimer = 2.0f;
@@ -216,7 +218,7 @@ void PlayerBehavior::Update(IScene* pScene)
                     Particle::Data particleData = {};
                     particleData.position = m_transform->GetPosition();
                     particleData.scaling = { 0.1f,0.1f,0.1f };
-                    particleData.color = { 1.0f, 1.0f, 0.5f, 1.0f };
+                    particleData.color = { 1.0f, 0.0f, 0.0f, 1.0f };
                     particleData.uvRect = { 0.0f, 0.0f, 1.0f, 1.0f };
 
                     Particle::Settings particleSettings = {};
@@ -234,8 +236,8 @@ void PlayerBehavior::Update(IScene* pScene)
                     );
 
                     if (m_penaltyRect && m_penaltyText) {
-                        m_scoreBuffer -= 50.0f;
-                        m_penaltyText->SetText(u8"-50");
+                        m_scoreBuffer -= 1000.0f;
+                        m_penaltyText->SetText(u8"-1000");
                         m_penaltyText->SetColor({ 1.0f,0.0f,0.0f,1.0f });
                         m_penaltyRect->SetPosition(m_penaltyStartPos);
                         m_penaltyTextTimer = 2.0f;
@@ -437,9 +439,13 @@ void PlayerBehavior::UpdateRideOnBall(float deltaTime)
 
 void PlayerBehavior::UpdateThrowBall(float deltaTime)
 {
-    if (!m_ballObject) return;
+    if (!m_pointerTransform)return;
 
-    if(!m_pointerTransform)return;
+    if (!m_ballObject){
+        m_throwPowerSlider->SetEnable(false);
+        m_pointerTransform->SetEnable(false);
+        return;
+    }
 
     m_throwDirection = m_pointerTransform->GetPosition();
     {
@@ -460,8 +466,16 @@ void PlayerBehavior::UpdateThrowBall(float deltaTime)
             m_throwPowerSlider->SetValue(m_throwPower / m_throwPowerMax);
         }
 
+        m_throwPowerSlider->SetEnable(true);
+        m_pointerTransform->SetEnable(true);
+
         return;
     }
+    else {
+        m_throwPowerSlider->SetEnable(false);
+        m_pointerTransform->SetEnable(false);
+    }
+
     if(Mouse_IsButtonUpTrigger(Mouse_Button::LEFT)){
         m_tpsCamera->SetSlowMotion(false);
 

@@ -30,6 +30,8 @@ TpsCameraBehavior::TpsCameraBehavior(GameObject* owner)
 
     m_angleX = 0.0f; // 初期角度は後ろ向き
     m_angleY = 0.7f;
+
+    m_useSlowMotion = false;
 }
 
 TpsCameraBehavior::~TpsCameraBehavior()
@@ -91,13 +93,15 @@ void TpsCameraBehavior::Update(IScene* pScene)
     }
 
     // スローモーション
-    if (m_isSlowMotion) {
-        FPS_SetTimeScale(0.3f);
-        grayRate = MiMath::Lerp(grayRate, 1.0f, deltaTime * 5.0f);
-    }
-    else {
-        FPS_SetTimeScale(1.0f);
-        grayRate = MiMath::Lerp(grayRate, 0.0f, deltaTime * 3.0f);
+    if (m_useSlowMotion){
+        if (m_isSlowMotion) {
+            FPS_SetTimeScale(0.3f);
+            grayRate = MiMath::Lerp(grayRate, 1.0f, deltaTime * 5.0f);
+        }
+        else {
+            FPS_SetTimeScale(1.0f);
+            grayRate = MiMath::Lerp(grayRate, 0.0f, deltaTime * 3.0f);
+        }
     }
 
     m_camera->SetShaderGrayRate(grayRate);

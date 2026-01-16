@@ -29,6 +29,7 @@ private:
 
     // シェーダー
     float       m_shaderGrayRate = 0.0f;
+    XMFLOAT4    m_clearColor = { 0.1f,0.7f,1.0f,1.0f }; // クリアカラー
 
 public:
     void    SetAtPosition(XMFLOAT3 atPosition) { m_atPosition = atPosition; }
@@ -62,6 +63,9 @@ private:
 
 public:
     ID3D11ShaderResourceView* GetSnapshot() const { return m_snapshot; }
+
+    void    SetClearColor(XMFLOAT4 clearColor) { m_clearColor = clearColor; }
+    XMFLOAT4   GetClearColor() const { return m_clearColor; }
 
 };
 

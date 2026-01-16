@@ -31,6 +31,7 @@
 #include "liftup_behavior.h"
 #include "field_behavior.h"
 #include "button_behavior.h"
+#include "golf_behavior.h"
 
 void Factory::CreateTpsCamera(GameObject* obj, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition)
 {
@@ -277,6 +278,7 @@ void Factory::CreateBoxCollider(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rot
 
     boxCollider->SetCenter(center);
     boxCollider->SetScale(size);
+    boxCollider->SetLayer(ColliderComponent::Layer::Field);
 }
 
 void Factory::CreateUiText(GameObject* uiText, DirectX::XMFLOAT3 position, const char8_t* text, float fontSize, DirectX::XMFLOAT4 color, bool isCenter)
@@ -338,7 +340,7 @@ void Factory::CreateUiImage(GameObject* obj, XMFLOAT3 position, float rotation, 
     imageComp->SetWorldSpaceType(WorldSpaceType::None);
 }
 
-void Factory::CreateUiButton(GameObject* obj, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color)
+void Factory::CreateUiButton(GameObject* obj, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, const wchar_t* texturePath)
 {
     // component生成・登録
     RectTransformComponent* rectTransform = obj->AddComponent<RectTransformComponent>();
@@ -347,7 +349,7 @@ void Factory::CreateUiButton(GameObject* obj, XMFLOAT2 position, XMFLOAT2 size, 
     // component設定
     rectTransform->SetPosition({ position.x, position.y, 0.0f });
     rectTransform->SetScaling({ size.x, size.y, 1.0f });
-    imageComp->Load(L"asset\\Texture\\white.bmp");
+    imageComp->Load(texturePath);
     imageComp->SetColor(color);
     imageComp->SetWorldSpaceType(WorldSpaceType::None);
 
@@ -462,4 +464,28 @@ void Factory::CreateResultBottle(GameObject* obj, XMFLOAT3 position, XMFLOAT3 ro
 
     // behavior生成・登録
     FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
+}
+
+void Factory::CreateGolfGameObject(GameObject* obj, XMFLOAT3 position, float angleY)
+{
+    obj->SetName("GolfGameObject");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ 0.0f, XMConvertToRadians(angleY), 0.0f });
+    transform->SetScaling({ 2.5f,2.5f,2.5f });
+    modelComp->LoadModel("asset\\Model\\golf.fbx");
+    collider->SetCenter({ 0.0f, 3.0f, 0.0f });
+    collider->SetScale({ 4.0f, 4.0f, 4.0f });
+    collider->SetLayer(ColliderComponent::Layer::Field);
+
+    // behavior生成・登録
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
+    GolfBehavior* golfBe = obj->AddBehavior<GolfBehavior>();
+
 }

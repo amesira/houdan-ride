@@ -11,6 +11,8 @@ void LevelM_Initialize(SceneBase* pScene, bool isTitle = false);
 void LevelM_Finalize();
 void LevelM_Update(SceneBase* pScene);
 
+void LevelM_ChangeLevel(SceneBase* pScene, int levelID);
+
 namespace LevelObjects {
     void CreateMainShip(SceneBase* pScene, XMFLOAT3 position);
 
@@ -20,4 +22,6 @@ namespace LevelObjects {
     void CreateEnemyGroup1(SceneBase* pScene, XMFLOAT3 position);
 
     void CreateGoalObject(SceneBase* pScene, XMFLOAT3 position);
+
+    void CreateGolfGame(SceneBase* pScene, XMFLOAT3 position, float angleY);
 }

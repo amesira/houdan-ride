@@ -90,6 +90,9 @@ void TrainBehavior::EntryRideObjects(BoxColliderComponent* col)
         if (collisionData.GetCollisionStay()) {
             GameObject* otherObj = collisionData.m_other->GetOwner();
             if (otherObj->GetName() == "Train" || otherObj->GetName() == "TrainChildCollider")continue; // 自分自身は無視
+            if (otherObj->GetName() != "Player" 
+                && otherObj->GetName() != "Enemy" 
+                && otherObj->GetName() != "Ball")continue; // プレイヤーと箱のみ対象
 
             auto* otherTransform = otherObj->GetComponent<TransformComponent>();
 

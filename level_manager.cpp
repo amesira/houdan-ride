@@ -18,6 +18,8 @@
 #include "model_component.h"
 #include "collider_component.h"
 #include "text_component.h"
+#include "rect_transform_component.h"
+#include "player_behavior.h"
 
 #include "mi_math.h"
 
@@ -37,7 +39,7 @@ static TransformComponent* g_Water_Transform = nullptr;
 static bool g_isTitle = false;
 
 static TextComponent* g_GoalMeter_TextComp = nullptr;
-static float g_GoalDistance = 30.0f;
+static float g_GoalDistance = 200.0f;
 static bool g_GoalReached = false;
 static bool g_CreateGoalObjects = false;
 
@@ -127,8 +129,8 @@ void LevelM_Update(SceneBase* pScene)
         else pos.x += 7.5f;
 
         // ランダムで木箱を生成
-        int r = rand() % 2;
-        if (r == 0) {
+        int r = rand() % 20;
+        if (r <= 7) {
             LevelObjects::CreateWoodboxes1(pScene, pos);
 
             pos = g_MainShip_TrainBehavior->GetPosition();
@@ -136,7 +138,7 @@ void LevelM_Update(SceneBase* pScene)
             pos.z += 7.0f;
             LevelObjects::CreateEnemyGroup1(pScene, pos);
         }
-        else if (r == 1) {
+        else if (r <= 14) {
             LevelObjects::CreateWoodboxes2(pScene, pos);
 
             pos = g_MainShip_TrainBehavior->GetPosition();
@@ -144,6 +146,10 @@ void LevelM_Update(SceneBase* pScene)
             pos.z += 7.0f;
             LevelObjects::CreateEnemyGroup1(pScene, pos);
         }
+        else {
+            LevelObjects::CreateGolfGame(pScene, pos,0.0f);
+        }
+
 
         g_SpawnIntervalZ += 20.0f;
     }
@@ -203,6 +209,9 @@ void LevelM_Update(SceneBase* pScene)
         std::string meterText = "本船へ帰還した！！";
         std::u8string u8MeterText = std::u8string(meterText.begin(), meterText.end());
         g_GoalMeter_TextComp->SetText(u8MeterText);
+        g_GoalMeter_TextComp->SetFontSize(100.0f);
+        RectTransformComponent* rectComp = g_GoalMeter_TextComp->GetOwner()->GetComponent<RectTransformComponent>();
+        rectComp->SetPosition(XMFLOAT3(1280.0f / 2.0f, 300.0f, 0.0f));
 
         if (!oldGoalReached) {
             // ゴール到達時の処理
@@ -212,7 +221,35 @@ void LevelM_Update(SceneBase* pScene)
         g_Timer -= FPS_GetUnscaledDeltaTime();
         if (g_Timer <= 0.0f) {
             g_Timer += 50.0f;
-            SetFade(60, { 0.0f,1.0f,1.0f,1.0f }, FADE_STATE::FADE_OUT, SCENE::SCENE_TITLE);
+            SetFade(120, { 0.0f,1.0f,1.0f,1.0f }, FADE_STATE::FADE_OUT, SCENE::SCENE_RESULT);
+
+            // 結果シーン用にスコアをセット
+            GameObject* player = pScene->GetGameObjectByName("Player");
+            PlayerBehavior* playerBe = player->GetBehavior<PlayerBehavior>();
+            int score = static_cast<int>(playerBe->GetScore());
+            Manager_SendScore(score);
+        }
+    }
+}
+
+void LevelM_ChangeLevel(SceneBase* pScene, int levelID)
+{
+    if(g_MainShip_TrainBehavior){
+        if(levelID == 1){
+            g_MainShip_TrainBehavior->SetMoveSpeed(2.5f);
+        }
+        else {
+            g_MainShip_TrainBehavior->SetMoveSpeed(4.5f);
+        }
+    }
+
+    if (g_Water_Transform) {
+        ImageComponent* imageComp = g_Water_Transform->GetOwner()->GetComponent<ImageComponent>();
+        if (levelID == 1) {
+            imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+        }
+        else {
+            imageComp->SetColor(XMFLOAT4(0.0f, 0.2f, 0.2f, 0.7f));
         }
     }
 }
@@ -373,4 +410,37 @@ void LevelObjects::CreateGoalObject(SceneBase* pScene, XMFLOAT3 position)
     // ゴールオブジェクトを生成
     GameObject* goal = pScene->CreateGameObject();
     Factory::CreateGoalShip(goal, position);
+}
+
+void LevelObjects::CreateGolfGame(SceneBase* pScene, XMFLOAT3 position, float angleY)
+{
+    // ゴルフゲームオブジェクトを生成
+    GameObject* golfGame = pScene->CreateGameObject();
+    Factory::CreateGolfGameObject(golfGame, position, 180.0f);
+
+    // 外枠
+    GameObject* collider = pScene->CreateGameObject();
+    Factory::CreateBoxCollider(collider, position,
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(0.0f, 2.5f, -2.5f),
+        XMFLOAT3(6.0f,6.0f,0.7f));
+
+    collider = pScene->CreateGameObject();
+    Factory::CreateBoxCollider(collider, position,
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(0.0f, 2.5f, 2.5f),
+        XMFLOAT3(6.0f, 6.0f, 0.7f));
+
+    collider = pScene->CreateGameObject();
+    Factory::CreateBoxCollider(collider, position,
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(2.5f, 2.5f, 0.0f),
+        XMFLOAT3(0.7f, 6.0f, 6.0f));
+
+    collider = pScene->CreateGameObject();
+    Factory::CreateBoxCollider(collider, position,
+        XMFLOAT3(0.0f, 0.0f, 0.0f),
+        XMFLOAT3(-2.5f, 2.5f, 0.0f),
+        XMFLOAT3(0.7f, 6.0f, 6.0f));
+
 }

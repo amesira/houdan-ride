@@ -26,7 +26,7 @@
 bool Direct3D_Initialize(HWND hWnd);    // DirectXの初期化
 void Direct3D_Finalize();               // DirectXの終了処理
 
-void Direct3D_BeginScene();
+void Direct3D_BeginScene(float r, float g, float b);
 
 void Direct3D_Clear();  // バックバッファのクリア
 void Direct3D_Present();// バックバッファの表示

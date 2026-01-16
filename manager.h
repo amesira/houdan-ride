@@ -27,6 +27,9 @@ void Manager_Finalize();
 void Manager_Update();
 void Manager_Draw();
 
+void Manager_SetGameLevel(int level);
+void Manager_SendScore(int score);
+
 void SetScene(SCENE scene);
 
 #endif

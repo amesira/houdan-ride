@@ -33,6 +33,10 @@ private:
 public:
     void    SetTexture(ID3D11ShaderResourceView* pTexture) { m_pTexture = pTexture; }
     void    Load(const wchar_t* fileName) {
+        if(m_pTexture){
+            m_pTexture->Release();
+            m_pTexture = nullptr;
+        }
         LoadTexture(&m_pTexture, fileName);
     }
     void    SetUvRect(DirectX::XMFLOAT4 uvRect) { m_uvRect = uvRect; }

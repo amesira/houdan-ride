@@ -185,6 +185,9 @@
     <ClCompile Include="result.cpp">
       <Filter>Sources\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="golf_behavior.cpp">
+      <Filter>Sources\GameParts\Behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -372,6 +375,9 @@
     </ClInclude>
     <ClInclude Include="result.h">
       <Filter>Sources\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="golf_behavior.h">
+      <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

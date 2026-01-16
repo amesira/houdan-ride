@@ -26,6 +26,8 @@
 #include "level_manager.h"
 #include "tps_camera_behavior.h"
 #include "button_behavior.h"
+#include "text_component.h"
+#include "camera_component.h"
 
 void TitleScene::Initialize()
 {
@@ -43,6 +45,7 @@ void TitleScene::Initialize()
     Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,0.0f,0.0f });
     TpsCameraBehavior* tpsCameraBe = camera->GetBehavior<TpsCameraBehavior>();
     tpsCameraBe->SetFreeze(true);
+    m_cameraComp = camera->GetComponent<CameraComponent>();
 
     // light
     GameObject* light = this->CreateGameObject();
@@ -70,10 +73,12 @@ void TitleScene::Initialize()
         GameObject* uiText = this->CreateGameObject();
         Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 100.0f, 0.0f }, u8"朝の海", 70.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
         m_selectUiObjects.push_back(uiText);
+        m_levelTextComp = uiText->GetComponent<TextComponent>();
         
         uiText = this->CreateGameObject();
         Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 150.0f, 0.0f }, u8"比較的穏やかな朝の海。海賊モンスターも少なめで、砂金が集めやすいぞ。", 30.0f, { 1.0f,1.0f,0.8f,1.0f }, true);
         m_selectUiObjects.push_back(uiText);
+        m_levelDescTextComp = uiText->GetComponent<TextComponent>();
 
         GameObject* uiButton = this->CreateGameObject();
         Factory::CreateUiButton(uiButton, { 1280.0f / 2.0f, 600.0f }, { 300.0f,80.0f },{1.0f, 1.0f, 1.0f,1.0f});
@@ -82,7 +87,17 @@ void TitleScene::Initialize()
         m_startButtonMorningSeaBe = uiButton->GetBehavior<ButtonBehavior>();
 
         uiText = this->CreateGameObject();
-        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 610.0f, 0.0f }, u8"スタート！", 50.0f, { 0.0f,0.8f,1.0f,1.0f }, true);
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 610.0f, 0.0f }, u8"スタート！", 50.0f, { 1.0f,0.8f,0.0f,1.0f }, true);
+        m_selectUiObjects.push_back(uiText);
+
+        uiButton = this->CreateGameObject();
+        Factory::CreateUiButton(uiButton, { 1280.0f / 2.0f - 500.0f, 400.0f }, { 80.0f,100.0f }, { 1.0f,1.0f,1.0f,1.0f }, L"asset\\Texture\\left.png");
+        m_leftButtonBe = uiButton->GetBehavior<ButtonBehavior>();
+        m_selectUiObjects.push_back(uiButton);
+
+        uiText = this->CreateGameObject();
+        Factory::CreateUiButton(uiText, { 1280.0f / 2.0f + 500.0f, 400.0f }, { 80.0f,100.0f }, { 1.0f,1.0f,1.0f,1.0f }, L"asset\\Texture\\right.png");
+        m_rightButtonBe = uiText->GetBehavior<ButtonBehavior>();
         m_selectUiObjects.push_back(uiText);
     }
     for (auto& ui : m_selectUiObjects) {
@@ -91,7 +106,11 @@ void TitleScene::Initialize()
 
     LevelM_Initialize(this, true);
 
+    m_selectLevel = 1;
     m_isSelectScene = false;
+
+    m_bgmHandle = LoadAudio("asset\\Audio\\title.wav");
+    PlayAudio(m_bgmHandle, true);
 }
 
 void TitleScene::Finalize()
@@ -104,6 +123,8 @@ void TitleScene::Finalize()
 
     m_titleUiObjects.clear();
     m_selectUiObjects.clear();
+
+    UnloadAudio(m_bgmHandle);
 
     LevelM_Finalize();
 }
@@ -136,9 +157,45 @@ void TitleScene::Update()
             }
         }
 
-        // 
+        // スタートボタン押下
         if (m_startButtonMorningSeaBe->GetIsPressed()) {
+            Manager_SetGameLevel(m_selectLevel);
             SetFade(60, { 0.0f,1.0f,1.0f,1.0f }, FADE_STATE::FADE_OUT, SCENE::SCENE_GAME);
+        }
+
+        // レベル選択
+        bool changedLevel = false;
+        if(m_leftButtonBe->GetIsPressed()) {
+            m_selectLevel--;
+            if (m_selectLevel < 1) {
+                m_selectLevel = 2;
+            }
+            LevelM_ChangeLevel(this, m_selectLevel);
+            changedLevel = true;
+            
+            
+        }
+        if (m_rightButtonBe->GetIsPressed()) {
+            m_selectLevel++;
+            if (m_selectLevel > 2) {
+                m_selectLevel = 1;
+            }
+            LevelM_ChangeLevel(this, m_selectLevel);
+            changedLevel = true;
+           
+        }
+
+        if(changedLevel){
+            if (m_selectLevel == 1) {
+                m_cameraComp->SetClearColor({ 0.1f,0.7f,1.0f,1.0f });
+                m_levelTextComp->SetText(u8"朝の海");
+                m_levelDescTextComp->SetText(u8"比較的穏やかな朝の海。海賊モンスターも少なめで、砂金が集めやすいぞ。");
+            }
+            else {
+                m_cameraComp->SetClearColor({ 0.2f, 0.3f, 0.3f,1.0f });
+                m_levelTextComp->SetText(u8"夜の海");
+                m_levelDescTextComp->SetText(u8"夜の海は早く抜けたい。船のスピードを上げよう…ということは砂金を集める時間も短いな。");
+            }
         }
     }
 

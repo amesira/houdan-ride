@@ -173,3 +173,10 @@ bool CameraProcessor::DrawSnapshot(int index, float x, float y, float width, flo
 
     return true;
 }
+
+XMFLOAT4 CameraProcessor::GetClearColor(int index) const
+{
+    CameraComponent* camera = m_cameraObjects[index];
+    if (!camera) return XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
+    return camera->GetClearColor();
+}

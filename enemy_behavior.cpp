@@ -30,7 +30,7 @@ EnemyBehavior::EnemyBehavior(GameObject* owner)
     m_collider = owner->GetComponent<SphereColliderComponent>();
     m_image = owner->GetComponent<ImageComponent>();
 
-    ParticleM_RegisterEmitter("EnemyDeath");
+    ParticleM_RegisterEmitter("ExpEffect");
 }
 
 EnemyBehavior::~EnemyBehavior()
@@ -88,7 +88,7 @@ void EnemyBehavior::Update(IScene* pScene)
                 Particle::Data particleData = {};
                 particleData.position = m_transform->GetPosition();
                 particleData.scaling = { 0.1f,0.1f,0.1f };
-                particleData.color = { 0.0f, 1.0f, 0.5f, 1.0f };
+                particleData.color = { 1.0f, 1.0f, 0.0f, 1.0f };
                 particleData.uvRect = { 0.0f, 0.0f, 1.0f, 1.0f };
 
                 Particle::Settings particleSettings = {};
@@ -98,7 +98,7 @@ void EnemyBehavior::Update(IScene* pScene)
                 particleSettings.fadeAlpha = false;
 
                 ParticleEmit::EmitExplosion(
-                    "EnemyDeath",
+                    "ExpEffect",
                     particleData,
                     particleSettings,
                     5.0f,
@@ -117,6 +117,9 @@ void EnemyBehavior::Update(IScene* pScene)
 
                     ballBehavior->AddRadius(0.1f);
                 }
+            }
+            else if(otherObj->GetName() == "Player") {
+                GetOwner()->Destroy();
             }
         }
     }

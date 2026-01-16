@@ -28,6 +28,8 @@
 
 #include "mi_fps.h"
 
+#include "camera_component.h"
+
 
 struct ResultDef
 {
@@ -51,34 +53,34 @@ std::vector<int> BuildResultIndexList(int score)
 
     while (score > 0){
         // 5000　最大10個
-        if (score >= 5000 && counter < 15) {
+        if (score >= 3000 && counter < 15) {
             result.push_back(0);
-            score -= 5000;
+            score -= 3000;
             counter++;
             continue;
         }
 
         // 1000 or 500×2
-        if (score >= 1000) {
+        if (score >= 700) {
             // 1000ちょうど or 余裕があるならランダム
-            if (score >= 2000 && (rand() % 5 >= 3))
+            if (score >= 700 && (rand() % 5 >= 3))
             {
                 result.push_back(2); // 500
                 result.push_back(2); // 500
-                score -= 1000;
+                score -= 700;
             }
             else
             {
                 result.push_back(1); // 1000
-                score -= 1000;
+                score -= 700;
             }
             continue;
         }
 
         // 500
-        if (score >= 500) {
+        if (score >= 300) {
             result.push_back(2);
-            score -= 500;
+            score -= 300;
             continue;
         }
 
@@ -105,6 +107,11 @@ void ResultScene::Initialize()
     tpsCameraBe->SetCameraAtOffset({ 0.0f,5.0f,10.0f });
     tpsCameraBe->SetCameraPosOffset({ 30.0f,2.0f,10.0f });
 
+    if (m_levelID == 2) {
+        CameraComponent* cameraComp = camera->GetComponent<CameraComponent>();
+        cameraComp->SetClearColor({ 0.2f, 0.3f, 0.3f,1.0f });
+    }
+
     // light
     GameObject* light = this->CreateGameObject();
     Factory::CreateLight(light, { 0.5f,-1.0f,0.5f,0.0f }, { 1.0f,1.0f,1.0f,1.0f }, { 0.65f,0.65f,0.65f,1.0f });
@@ -115,7 +122,13 @@ void ResultScene::Initialize()
     Factory::CreateUiImageWorld(water, XMFLOAT3(0.0f, -3.0f, 0.0f), XMFLOAT3(XMConvertToRadians(-90.0f), 0.0f, 0.0f), XMFLOAT3(100.0f, 200.0f, 1.0f));
     ImageComponent* imageComp = water->GetComponent<ImageComponent>();
     imageComp->Load(L"asset\\Texture\\water.png");
-    imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+
+    if(m_levelID == 1){
+        imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+    }
+    else {
+        imageComp->SetColor(XMFLOAT4(0.0f, 0.2f, 0.2f, 0.7f));
+    }
 
     // 船を生成
     // 船
@@ -143,7 +156,6 @@ void ResultScene::Initialize()
     m_scoreTextComp = uiText->GetComponent<TextComponent>();
 
     // スコアの値から、生成するスコアオブジェクト群を決定
-    m_score = 100000;
     m_scoreObjectIDs = BuildResultIndexList(m_score);
 
     std::mt19937 rng(1234);
@@ -155,6 +167,9 @@ void ResultScene::Initialize()
     // 生成完了のタイミングでスコアが確定するように調整
     m_scoreTimerMax = 0.1f * m_scoreObjectIDs.size();
     m_scoreTimer = 0.0f;
+
+    m_bgmHandle = LoadAudio("asset\\Audio\\result.wav");
+    PlayAudio(m_bgmHandle, true);
 }
 
 void ResultScene::Finalize()
@@ -164,6 +179,8 @@ void ResultScene::Finalize()
     for (GameObject& obj : gameObjects) {
         obj.Destroy();
     }
+
+    UnloadAudio(m_bgmHandle);
 
     m_scoreTextComp = nullptr;
     m_titleButtonBehavior = nullptr;
@@ -200,17 +217,17 @@ void ResultScene::Update()
 
     // スコアテキスト更新
     float dispScoreValue = static_cast<float>(m_score);
-    if(m_scoreTimer < m_scoreTimerMax){
+    if(m_scoreTimer <= m_scoreTimerMax){
         dispScoreValue *= (m_scoreTimer / m_scoreTimerMax);
         m_scoreTimer += FPS_GetDeltaTime();
 
         // 最終的に正確な値にする
-        if(m_scoreTimer >= m_scoreTimerMax){
+        if(m_scoreTimer > m_scoreTimerMax){
             dispScoreValue = static_cast<float>(m_score);
 
             // ノルマ達成かどうか
             GameObject* uiText = this->CreateGameObject();
-            if (m_score >= 50000){
+            if (m_score >= 30000){
                 Factory::CreateUiText(uiText, { 1280.0f / 2.0f - 620.0f, 300.0f, 0.0f }, u8"ノルマ達成！", 70.0f, { 1.0f,1.0f,0.0f,1.0f }, false);
             }
             else {

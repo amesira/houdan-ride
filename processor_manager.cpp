@@ -177,7 +177,8 @@ void ProcessorM_Draw(IScene* pScene)
             }
         }
         // バッファのクリアとシーン描画用RTVのセット
-        Direct3D_BeginScene();
+        XMFLOAT4 clearColor = g_CameraProcessor->GetClearColor(i);
+        Direct3D_BeginScene(clearColor.x, clearColor.y, clearColor.z);
         g_CameraProcessor->BindMatrix(i);
 
         // ライト設定
@@ -216,6 +217,20 @@ void ProcessorM_Draw(IScene* pScene)
     g_CameraProcessor->DrawSnapshot(0, w / 2.0f, h / 2.0f, w, h);
     SetBlendState(BLENDSTATE_ALFA);
 
+    // マップUI描画
+    if (g_CameraProcessor->GetCameraCount() > 1) {
+        SetBlendState(BLENDSTATE_ALFA);
+        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f), 1.0f);
+        XMFLOAT4 alphaColor = g_CameraProcessor->GetClearColor(1);
+        alphaColor.w = 0.0f;
+        Shader_SetPixelOptionAlphaRate(alphaColor);
+
+        g_CameraProcessor->DrawSnapshot(1, 120.0f, 280.0f, 30.0f * 9.0f, 30.0f * 16.0f, false);
+
+        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
+        Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+    }
+
     // UI配置設定
     g_RendererImageProcessor->SetDrawWorldImages(false);
     g_RendererImageProcessor->SetDrawUiImages(true);
@@ -225,20 +240,10 @@ void ProcessorM_Draw(IScene* pScene)
     g_RendererSliderProcessor->Process(pScene);
     g_RendererFontProcessor->Process(pScene);
 
-    // マップUI描画
-    if (g_CameraProcessor->GetCameraCount() > 1) {
-        SetBlendState(BLENDSTATE_ALFA);
-        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 0.1f), 1.0f);
-        Shader_SetPixelOptionAlphaRate(XMFLOAT4(0.1f, 0.7f, 1.0f, 0.0f));
+   
 
-        g_CameraProcessor->DrawSnapshot(1, 120.0f, 280.0f, 30.0f * 9.0f, 30.0f * 16.0f, false);
-
-        Shader_SetPixelOption(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 0.0f);
-        Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
-    }
-
-    //g_CameraProcessor->BindMatrix(0);
-    //DebugRenderer_DrawFlush();
+    /*g_CameraProcessor->BindMatrix(0);
+    DebugRenderer_DrawFlush();*/
 
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();

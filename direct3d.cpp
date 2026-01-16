@@ -218,11 +218,17 @@ void Direct3D_Finalize()
     }
 }
 
-void Direct3D_BeginScene()
+static float g_clearColor[4] = { 0.2f,0.4f,0.8f,1.0f };
+
+void Direct3D_BeginScene(float r, float g, float b)
 {
     // シーンバッファのクリア
-    float clear_color[4] = { 0.1f,0.7f,1.0f,1.0f }; // クリア色設定
-    g_pDeviceContext->ClearRenderTargetView(g_pSceneRtv, clear_color);
+    g_clearColor[0] = r;
+    g_clearColor[1] = g;
+    g_clearColor[2] = b;
+
+    //float clear_color[4] = { 0.1f,0.7f,1.0f,1.0f }; // クリア色設定
+    g_pDeviceContext->ClearRenderTargetView(g_pSceneRtv, g_clearColor);
     g_pDeviceContext->ClearDepthStencilView(g_pDepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
     // シーンバッファをレンダーターゲットに設定

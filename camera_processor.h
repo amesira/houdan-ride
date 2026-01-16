@@ -11,6 +11,9 @@
 #include <string>
 #include "direct3d.h"
 
+#include <DirectXMath.h>
+using namespace DirectX;
+
 class CameraComponent;
 
 class CameraProcessor : public Processor {
@@ -32,5 +35,7 @@ public:
     bool    SnapShotCamera(int index);
 
     bool    DrawSnapshot(int index, float x, float y, float width, float height, bool usePixelOption = true);
+
+    XMFLOAT4   GetClearColor(int index) const;
 };
 #endif // CAMERA_PROCESSOR_H

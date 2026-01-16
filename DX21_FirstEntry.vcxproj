@@ -147,6 +147,7 @@
     <ClCompile Include="factory.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="field_behavior.cpp" />
+    <ClCompile Include="golf_behavior.cpp" />
     <ClCompile Include="liftup_behavior.cpp" />
     <ClCompile Include="mi_fps.cpp" />
     <ClCompile Include="game.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="enemy_behavior.h" />
     <ClInclude Include="factory.h" />
     <ClInclude Include="field_behavior.h" />
+    <ClInclude Include="golf_behavior.h" />
     <ClInclude Include="liftup_behavior.h" />
     <ClInclude Include="mi_fps.h" />
     <ClInclude Include="image_component.h" />

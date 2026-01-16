@@ -69,6 +69,7 @@ void RendererSliderProcessor::Process(IScene* pScene)
 
         // コンポーネントが無効ならスキップ
         if (!pRect && !pTransform) continue;
+        if (!pSlider->GetEnable()) continue;
 
         //----------------------------------------------------
         // BG描画

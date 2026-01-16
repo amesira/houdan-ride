@@ -42,7 +42,7 @@ namespace Factory {
     void CreateUiImageWorld (GameObject*, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale, const wchar_t* texturePath = L"asset\\Texture\\test.jpg");
     void CreateUiSlider     (GameObject*, XMFLOAT3 position, float rotation, XMFLOAT2 size);
     void CreateUiImage(GameObject*, XMFLOAT3 position, float rotation, XMFLOAT2 size, const wchar_t* texturePath);
-    void CreateUiButton(GameObject*, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
+    void CreateUiButton(GameObject*, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, const wchar_t* texturePath = L"asset\\Texture\\white.bmp");
 
     void CreatePointer(GameObject*);
 
@@ -53,6 +53,8 @@ namespace Factory {
 
     void CreateResultChest(GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
     void CreateResultBottle(GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
+
+    void CreateGolfGameObject(GameObject* obj, XMFLOAT3 position, float angleY);
 }
 
 #endif

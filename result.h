@@ -8,6 +8,8 @@ class ButtonBehavior;
 // リザルトシーン
 class ResultScene : public SceneBase {
 private:
+    int m_levelID;
+
     float m_timer;
     int m_counter;
 
@@ -20,10 +22,15 @@ private:
 
     ButtonBehavior* m_titleButtonBehavior;
 
+    int m_bgmHandle;
+
 public:
     void    Initialize() override;
     void    Finalize() override;
 
     void    Update() override;
     void    Draw() override;
+
+    void SetScore(int score) { m_score = score; }
+    void SetLevelID(int levelID) { m_levelID = levelID; }
 };
