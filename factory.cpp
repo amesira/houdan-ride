@@ -372,3 +372,26 @@ void Factory::CreatePointer(GameObject* obj) {
     // behavior生成・登録
     PointerBehavior* pointerBe = obj->AddBehavior<PointerBehavior>();
 }
+
+void Factory::CreateGoalShip(GameObject* obj, XMFLOAT3 position)
+{
+    obj->SetName("GoalShip");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+    
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ 0.0f, XMConvertToRadians(90.0f), 0.0f });
+    transform->SetScaling({ 3.0f,3.0f,3.0f });
+    modelComp->LoadModel("asset\\Model\\goal.fbx");
+    collider->SetCenter({ 0.0f, 4.0f, -0.35f });
+    collider->SetScale({ 14.4f, 1.0f, 11.4f });
+    collider->SetLayer(ColliderComponent::Layer::Field);
+}
+
+void Factory::CreateGoalCharacter(GameObject* obj, XMFLOAT3 position)
+{
+}

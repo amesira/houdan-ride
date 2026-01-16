@@ -47,11 +47,13 @@ void CameraProcessor::Process(IScene* pScene)
 
     auto& cameraCompList = cameraCompPool->GetList();
     for (CameraComponent& camera : cameraCompList) {
+        CameraComponent* c = &camera;
         TransformComponent* transform = camera.GetOwner()->GetComponent<TransformComponent>();
         
         // 無効なコンポーネントはスキップ
-        if (!transform) continue;
-        if (!transform->GetEnable() || !camera.GetEnable()) continue;
+        if (!transform && !c) continue;
+        if (!transform->GetEnable() || !c->GetEnable()) continue;
+        if (camera.GetOwner()->GetActive() == false) continue;
 
         // gameObjectIDsに登録
         if (m_cameraCounter < MAX_CAMERAS) {

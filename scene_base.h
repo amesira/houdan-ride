@@ -37,7 +37,9 @@ protected: // IScene implementation
 
 public:
     SceneBase() {
+        m_gameObjects.clear();
         m_gameObjects.reserve(MAX_GAMEOBJECTS);
+        m_componentPools.clear();
         m_componentPools.reserve(MAX_COMPONENTPOOLS);
         m_freeGameObjectIndices.clear();
     }
@@ -46,6 +48,14 @@ public:
     virtual void   Finalize() override = 0;
     virtual void   Update() override = 0;
     virtual void   Draw() override = 0;
+
+    void Reset() {
+        m_gameObjects.clear();
+        m_gameObjects.reserve(MAX_GAMEOBJECTS);
+        m_componentPools.clear();
+        m_componentPools.reserve(MAX_COMPONENTPOOLS);
+        m_freeGameObjectIndices.clear();
+    }
 
     // GameObjectの生成
     // ・return: 生成したGameObjectへのポインタ

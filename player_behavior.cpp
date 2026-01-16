@@ -111,7 +111,7 @@ void PlayerBehavior::Update(IScene* pScene)
         }
 
         // スコアテキスト更新
-        std::string s = "SCORE: ";
+        std::string s = "集めた砂金: ";
         int value = static_cast<int>(m_score);
         for(int i = 0; i < 6; i++) {
             value /= 10;
@@ -120,6 +120,7 @@ void PlayerBehavior::Update(IScene* pScene)
             }
         }
         s += std::to_string(static_cast<int>(m_score));
+        s += " G";
 
         std::u8string u8 = std::u8string(s.begin(), s.end());
         m_scoreText->SetText(u8);
@@ -311,6 +312,8 @@ void PlayerBehavior::GetReferenceObjects(IScene* pScene)
 // 移動処理の更新
 void PlayerBehavior::UpdateMovement(float deltaTime)
 {
+    if (m_tpsCamera == nullptr)return;
+
     //-------------------------------
     // 入力処理
     //-------------------------------
@@ -372,7 +375,7 @@ void PlayerBehavior::UpdateMovement(float deltaTime)
 
         // ジャンプ
         if (Keyboard_IsKeyDownTrigger(KK_SPACE) && m_isGrounded) {
-            velocity.y += 9.0f;
+            velocity.y += 10.5f;
             m_groundCheckTimer = 0.8f;
             m_isGrounded = false;
         }

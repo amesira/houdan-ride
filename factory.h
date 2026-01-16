@@ -45,6 +45,9 @@ namespace Factory {
     void CreateUiButton(GameObject*, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color);
 
     void CreatePointer(GameObject*);
+
+    void CreateGoalShip(GameObject*, XMFLOAT3 position);
+    void CreateGoalCharacter(GameObject*, XMFLOAT3 position);
 }
 
 #endif

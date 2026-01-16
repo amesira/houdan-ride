@@ -17,11 +17,14 @@
 #include "camera_component.h"
 #include "model_component.h"
 #include "collider_component.h"
+#include "text_component.h"
 
 #include "mi_math.h"
 
+#include "fade.h"
+
 static float g_LevelM_Timer = 0.0f;
-static float g_SpawnIntervalZ = 20.0f;
+static float g_SpawnIntervalZ = 0.0f;
 
 static TrainBehavior* g_MainShip_TrainBehavior = nullptr;
 static BallBehavior* g_MainBall_BallBehavior = nullptr;
@@ -32,6 +35,15 @@ static CameraComponent* g_MapCamera_CameraComp = nullptr;
 static TransformComponent* g_Water_Transform = nullptr;
 
 static bool g_isTitle = false;
+
+static TextComponent* g_GoalMeter_TextComp = nullptr;
+static float g_GoalDistance = 30.0f;
+static bool g_GoalReached = false;
+static bool g_CreateGoalObjects = false;
+
+static float g_EnemyInterval = 0.0f;
+
+static float g_Timer = 0.0f;
 
 void LevelM_Initialize(SceneBase* pScene, bool isTitle)
 {
@@ -50,20 +62,34 @@ void LevelM_Initialize(SceneBase* pScene, bool isTitle)
 
     // 船を生成
     LevelObjects::CreateMainShip(pScene, XMFLOAT3(0.0f, -5.0f, -2.0f));
-    g_MainShip_TrainBehavior->SetMoveSpeed(1.5f);
+    g_MainShip_TrainBehavior->SetMoveSpeed(6.5f); // スピード上がると難易度上がる
 
     // ボールを生成
     GameObject* ball = pScene->CreateGameObject();
     Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
     g_MainBall_BallBehavior = ball->GetBehavior<BallBehavior>();
 
-    if(!g_isTitle){
+    if(!g_isTitle){ // ゲーム
         // マップカメラ
         GameObject* camera = pScene->CreateGameObject();
         Factory::CreateMapCamera(camera, { 0.0f,20.0f,0.0f }, { 0.0f,0.0f,0.0f });
         g_MapCamera_Transform = camera->GetComponent<TransformComponent>();
         g_MapCamera_CameraComp = camera->GetComponent<CameraComponent>();
+
+        // 帰還するまでのメートルを示すUI
+        GameObject* uiText = pScene->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 60.0f, 0.0f }, u8"帰還まで: 1000 m", 50.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        g_GoalMeter_TextComp = uiText->GetComponent<TextComponent>();
+
+        g_GoalReached = false;
+        g_CreateGoalObjects = false;
     }
+    else { // タイトル
+        
+    }
+
+    g_SpawnIntervalZ = 40.0f;
+    g_Timer = 0.0f;
 }
 
 void LevelM_Finalize()
@@ -75,14 +101,20 @@ void LevelM_Finalize()
     g_MapCamera_CameraComp = nullptr;
 
     g_Water_Transform = nullptr;
+
+    g_GoalMeter_TextComp = nullptr;
+    g_GoalReached = false;
+    g_CreateGoalObjects = false;
 }
 
 void LevelM_Update(SceneBase* pScene)
 {
     float shipPosZ = g_MainShip_TrainBehavior->GetPosition().z;
 
+    g_EnemyInterval -= FPS_GetDeltaTime();
+
     // 一定間隔で木箱を生成
-    if (g_SpawnIntervalZ < shipPosZ + 50.0f){
+    if (g_SpawnIntervalZ < shipPosZ + 100.0f){
 
         // ランダムな位置を生成
         XMFLOAT3 pos = {
@@ -151,7 +183,38 @@ void LevelM_Update(SceneBase* pScene)
         g_MainShip_TrainBehavior->GetPosition().z
     ));
 
+    // 距離メーター更新
+    bool oldGoalReached = g_GoalReached;
+    if (g_GoalMeter_TextComp && !g_GoalReached) {
+        float diff = g_GoalDistance - shipPosZ;
+        if (diff < 0.0f) {
+            diff = 0.0f;
+            g_GoalReached = true;
+        }
+        if (diff < 100.0f && !g_CreateGoalObjects) {
+            g_CreateGoalObjects = true;
+            LevelObjects::CreateGoalObject(pScene, XMFLOAT3(0.0f, -5.0f, shipPosZ + 130.0f));
+        }
+        std::string meterText = "帰還まで: " + std::to_string(static_cast<int>(diff)) + " m";
+        std::u8string u8MeterText = std::u8string(meterText.begin(), meterText.end());
+        g_GoalMeter_TextComp->SetText(u8MeterText);
+    }
+    if (g_GoalReached) {
+        std::string meterText = "本船へ帰還した！！";
+        std::u8string u8MeterText = std::u8string(meterText.begin(), meterText.end());
+        g_GoalMeter_TextComp->SetText(u8MeterText);
 
+        if (!oldGoalReached) {
+            // ゴール到達時の処理
+            g_MainShip_TrainBehavior->SetMoveSpeed(0.0f);
+            g_Timer = 2.0f;
+        }
+        g_Timer -= FPS_GetUnscaledDeltaTime();
+        if (g_Timer <= 0.0f) {
+            g_Timer += 50.0f;
+            SetFade(60, { 0.0f,1.0f,1.0f,1.0f }, FADE_STATE::FADE_OUT, SCENE::SCENE_TITLE);
+        }
+    }
 }
 
 void LevelObjects::CreateMainShip(SceneBase* pScene, XMFLOAT3 position)
@@ -282,6 +345,9 @@ void LevelObjects::CreateWoodboxes2(SceneBase* pScene, XMFLOAT3 position)
 
 void LevelObjects::CreateEnemyGroup1(SceneBase* pScene, XMFLOAT3 position)
 {
+    if(g_EnemyInterval > 0.0f)return;
+    g_EnemyInterval = 2.0f;
+
     // 2もしくは3体の敵を生成
     int enemyCount = (rand() % 2) + 2;
 
@@ -300,4 +366,11 @@ void LevelObjects::CreateEnemyGroup1(SceneBase* pScene, XMFLOAT3 position)
             0.0f
         ));
     }
+}
+
+void LevelObjects::CreateGoalObject(SceneBase* pScene, XMFLOAT3 position)
+{
+    // ゴールオブジェクトを生成
+    GameObject* goal = pScene->CreateGameObject();
+    Factory::CreateGoalShip(goal, position);
 }

@@ -36,6 +36,7 @@ void SwitchSpriteBehavior::Update(IScene* pScene)
         if (cameraObj) {
             m_tpsCamera = cameraObj->GetBehavior<TpsCameraBehavior>();
         }
+        return;
     }
 
     const float CHARA_SPRITE_WIDTH = 1.0f / 3.0f;

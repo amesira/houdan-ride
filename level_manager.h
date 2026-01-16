@@ -18,4 +18,6 @@ namespace LevelObjects {
     void CreateWoodboxes2(SceneBase* pScene, XMFLOAT3 position);
 
     void CreateEnemyGroup1(SceneBase* pScene, XMFLOAT3 position);
+
+    void CreateGoalObject(SceneBase* pScene, XMFLOAT3 position);
 }

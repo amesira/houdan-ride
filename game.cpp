@@ -19,6 +19,8 @@
 //===================================================
 void GameScene::Initialize()
 {
+    this->Reset();
+
     ProcessorM_Initialize();
 
     // camera
@@ -34,18 +36,15 @@ void GameScene::Initialize()
 
     // ui
     GameObject* uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"SCORE: 0000000", 50.0f, { 1.0f,1.0f,1.0f,1.0f },false);
+    Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"集めた砂金: 0000000 G", 40.0f, { 1.0f,1.0f,1.0f,1.0f },false);
     uiText->SetName("ScoreText");
 
     uiText = this->CreateGameObject();
     Factory::CreateUiText(uiText, { 350.0f, 50.0f, 0.0f }, u8"-500", 30.0f, { 1.0f,0.0f,0.0f,1.0f }, false);
     uiText->SetName("PenaltyText");
 
-    /*GameObject* uiImage = this->CreateGameObject();
-    Factory::CreateUiImage(uiImage, { 400.0f, 50.0f, 0.0f }, 0.0f, { 200.0f,200.0f }, L"asset\\Texture\\map.png");
-    */
     GameObject* uiSlider = this->CreateGameObject();
-    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, -90.0f, { 100.0f,20.0f });
+    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 0.0f, { 100.0f,20.0f });
     uiSlider->SetName("ThrowPowerSlider");
 
 
@@ -67,6 +66,7 @@ void GameScene::Finalize()
     for (GameObject& obj : gameObjects) {
         obj.Destroy();
     }
+    LevelM_Finalize();
 }
 
 //===================================================

@@ -57,7 +57,7 @@ void PointerBehavior::Update(IScene* pScene)
     float ndcX = (mousePos.x / Direct3D_GetBackBufferWidth()) * 2.0f - 1.0f;
     float ndcY = 1.0f - (mousePos.y / Direct3D_GetBackBufferHeight()) * 2.0f;
 
-    hal::dout << "mousePos: " << mousePos.x << ", " << mousePos.y << std::endl;
+    //hal::dout << "mousePos: " << mousePos.x << ", " << mousePos.y << std::endl;
 
     XMVECTOR pNear = XMVectorSet(ndcX, ndcY, 0.0f, 1.0f);
     XMVECTOR pFar = XMVectorSet(ndcX, ndcY, 1.0f, 1.0f);
@@ -86,8 +86,8 @@ void PointerBehavior::Update(IScene* pScene)
     // スライダー位置調整
     if(m_sliderRectTransform) {
         XMFLOAT3 sliderPos;
-        sliderPos.x = mousePos.x + 40.0f;
-        sliderPos.y = mousePos.y;
+        sliderPos.x = mousePos.x;
+        sliderPos.y = mousePos.y + 40.0f;
         m_sliderRectTransform->SetPosition(sliderPos);
     }
 

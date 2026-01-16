@@ -29,6 +29,8 @@
 
 void TitleScene::Initialize()
 {
+    this->Reset();
+
     ProcessorM_Initialize();
 
     // 初期化
