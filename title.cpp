@@ -76,13 +76,13 @@ void TitleScene::Initialize()
         m_selectUiObjects.push_back(uiText);
 
         GameObject* uiButton = this->CreateGameObject();
-        Factory::CreateUiButton(uiButton, { 1280.0f / 2.0f, 600.0f }, { 300.0f,80.0f },{0.5f, 0.8f, 0.8f,1.0f});
+        Factory::CreateUiButton(uiButton, { 1280.0f / 2.0f, 600.0f }, { 300.0f,80.0f },{1.0f, 1.0f, 1.0f,1.0f});
         uiButton->SetName("StartButton_MorningSea");
         m_selectUiObjects.push_back(uiButton);
         m_startButtonMorningSeaBe = uiButton->GetBehavior<ButtonBehavior>();
 
         uiText = this->CreateGameObject();
-        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 610.0f, 0.0f }, u8"スタート！", 50.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 610.0f, 0.0f }, u8"スタート！", 50.0f, { 0.0f,0.8f,1.0f,1.0f }, true);
         m_selectUiObjects.push_back(uiText);
     }
     for (auto& ui : m_selectUiObjects) {

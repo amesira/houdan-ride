@@ -62,7 +62,7 @@ void LevelM_Initialize(SceneBase* pScene, bool isTitle)
 
     // 船を生成
     LevelObjects::CreateMainShip(pScene, XMFLOAT3(0.0f, -5.0f, -2.0f));
-    g_MainShip_TrainBehavior->SetMoveSpeed(6.5f); // スピード上がると難易度上がる
+    g_MainShip_TrainBehavior->SetMoveSpeed(2.5f); // スピード上がると難易度上がる
 
     // ボールを生成
     GameObject* ball = pScene->CreateGameObject();

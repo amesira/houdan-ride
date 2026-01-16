@@ -70,6 +70,10 @@ void TpsCameraBehavior::Update(IScene* pScene)
     if(targetPos.y < 1.0f) {
         targetPos.y = 1.0f; // 地面より下に行かないようにする
     }
+    targetPos.x += m_cameraAtOffset.x;
+    targetPos.y += m_cameraAtOffset.y;
+    targetPos.z += m_cameraAtOffset.z;
+
     m_cameraAnchor = MiMath::Lerp(m_cameraAnchor, targetPos, deltaTime * 3.0f);
 
     float grayRate = m_camera->GetShaderGrayRate();

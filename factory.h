@@ -48,6 +48,11 @@ namespace Factory {
 
     void CreateGoalShip(GameObject*, XMFLOAT3 position);
     void CreateGoalCharacter(GameObject*, XMFLOAT3 position);
+
+    void CreatePlatform(GameObject*, XMFLOAT3 position, XMFLOAT3 size);
+
+    void CreateResultChest(GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
+    void CreateResultBottle(GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
 }
 
 #endif

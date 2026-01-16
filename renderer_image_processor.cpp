@@ -62,8 +62,14 @@ void RendererImageProcessor::Process(IScene* pScene)
 
         // コンポーネントが無効ならスキップ
         unsigned int gameObjectID = image.GetOwner()->GetID();
-        RectTransformComponent* pRect = rectTransformPool->GetByGameObjectID(gameObjectID);
-        TransformComponent* pTransform = transformPool->GetByGameObjectID(gameObjectID);
+        RectTransformComponent* pRect = nullptr;
+        if(rectTransformPool){
+            pRect = rectTransformPool->GetByGameObjectID(gameObjectID);
+        }
+        TransformComponent* pTransform = nullptr;
+        if(transformPool){
+            pTransform = transformPool->GetByGameObjectID(gameObjectID);
+        }
         if (!pRect && !pTransform) continue;
         if (pRect && (!pRect->GetEnable() || !m_drawUiImages)) continue;
         if (pTransform && (!pTransform->GetEnable() || !m_drawWorldImages)) continue;

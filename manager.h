@@ -1,8 +1,8 @@
 //----------------------------------------------------
-// manager.h [ƒ}ƒl[ƒWƒƒ[]
+// manager.h [ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/09/05
+// Authorï¼šMiu Kitamura
+// Date  ï¼š2025/09/05
 //----------------------------------------------------
 #ifndef MANAGER_H
 #define MANAGER_H
@@ -18,9 +18,10 @@ enum SCENE {
     SCENE_TITLE,
     SCENE_GAME,
     SCENE_RESULT,
+    SCENE_MAX,
 };
 
-// ƒƒCƒ“ˆ—
+// ãƒ¡ã‚¤ãƒ³å‡¦ç†
 void Manager_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 void Manager_Finalize();
 void Manager_Update();

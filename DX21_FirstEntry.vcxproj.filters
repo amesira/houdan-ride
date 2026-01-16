@@ -182,6 +182,9 @@
     <ClCompile Include="button_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
+    <ClCompile Include="result.cpp">
+      <Filter>Sources\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug_ostream.h">
@@ -366,6 +369,9 @@
     </ClInclude>
     <ClInclude Include="button_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="result.h">
+      <Filter>Sources\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

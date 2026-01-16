@@ -35,4 +35,10 @@ void FieldBehavior::Update(IScene* pScene)
             return;
         }
     }
+
+    if(m_transform->GetPosition().y < -50.0f) {
+        // 一定以下に落ちたら消す
+        GetOwner()->Destroy();
+        return;
+    }
 }

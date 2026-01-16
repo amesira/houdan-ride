@@ -35,6 +35,7 @@ private:
 
     bool    m_isSlowMotion = false;
 
+    XMFLOAT3 m_cameraAtOffset = { 0.0f,0.0f,0.0f };
     XMFLOAT3 m_cameraPosOffset = {0.0f,0.0f,0.0f};
     bool    m_isFreeze = false;
 
@@ -51,6 +52,8 @@ public:
     void    SetSlowMotion(bool isSlow) { m_isSlowMotion = isSlow; }
 
     void    SetFreeze(bool isFreeze) { m_isFreeze = isFreeze; }
+
+    void    SetCameraAtOffset(XMFLOAT3 offset) { m_cameraAtOffset = offset; }
     void    SetCameraPosOffset(XMFLOAT3 offset) { m_cameraPosOffset = offset; }
 };
 

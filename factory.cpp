@@ -390,8 +390,76 @@ void Factory::CreateGoalShip(GameObject* obj, XMFLOAT3 position)
     collider->SetCenter({ 0.0f, 4.0f, -0.35f });
     collider->SetScale({ 14.4f, 1.0f, 11.4f });
     collider->SetLayer(ColliderComponent::Layer::Field);
+
+    // behavior生成・登録
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
 }
 
 void Factory::CreateGoalCharacter(GameObject* obj, XMFLOAT3 position)
 {
+}
+
+void Factory::CreatePlatform(GameObject* obj, XMFLOAT3 position, XMFLOAT3 size)
+{
+    obj->SetName("Platform");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    BoxColliderComponent* collider = obj->AddComponent<BoxColliderComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ 0.0f, 0.0f, 0.0f});
+    transform->SetScaling(size);
+    collider->SetCenter({ 0.0f, size.y / 2.0f, 0.0f });
+    collider->SetScale({ size.x * 8.0f, 1.0f, size.z * 5.0f });
+    collider->SetLayer(ColliderComponent::Layer::Field);
+    modelComp->LoadModel("asset\\Model\\platform.fbx");
+    modelComp->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+
+}
+
+void Factory::CreateResultChest(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale)
+{
+    obj->SetName("ResultChest");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    SphereColliderComponent* collider = obj->AddComponent<SphereColliderComponent>();
+    RigidbodyComponent* rigidbody = obj->AddComponent<RigidbodyComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)});
+    transform->SetScaling(scale);
+    modelComp->LoadModel("asset\\Model\\chest.fbx");
+    collider->SetCenter({ 0.0f, 0.0f, 0.0f });
+    collider->SetRadius(scale.x * 0.5f);
+
+    // behavior生成・登録
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
+}
+
+void Factory::CreateResultBottle(GameObject* obj, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale)
+{
+    obj->SetName("ResultBottle");
+
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+    SphereColliderComponent* collider = obj->AddComponent<SphereColliderComponent>();
+    RigidbodyComponent* rigidbody = obj->AddComponent<RigidbodyComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation({ XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z) });
+    transform->SetScaling(scale);
+    modelComp->LoadModel("asset\\Model\\bottle.fbx");
+    collider->SetCenter({ 0.0f, 0.0f, 0.0f });
+    collider->SetRadius(scale.x * 0.5f);
+
+    // behavior生成・登録
+    FieldBehavior* fieldBe = obj->AddBehavior<FieldBehavior>();
 }

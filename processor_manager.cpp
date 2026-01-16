@@ -237,8 +237,8 @@ void ProcessorM_Draw(IScene* pScene)
         Shader_SetPixelOptionAlphaRate(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
-    /*g_CameraProcessor->BindMatrix(0);
-    DebugRenderer_DrawFlush();*/
+    //g_CameraProcessor->BindMatrix(0);
+    //DebugRenderer_DrawFlush();
 
     // デバッグ描画用バッファリセット
     DebugRenderer_ResetBuffer();
