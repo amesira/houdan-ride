@@ -15,9 +15,11 @@
 
 #include "direct3d.h"
 #include <DirectXMath.h>
+using namespace DirectX;
 
 class TransformComponent;
 class ColliderComponent;
+class RigidbodyComponent;
 
 class BoxColliderComponent;
 class SphereColliderComponent;
@@ -34,8 +36,8 @@ private:
 
     // 衝突判定結果
     struct CollisionResult {
-        bool                isCollision;
-        DirectX::XMFLOAT3   mtv;
+        bool        isCollision;
+        XMFLOAT3    mtv;
     };
     
     //----------------------------------------------------
@@ -68,7 +70,8 @@ private:
         TransformComponent* transformA, SphereColliderComponent* colliderA,
         TransformComponent* transformB, SphereColliderComponent* colliderB);
 
-
+    // 衝突解決のための補正ベクトル比の算出
+    float   CorrectionVectorRate(ColliderComponent* collider, RigidbodyComponent* rb);
 };
 
 

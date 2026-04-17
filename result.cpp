@@ -53,26 +53,26 @@ std::vector<int> BuildResultIndexList(int score)
 
     while (score > 0){
         // 5000　最大10個
-        if (score >= 3000 && counter < 15) {
+        if (score >= 5000 && counter < 15) {
             result.push_back(0);
-            score -= 3000;
+            score -= 5000;
             counter++;
             continue;
         }
 
         // 1000 or 500×2
-        if (score >= 700) {
+        if (score >= 1000) {
             // 1000ちょうど or 余裕があるならランダム
-            if (score >= 700 && (rand() % 5 >= 3))
+            if (score >= 1000 && (rand() % 5 >= 3))
             {
                 result.push_back(2); // 500
                 result.push_back(2); // 500
-                score -= 700;
+                score -= 1000;
             }
             else
             {
                 result.push_back(1); // 1000
-                score -= 700;
+                score -= 1000;
             }
             continue;
         }
@@ -98,6 +98,8 @@ void ResultScene::Initialize()
     this->Reset();
 
     ProcessorM_Initialize();
+
+    FPS_SetTimeScale(1.0f);
 
     // camera
     GameObject* camera = this->CreateGameObject();

@@ -31,6 +31,8 @@ void GameScene::Initialize()
 
     ProcessorM_Initialize();
 
+    FPS_SetTimeScale(1.0f);
+
     // camera
     GameObject* camera = this->CreateGameObject();
     Factory::CreateTpsCamera(camera, { 0.0f,3.0f,0.0f }, { 0.0f,5.0f,0.0f });
@@ -244,7 +246,7 @@ void GameScene::Update()
 
     }
     else {
-        FPS_SetTimeScale(0.001f);
+        FPS_SetTimeScale(0.01f);
     }
 
     // 破棄予約されたGameObjectの収集

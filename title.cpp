@@ -29,11 +29,15 @@
 #include "text_component.h"
 #include "camera_component.h"
 
+#include "mi_fps.h"
+
 void TitleScene::Initialize()
 {
     this->Reset();
 
     ProcessorM_Initialize();
+
+    FPS_SetTimeScale(1.0f);
 
     // 初期化
     m_isSelectScene = false;

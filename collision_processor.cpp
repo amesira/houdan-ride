@@ -12,6 +12,7 @@
 
 #include "transform_component.h"
 #include "collider_component.h"
+#include "rigidbody_component.h"
 
 #include "debug_renderer.h"
 
@@ -44,6 +45,7 @@ void CollisionProcessor::Process(IScene* pScene)
     auto* transformPool = pScene->GetComponentPool<TransformComponent>();
     auto* boxColliderPool = pScene->GetComponentPool<BoxColliderComponent>();
     auto* sphereColliderPool = pScene->GetComponentPool<SphereColliderComponent>();
+    auto* rigidbodyPool = pScene->GetComponentPool<RigidbodyComponent>();
     if(transformPool == nullptr)return;
 
     if(boxColliderPool){
@@ -83,11 +85,32 @@ void CollisionProcessor::Process(IScene* pScene)
 
                 // 衝突している場合
                 if (result.isCollision) {
-                    colliderA->RegisterCollisionData(colliderB, result.mtv);
+                    // 解決ベクトルの分配
+                    RigidbodyComponent* rbA = rigidbodyPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+                    RigidbodyComponent* rbB = rigidbodyPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
+
+                    float rateA = CorrectionVectorRate(colliderA, rbA);
+                    float rateB = CorrectionVectorRate(colliderB, rbB);
+                    float totalRate = rateA + rateB;
+                    if (totalRate > 0.0f) {
+                        rateA /= totalRate;
+                        rateB /= totalRate;
+                    }
+                    else {
+                        rateA = 0.0f;
+                        rateB = 0.0f;
+                    }
+
+                    // 衝突情報の登録
+                    colliderA->RegisterCollisionData(colliderB, {
+                        result.mtv.x* rateA,
+                        result.mtv.y* rateA,
+                        result.mtv.z* rateA
+                        });
                     colliderB->RegisterCollisionData(colliderA, {
-                        -result.mtv.x,
-                        -result.mtv.y,
-                        -result.mtv.z });
+                        -result.mtv.x * rateB,
+                        -result.mtv.y * rateB,
+                        -result.mtv.z * rateB });
                 }
             }
         }
@@ -124,11 +147,32 @@ void CollisionProcessor::Process(IScene* pScene)
 
                 // 衝突している場合
                 if (result.isCollision) {
-                    colliderA->RegisterCollisionData(colliderB, result.mtv);
+                    // 解決ベクトルの分配
+                    RigidbodyComponent* rbA = rigidbodyPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+                    RigidbodyComponent* rbB = rigidbodyPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
+
+                    float rateA = CorrectionVectorRate(colliderA, rbA);
+                    float rateB = CorrectionVectorRate(colliderB, rbB);
+                    float totalRate = rateA + rateB;
+                    if (totalRate > 0.0f) {
+                        rateA /= totalRate;
+                        rateB /= totalRate;
+                    }
+                    else {
+                        rateA = 0.0f;
+                        rateB = 0.0f;
+                    }
+
+                    // 衝突情報の登録
+                    colliderA->RegisterCollisionData(colliderB, {
+                        result.mtv.x * rateA,
+                        result.mtv.y * rateA,
+                        result.mtv.z * rateA
+                        });
                     colliderB->RegisterCollisionData(colliderA, {
-                        -result.mtv.x,
-                        -result.mtv.y,
-                        -result.mtv.z });
+                        -result.mtv.x * rateB,
+                        -result.mtv.y * rateB,
+                        -result.mtv.z * rateB });
                 }
             }
         }
@@ -162,11 +206,32 @@ void CollisionProcessor::Process(IScene* pScene)
 
                 // 衝突している場合
                 if (result.isCollision) {
-                    colliderA->RegisterCollisionData(colliderB, result.mtv);
+                    // 解決ベクトルの分配
+                    RigidbodyComponent* rbA = rigidbodyPool->GetByGameObjectID(colliderA->GetOwner()->GetID());
+                    RigidbodyComponent* rbB = rigidbodyPool->GetByGameObjectID(colliderB->GetOwner()->GetID());
+
+                    float rateA = CorrectionVectorRate(colliderA, rbA);
+                    float rateB = CorrectionVectorRate(colliderB, rbB);
+                    float totalRate = rateA + rateB;
+                    if (totalRate > 0.0f) {
+                        rateA /= totalRate;
+                        rateB /= totalRate;
+                    }
+                    else {
+                        rateA = 0.0f;
+                        rateB = 0.0f;
+                    }
+
+                    // 衝突情報の登録
+                    colliderA->RegisterCollisionData(colliderB, {
+                        result.mtv.x * rateA,
+                        result.mtv.y * rateA,
+                        result.mtv.z * rateA
+                        });
                     colliderB->RegisterCollisionData(colliderA, {
-                        -result.mtv.x,
-                        -result.mtv.y,
-                        -result.mtv.z });
+                        -result.mtv.x * rateB,
+                        -result.mtv.y * rateB,
+                        -result.mtv.z * rateB });
                 }
             }
         }
@@ -651,3 +716,12 @@ CollisionProcessor::CollisionResult CollisionProcessor::CheckSphereToSphere(Tran
 }
 
 #pragma endregion
+
+// 衝突修正ベクトルの割合計算
+float CollisionProcessor::CorrectionVectorRate(ColliderComponent* collider, RigidbodyComponent* rb)
+{
+    if (rb == nullptr) return 0.0f;
+    if (!rb->GetEnable()) return 0.0f;
+
+    return rb->GetMass();
+}

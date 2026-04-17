@@ -24,6 +24,7 @@ public:
     struct CollisionData {
         ColliderComponent*  m_other = nullptr;  // 衝突相手のコライダーコンポーネント
         XMFLOAT3    m_mtv = { 0.0f,0.0f,0.0f }; // 最小移動ベクトル
+        XMFLOAT3    m_cv = { 0.0f,0.0f,0.0f };  // 補正ベクトル
 
         bool    m_isCollision = false;  // 当たり判定フラグ
         bool    m_wasCollision = false; // 前フレームの当たり判定フラグ
