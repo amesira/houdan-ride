@@ -10,11 +10,11 @@
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
 #include <string>
 
-#include "component.h"
+#include "Sources/Core/component.h"
 
 class TextComponent : public Component {
 public:

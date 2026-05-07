@@ -1,29 +1,29 @@
 #include "level_manager.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "factory.h"
-#include "mi_fps.h"
-#include "scene_base.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/GameParts/factory.h"
+#include "Sources/System/mi_fps.h"
+#include "Sources/Scene/scene_base.h"
 
 #include <iostream>
 
-#include "train_behavior.h"
-#include "liftup_behavior.h"
-#include "ball_behavior.h"
-#include "enemy_behavior.h"
+#include "Sources/GameParts/Behavior/train_behavior.h"
+#include "Sources/GameParts/Behavior/liftup_behavior.h"
+#include "Sources/GameParts/Behavior/ball_behavior.h"
+#include "Sources/GameParts/Behavior/enemy_behavior.h"
 
-#include "transform_component.h"
-#include "image_component.h"
-#include "camera_component.h"
-#include "model_component.h"
-#include "collider_component.h"
-#include "text_component.h"
-#include "rect_transform_component.h"
-#include "player_behavior.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
+#include "Sources/GameParts/Component/model_component.h"
+#include "Sources/GameParts/Component/collider_component.h"
+#include "Sources/GameParts/Component/UiComponents/text_component.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
+#include "Sources/GameParts/Behavior/player_behavior.h"
 
-#include "mi_math.h"
+#include "Utility/mi_math.h"
 
-#include "fade.h"
+#include "Sources/Content/fade.h"
 
 static float g_LevelM_Timer = 0.0f;
 static float g_SpawnIntervalZ = 0.0f;

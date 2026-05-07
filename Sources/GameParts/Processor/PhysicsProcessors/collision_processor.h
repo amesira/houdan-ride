@@ -11,9 +11,9 @@
 #define COLLISION_PROCESSOR_H
 
 #include <vector>
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

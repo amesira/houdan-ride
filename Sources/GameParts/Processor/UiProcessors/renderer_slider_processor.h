@@ -7,7 +7,7 @@
 #ifndef RENDERER_SLIDER_PROCESSOR_H
 #define RENDERER_SLIDER_PROCESSOR_H
 
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
 
 class RendererSliderProcessor : public Processor {

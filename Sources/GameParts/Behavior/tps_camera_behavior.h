@@ -7,7 +7,7 @@
 #ifndef TPS_CAMERA_BEHAVIOR_H
 #define TPS_CAMERA_BEHAVIOR_H
 
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

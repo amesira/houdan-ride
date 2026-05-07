@@ -4,32 +4,32 @@
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
-#include "shader.h"
+#include "Sources/System/Graphic/shader.h"
 
-#include "scene_interface.h"
-#include "mi_fps.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/System/mi_fps.h"
 
-#include "debug_renderer.h"
+#include "Utility/debug_renderer.h"
 
 #include "particle_manager.h"
 
-#include "renderer_3dcube_processor.h"
-#include "renderer_3dmodel_processor.h"
-#include "physics_processor.h"
-#include "collision_processor.h"
-#include "dynamics_processor.h"
-#include "renderer_font_processor.h"
-#include "renderer_image_processor.h"
-#include "camera_processor.h"
-#include "light_processor.h"
-#include "renderer_slider_processor.h"
+#include "Sources/GameParts/Processor/renderer_3dcube_processor.h"
+#include "Sources/GameParts/Processor/renderer_3dmodel_processor.h"
+#include "Sources/GameParts/Processor/PhysicsProcessors/physics_processor.h"
+#include "Sources/GameParts/Processor/PhysicsProcessors/collision_processor.h"
+#include "Sources/GameParts/Processor/PhysicsProcessors/dynamics_processor.h"
+#include "Sources/GameParts/Processor/UiProcessors/renderer_font_processor.h"
+#include "Sources/GameParts/Processor/UiProcessors/renderer_image_processor.h"
+#include "Sources/GameParts/Processor/camera_processor.h"
+#include "Sources/GameParts/Processor/light_processor.h"
+#include "Sources/GameParts/Processor/UiProcessors/renderer_slider_processor.h"
 
-#include "game_object.h"
-#include "image_component.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
 
-#include "fade.h"
+#include "Sources/Content/fade.h"
 
 static Renderer3DCubeProcessor* g_Renderer3DCubeProcessor = nullptr;
 static Renderer3DModelProcessor* g_Renderer3DModelProcessor = nullptr;

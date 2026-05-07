@@ -13,8 +13,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "component_pool.h"
-#include "type_id.h"
+#include "Sources/Core/component_pool.h"
+#include "Sources/Core/type_id.h"
 
 class GameObject;
 

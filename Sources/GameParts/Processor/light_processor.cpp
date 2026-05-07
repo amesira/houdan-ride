@@ -5,10 +5,10 @@
 // Date  ：2025/01/05
 //===================================================
 #include "light_processor.h"
-#include "scene_interface.h"
+#include "Sources/Scene/scene_interface.h"
 
-#include "shader.h"
-#include "light_component.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/GameParts/Component/light_component.h"
 
 void LightProcessor::Initialize()
 {

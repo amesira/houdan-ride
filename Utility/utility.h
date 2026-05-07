@@ -7,7 +7,7 @@
 // ==============================================
 #pragma once
 
-#include "Windows.h"
+#include <Windows.h>
 #define NOMINMAX
 
 // ComPtrを使うためのヘッダー

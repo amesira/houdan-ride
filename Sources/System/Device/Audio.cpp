@@ -2,9 +2,9 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 using namespace DirectX;
-#include "direct3d.h"
-#include "shader.h"
-#include "sprite.h"
+#include "Sources/System/direct3d.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
 #include "keyboard.h"
 
 #include "audio.h"
@@ -20,10 +20,10 @@ static IXAudio2MasteringVoice* g_MasteringVoice{};
 
 void InitAudio()
 {
-	// XAudio¶¬
+	// XAudioï¿½ï¿½ï¿½ï¿½
 	XAudio2Create(&g_Xaudio, 0);
 
-	// ƒ}ƒXƒ^ƒŠƒ“ƒOƒ{ƒCƒX¶¬
+	// ï¿½}ï¿½Xï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½{ï¿½Cï¿½Xï¿½ï¿½ï¿½ï¿½
 	g_Xaudio->CreateMasteringVoice(&g_MasteringVoice);
 }
 
@@ -75,7 +75,7 @@ int LoadAudio(const char *FileName)
 
 
 
-	// ƒTƒEƒ“ƒhƒf[ƒ^“Çž
+	// ï¿½Tï¿½Eï¿½ï¿½ï¿½hï¿½fï¿½[ï¿½^ï¿½Çï¿½
 	WAVEFORMATEX wfx = { 0 };
 
 	{
@@ -129,7 +129,7 @@ int LoadAudio(const char *FileName)
 	}
 
 
-	// ƒTƒEƒ“ƒhƒ\[ƒX¶¬
+	// ï¿½Tï¿½Eï¿½ï¿½ï¿½hï¿½\ï¿½[ï¿½Xï¿½ï¿½ï¿½ï¿½
 	g_Xaudio->CreateSourceVoice(&g_Audio[index].SourceVoice, &wfx);
 	assert(g_Audio[index].SourceVoice);
 
@@ -159,7 +159,7 @@ void PlayAudio(int Index, bool Loop)
 	g_Audio[Index].SourceVoice->FlushSourceBuffers();
 
 
-	// ƒoƒbƒtƒ@Ý’è
+	// ï¿½oï¿½bï¿½tï¿½@ï¿½Ý’ï¿½
 	XAUDIO2_BUFFER bufinfo;
 
 	memset(&bufinfo, 0x00, sizeof(bufinfo));
@@ -168,7 +168,7 @@ void PlayAudio(int Index, bool Loop)
 	bufinfo.PlayBegin = 0;
 	bufinfo.PlayLength = g_Audio[Index].PlayLength;
 
-	// ƒ‹[ƒvÝ’è
+	// ï¿½ï¿½ï¿½[ï¿½vï¿½Ý’ï¿½
 	if (Loop)
 	{
 		bufinfo.LoopBegin = 0;
@@ -179,7 +179,7 @@ void PlayAudio(int Index, bool Loop)
 	g_Audio[Index].SourceVoice->SubmitSourceBuffer(&bufinfo, NULL);
 
 
-	// Ä¶
+	// ï¿½Äï¿½
 	g_Audio[Index].SourceVoice->Start();
 
 }

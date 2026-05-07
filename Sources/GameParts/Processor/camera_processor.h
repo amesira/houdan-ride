@@ -7,9 +7,9 @@
 #ifndef CAMERA_PROCESSOR_H
 #define CAMERA_PROCESSOR_H
 
-#include "processor.h"
+#include "Sources/Core/processor.h"
 #include <string>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
 #include <DirectXMath.h>
 using namespace DirectX;

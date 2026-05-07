@@ -8,7 +8,7 @@
 #ifndef TRAIN_BEHAVIOR_H
 #define TRAIN_BEHAVIOR_H
 
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 #include <DirectXMath.h>
 #include <vector>
 using namespace DirectX;

@@ -8,7 +8,7 @@
 #define RENDERER_IMAGE_PROCESSOR_H
 
 #include <vector>
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
 class RectTransformComponent;
 class ImageComponent;

@@ -5,14 +5,14 @@
 // Date  ：2025/12/29
 //===================================================
 #include "camera_processor.h"
-#include "scene_interface.h"
-#include "game_object.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
 
-#include "transform_component.h"
-#include "camera_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
 
-#include "shader.h"
-#include "sprite.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
 
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pDeviceContext = nullptr;

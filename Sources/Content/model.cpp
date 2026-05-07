@@ -4,9 +4,9 @@
 #define NOMINMAX
 
 #include "model.h"
-#include "shader.h"
+#include "Sources/System/Graphic/shader.h"
 
-#include "sprite.h"
+#include "Sources/System/Graphic/sprite.h"
 
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;

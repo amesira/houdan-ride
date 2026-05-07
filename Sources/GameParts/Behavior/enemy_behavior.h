@@ -7,7 +7,7 @@
 #ifndef ENEMY_BEHAVIOR_H
 #define ENEMY_BEHAVIOR_H
 
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

@@ -9,18 +9,18 @@
 #define NOMINMAX
 #include "renderer_font_processor.h"
 
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include "direct3d.h"
-#include "shader.h"
-#include "sprite.h"
+#include "Sources/System/direct3d.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
 
-#include "scene_interface.h"
-#include "game_object.h"
-#include "rect_transform_component.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
 
 void RendererFontProcessor::Initialize()
 {

@@ -1,18 +1,18 @@
 #include "pointer_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 
-#include "mi_fps.h"
-#include "mouse.h"
+#include "Sources/System/mi_fps.h"
+#include "Sources/System/Device/mouse.h"
 
-#include "mi_math.h"
-#include "debug_ostream.h"
+#include "Utility/mi_math.h"
+#include "Utility/debug_ostream.h"
 
-#include "transform_component.h"
-#include "image_component.h"
-#include "camera_component.h"
-#include "rect_transform_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
 
 PointerBehavior::PointerBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<PointerBehavior>())

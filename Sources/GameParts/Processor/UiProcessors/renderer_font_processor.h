@@ -11,12 +11,12 @@
 #include <vector>
 #include <map>
 #include <d3d11.h>
-#include "utility.h"
+#include "Utility/utility.h"
 #include "stb_truetype.h"
 
-#include "text_component.h"
+#include "Sources/GameParts/Component/UiComponents/text_component.h"
 
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
 class RectTransformComponent;
 

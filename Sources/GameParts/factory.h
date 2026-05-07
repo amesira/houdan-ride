@@ -10,10 +10,10 @@
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 using namespace DirectX;
 
-#include "game_object.h"
+#include "Sources/Core/game_object.h"
 
 namespace Factory {
     void CreateTpsCamera    (GameObject*, DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 atPosition);

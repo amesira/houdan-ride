@@ -7,7 +7,7 @@
 #ifndef LIGHT_COMPONENT_H
 #define LIGHT_COMPONENT_H
 
-#include "component.h"
+#include "Sources/Core/component.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

@@ -1,34 +1,34 @@
 #include "result.h"
 
 // graphics
-#include "shader.h"
-#include "sprite.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
 
 // system
-#include "keyboard.h"
+#include "Sources/System/Device/keyboard.h"
 
-#include "manager.h"
-#include "fade.h"
+#include "Sources/Manager/manager.h"
+#include "Sources/Content/fade.h"
 
-#include "Audio.h"
-#include "processor_manager.h"
-#include "factory.h"
+#include "Sources/System/Device/Audio.h"
+#include "Sources/Manager/processor_manager.h"
+#include "Sources/GameParts/factory.h"
 
-#include "mouse.h"
+#include "Sources/System/Device/mouse.h"
 
-#include "image_component.h"
-#include "level_manager.h"
-#include "tps_camera_behavior.h"
-#include "button_behavior.h"
-#include "text_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/Manager/level_manager.h"
+#include "Sources/GameParts/Behavior/tps_camera_behavior.h"
+#include "Sources/GameParts/Behavior/button_behavior.h"
+#include "Sources/GameParts/Component/UiComponents/text_component.h"
 
 #include <vector>
 #include <algorithm>  // std::shuffle
 #include <random>     // std::mt19937
 
-#include "mi_fps.h"
+#include "Sources/System/mi_fps.h"
 
-#include "camera_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
 
 
 struct ResultDef

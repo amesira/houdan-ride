@@ -9,7 +9,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
 void DebugRenderer_Initialize();
 void DebugRenderer_Finalize();

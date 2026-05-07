@@ -1,12 +1,12 @@
 #include "button_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 
-#include "rect_transform_component.h"
-#include "image_component.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
 
-#include "mouse.h"
+#include "Sources/System/Device/mouse.h"
 
 ButtonBehavior::ButtonBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<ButtonBehavior>())

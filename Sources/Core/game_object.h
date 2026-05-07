@@ -19,7 +19,7 @@
 
 #include "behavior.h"
 
-#include "scene_interface.h"
+#include "Sources/Scene/scene_interface.h"
 
 class GameObject {
 private:

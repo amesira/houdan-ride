@@ -6,8 +6,8 @@
 //===================================================
 #include "debug_renderer.h"
 #include <vector>
-#include "shader.h"
-#include "sprite.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
 
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;

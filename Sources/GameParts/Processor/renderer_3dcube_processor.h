@@ -8,7 +8,7 @@
 #define RENDERER_3DCUBE_PROCESSOR_H
 
 #include <vector>
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
 class IScene;
 

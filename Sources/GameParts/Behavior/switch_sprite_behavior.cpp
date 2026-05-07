@@ -1,16 +1,16 @@
 // switch_sprite_behavior.h
 #include "switch_sprite_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 using namespace DirectX;
 
-#include "mi_fps.h"
-#include "mi_math.h"
+#include "Sources/System/mi_fps.h"
+#include "Utility/mi_math.h"
 #include "tps_camera_behavior.h"
 
-#include "image_component.h"
-#include "rigidbody_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/GameParts/Component/rigidbody_component.h"
 
 SwitchSpriteBehavior::SwitchSpriteBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<SwitchSpriteBehavior>())

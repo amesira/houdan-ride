@@ -5,36 +5,36 @@
 // Date  ：2025/10/27
 //===================================================
 #include "player_behavior.h"
-#include "scene_interface.h"
+#include "Sources/Scene/scene_interface.h"
 
-#include "type_id.h"
-#include "game_object.h"
+#include "Sources/Core/type_id.h"
+#include "Sources/Core/game_object.h"
 using namespace DirectX;
 
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 
-#include "mi_math.h"
+#include "Utility/mi_math.h"
 
-#include "transform_component.h"
-#include "cubemesh_component.h"
-#include "collider_component.h"
-#include "rigidbody_component.h"
-#include "image_component.h"
-#include "slider_component.h"
-#include "rect_transform_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/cubemesh_component.h"
+#include "Sources/GameParts/Component/collider_component.h"
+#include "Sources/GameParts/Component/rigidbody_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/GameParts/Component/UiComponents/slider_component.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
 
 #include "tps_camera_behavior.h"
 #include "switch_sprite_behavior.h"
 #include "ball_behavior.h"
 
-#include "keyboard.h"
-#include "mouse.h"
-#include "mi_fps.h"
+#include "Sources/System/Device/keyboard.h"
+#include "Sources/System/Device/mouse.h"
+#include "Sources/System/mi_fps.h"
 
-#include "particle_manager.h"
-#include "text_component.h"
+#include "Sources/Manager/particle_manager.h"
+#include "Sources/GameParts/Component/UiComponents/text_component.h"
 
-#include "manager.h"
+#include "Sources/Manager/manager.h"
 
 static ID3D11ShaderResourceView* s_playerDamageTexture = nullptr;
 

@@ -6,17 +6,17 @@
 //===================================================
 #include "tps_camera_behavior.h"
 
-#include "scene_interface.h"
-#include "game_object.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
 
-#include "mi_math.h"
-#include "mi_fps.h"
-#include "mouse.h"
-#include "keyboard.h"
+#include "Utility/mi_math.h"
+#include "Sources/System/mi_fps.h"
+#include "Sources/System/Device/mouse.h"
+#include "Sources/System/Device/keyboard.h"
 
-#include "transform_component.h"
-#include "camera_component.h"
-#include "image_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
 
 TpsCameraBehavior::TpsCameraBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<TpsCameraBehavior>())

@@ -7,15 +7,15 @@
 #ifndef MODEL_COMPONENT_H
 #define MODEL_COMPONENT_H
 
-#include "component.h"
+#include "Sources/Core/component.h"
 
-#include "model.h"
+#include "Sources/Content/model.h"
 #include <iostream>
 
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
 class ModelComponent : public Component {
 private:

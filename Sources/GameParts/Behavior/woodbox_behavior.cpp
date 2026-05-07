@@ -5,20 +5,20 @@
 // Date  ：2026/01/08
 //===================================================
 #include "woodbox_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 
-#include "mi_math.h"
+#include "Utility/mi_math.h"
 
-#include "transform_component.h"
-#include "rigidbody_component.h"
-#include "collider_component.h"
-#include "model_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/rigidbody_component.h"
+#include "Sources/GameParts/Component/collider_component.h"
+#include "Sources/GameParts/Component/model_component.h"
 
-#include "particle_manager.h"
-#include "sprite.h"
-#include "mi_fps.h"
+#include "Sources/Manager/particle_manager.h"
+#include "Sources/System/Graphic/sprite.h"
+#include "Sources/System/mi_fps.h"
 
 static ID3D11ShaderResourceView* g_pWoodboxBreakTexture = nullptr;
 

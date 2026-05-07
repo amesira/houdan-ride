@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Sources;$(ProjectDir)Sources\Content;$(ProjectDir)Sources\Core;$(ProjectDir)Sources\GameParts;$(ProjectDir)Sources\GameParts\Behavior;$(ProjectDir)Sources\GameParts\Component;$(ProjectDir)Sources\GameParts\Component\UiComponents;$(ProjectDir)Sources\GameParts\Processor;$(ProjectDir)Sources\GameParts\Processor\PhysicsProcessors;$(ProjectDir)Sources\GameParts\Processor\UiProcessors;$(ProjectDir)Sources\Manager;$(ProjectDir)Sources\Scene;$(ProjectDir)Sources\System;$(ProjectDir)Sources\System\Device;$(ProjectDir)Sources\System\Graphic;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,6 +92,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Sources;$(ProjectDir)Sources\Content;$(ProjectDir)Sources\Core;$(ProjectDir)Sources\GameParts;$(ProjectDir)Sources\GameParts\Behavior;$(ProjectDir)Sources\GameParts\Component;$(ProjectDir)Sources\GameParts\Component\UiComponents;$(ProjectDir)Sources\GameParts\Processor;$(ProjectDir)Sources\GameParts\Processor\PhysicsProcessors;$(ProjectDir)Sources\GameParts\Processor\UiProcessors;$(ProjectDir)Sources\Manager;$(ProjectDir)Sources\Scene;$(ProjectDir)Sources\System;$(ProjectDir)Sources\System\Device;$(ProjectDir)Sources\System\Graphic;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,6 +110,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Sources;$(ProjectDir)Sources\Content;$(ProjectDir)Sources\Core;$(ProjectDir)Sources\GameParts;$(ProjectDir)Sources\GameParts\Behavior;$(ProjectDir)Sources\GameParts\Component;$(ProjectDir)Sources\GameParts\Component\UiComponents;$(ProjectDir)Sources\GameParts\Processor;$(ProjectDir)Sources\GameParts\Processor\PhysicsProcessors;$(ProjectDir)Sources\GameParts\Processor\UiProcessors;$(ProjectDir)Sources\Manager;$(ProjectDir)Sources\Scene;$(ProjectDir)Sources\System;$(ProjectDir)Sources\System\Device;$(ProjectDir)Sources\System\Graphic;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +128,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Sources;$(ProjectDir)Sources\Content;$(ProjectDir)Sources\Core;$(ProjectDir)Sources\GameParts;$(ProjectDir)Sources\GameParts\Behavior;$(ProjectDir)Sources\GameParts\Component;$(ProjectDir)Sources\GameParts\Component\UiComponents;$(ProjectDir)Sources\GameParts\Processor;$(ProjectDir)Sources\GameParts\Processor\PhysicsProcessors;$(ProjectDir)Sources\GameParts\Processor\UiProcessors;$(ProjectDir)Sources\Manager;$(ProjectDir)Sources\Scene;$(ProjectDir)Sources\System;$(ProjectDir)Sources\System\Device;$(ProjectDir)Sources\System\Graphic;$(ProjectDir)Utility;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,118 +138,118 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
-    <ClCompile Include="ball_behavior.cpp" />
-    <ClCompile Include="button_behavior.cpp" />
-    <ClCompile Include="camera_processor.cpp" />
-    <ClCompile Include="collision_processor.cpp" />
-    <ClCompile Include="debug_ostream.cpp" />
-    <ClCompile Include="debug_renderer.cpp" />
-    <ClCompile Include="direct3d.cpp" />
-    <ClCompile Include="dynamics_processor.cpp" />
-    <ClCompile Include="enemy_behavior.cpp" />
-    <ClCompile Include="factory.cpp" />
-    <ClCompile Include="fade.cpp" />
-    <ClCompile Include="field_behavior.cpp" />
-    <ClCompile Include="golf_behavior.cpp" />
-    <ClCompile Include="liftup_behavior.cpp" />
-    <ClCompile Include="mi_fps.cpp" />
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="game_object.h" />
-    <ClCompile Include="keyboard.cpp" />
-    <ClCompile Include="level_manager.cpp" />
-    <ClCompile Include="light_processor.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="manager.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="mouse.cpp" />
-    <ClCompile Include="particle_manager.cpp" />
-    <ClCompile Include="physics_processor.cpp" />
-    <ClCompile Include="player_behavior.cpp" />
-    <ClCompile Include="pointer_behavior.cpp" />
-    <ClCompile Include="processor_manager.cpp" />
-    <ClCompile Include="renderer_3dcube_processor.cpp" />
-    <ClCompile Include="renderer_3dmodel_processor.cpp" />
-    <ClCompile Include="renderer_font_processor.cpp" />
-    <ClCompile Include="renderer_image_processor.cpp" />
-    <ClCompile Include="renderer_slider_processor.cpp" />
-    <ClCompile Include="result.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="Sources\System\Device\Audio.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\ball_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\button_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\camera_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\collision_processor.cpp" />
+    <ClCompile Include="Utility\debug_ostream.cpp" />
+    <ClCompile Include="Utility\debug_renderer.cpp" />
+    <ClCompile Include="Sources\System\direct3d.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\dynamics_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\enemy_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\factory.cpp" />
+    <ClCompile Include="Sources\Content\fade.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\field_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\golf_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\liftup_behavior.cpp" />
+    <ClCompile Include="Sources\System\mi_fps.cpp" />
+    <ClCompile Include="Sources\Scene\game.cpp" />
+    <ClCompile Include="Sources\Core\game_object.h" />
+    <ClCompile Include="Sources\System\Device\keyboard.cpp" />
+    <ClCompile Include="Sources\Manager\level_manager.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\light_processor.cpp" />
+    <ClCompile Include="Sources\main.cpp" />
+    <ClCompile Include="Sources\Manager\manager.cpp" />
+    <ClCompile Include="Sources\Content\model.cpp" />
+    <ClCompile Include="Sources\System\Device\mouse.cpp" />
+    <ClCompile Include="Sources\Manager\particle_manager.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\physics_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\player_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\pointer_behavior.cpp" />
+    <ClCompile Include="Sources\Manager\processor_manager.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\renderer_3dcube_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\renderer_3dmodel_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_font_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_image_processor.cpp" />
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_slider_processor.cpp" />
+    <ClCompile Include="Sources\Scene\result.cpp" />
+    <ClCompile Include="Sources\System\Graphic\shader.cpp" />
+    <ClCompile Include="Sources\System\Graphic\sprite.cpp" />
     <ClCompile Include="stb_implementation.cpp" />
-    <ClCompile Include="switch_sprite_behavior.cpp" />
-    <ClCompile Include="title.cpp" />
-    <ClCompile Include="tps_camera_behavior.cpp" />
-    <ClCompile Include="train_behavior.cpp" />
-    <ClCompile Include="woodbox_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\switch_sprite_behavior.cpp" />
+    <ClCompile Include="Sources\Scene\title.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\tps_camera_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\train_behavior.cpp" />
+    <ClCompile Include="Sources\GameParts\Behavior\woodbox_behavior.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ball_behavior.h" />
-    <ClInclude Include="button_behavior.h" />
-    <ClInclude Include="camera_component.h" />
-    <ClInclude Include="camera_processor.h" />
-    <ClInclude Include="collider_component.h" />
-    <ClInclude Include="collision_processor.h" />
-    <ClInclude Include="component_pool.h" />
-    <ClInclude Include="component_pool_interface.h" />
-    <ClInclude Include="cubemesh_component.h" />
-    <ClInclude Include="debug_renderer.h" />
-    <ClInclude Include="dynamics_processor.h" />
-    <ClInclude Include="enemy_behavior.h" />
-    <ClInclude Include="factory.h" />
-    <ClInclude Include="field_behavior.h" />
-    <ClInclude Include="golf_behavior.h" />
-    <ClInclude Include="liftup_behavior.h" />
-    <ClInclude Include="mi_fps.h" />
-    <ClInclude Include="image_component.h" />
-    <ClInclude Include="level_manager.h" />
-    <ClInclude Include="light_component.h" />
-    <ClInclude Include="light_processor.h" />
-    <ClInclude Include="mi_math.h" />
-    <ClInclude Include="model.h" />
-    <ClInclude Include="model_component.h" />
-    <ClInclude Include="particle_manager.h" />
-    <ClInclude Include="physics_processor.h" />
-    <ClInclude Include="player_behavior.h" />
-    <ClInclude Include="pointer_behavior.h" />
-    <ClInclude Include="processor_manager.h" />
-    <ClInclude Include="rect_transform_component.h" />
-    <ClInclude Include="renderer_3dcube_processor.h" />
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="behavior.h" />
-    <ClInclude Include="component.h" />
-    <ClInclude Include="debug_ostream.h" />
-    <ClInclude Include="direct3d.h" />
-    <ClInclude Include="fade.h" />
-    <ClInclude Include="game.h" />
-    <ClInclude Include="keyboard.h" />
-    <ClInclude Include="manager.h" />
-    <ClInclude Include="mouse.h" />
-    <ClInclude Include="processor.h" />
-    <ClInclude Include="renderer_3dmodel_processor.h" />
-    <ClInclude Include="renderer_font_processor.h" />
-    <ClInclude Include="renderer_image_processor.h" />
-    <ClInclude Include="renderer_slider_processor.h" />
-    <ClInclude Include="result.h" />
-    <ClInclude Include="rigidbody_component.h" />
-    <ClInclude Include="scene_base.h" />
-    <ClInclude Include="scene_interface.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="slider_component.h" />
-    <ClInclude Include="sprite.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\ball_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\button_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Component\camera_component.h" />
+    <ClInclude Include="Sources\GameParts\Processor\camera_processor.h" />
+    <ClInclude Include="Sources\GameParts\Component\collider_component.h" />
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\collision_processor.h" />
+    <ClInclude Include="Sources\Core\component_pool.h" />
+    <ClInclude Include="Sources\Core\component_pool_interface.h" />
+    <ClInclude Include="Sources\GameParts\Component\cubemesh_component.h" />
+    <ClInclude Include="Utility\debug_renderer.h" />
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\dynamics_processor.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\enemy_behavior.h" />
+    <ClInclude Include="Sources\GameParts\factory.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\field_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\golf_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\liftup_behavior.h" />
+    <ClInclude Include="Sources\System\mi_fps.h" />
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\image_component.h" />
+    <ClInclude Include="Sources\Manager\level_manager.h" />
+    <ClInclude Include="Sources\GameParts\Component\light_component.h" />
+    <ClInclude Include="Sources\GameParts\Processor\light_processor.h" />
+    <ClInclude Include="Utility\mi_math.h" />
+    <ClInclude Include="Sources\Content\model.h" />
+    <ClInclude Include="Sources\GameParts\Component\model_component.h" />
+    <ClInclude Include="Sources\Manager\particle_manager.h" />
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\physics_processor.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\player_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\pointer_behavior.h" />
+    <ClInclude Include="Sources\Manager\processor_manager.h" />
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\rect_transform_component.h" />
+    <ClInclude Include="Sources\GameParts\Processor\renderer_3dcube_processor.h" />
+    <ClInclude Include="Sources\System\Device\Audio.h" />
+    <ClInclude Include="Sources\Core\behavior.h" />
+    <ClInclude Include="Sources\Core\component.h" />
+    <ClInclude Include="Utility\debug_ostream.h" />
+    <ClInclude Include="Sources\System\direct3d.h" />
+    <ClInclude Include="Sources\Content\fade.h" />
+    <ClInclude Include="Sources\Scene\game.h" />
+    <ClInclude Include="Sources\System\Device\keyboard.h" />
+    <ClInclude Include="Sources\Manager\manager.h" />
+    <ClInclude Include="Sources\System\Device\mouse.h" />
+    <ClInclude Include="Sources\Core\processor.h" />
+    <ClInclude Include="Sources\GameParts\Processor\renderer_3dmodel_processor.h" />
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_font_processor.h" />
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_image_processor.h" />
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_slider_processor.h" />
+    <ClInclude Include="Sources\Scene\result.h" />
+    <ClInclude Include="Sources\GameParts\Component\rigidbody_component.h" />
+    <ClInclude Include="Sources\Scene\scene_base.h" />
+    <ClInclude Include="Sources\Scene\scene_interface.h" />
+    <ClInclude Include="Sources\System\Graphic\shader.h" />
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\slider_component.h" />
+    <ClInclude Include="Sources\System\Graphic\sprite.h" />
     <ClInclude Include="stb_truetype.h" />
-    <ClInclude Include="switch_sprite_behavior.h" />
-    <ClInclude Include="text_component.h" />
-    <ClInclude Include="title.h" />
-    <ClInclude Include="tps_camera_behavior.h" />
-    <ClInclude Include="train_behavior.h" />
-    <ClInclude Include="transform_component.h" />
-    <ClInclude Include="type_id.h" />
-    <ClInclude Include="utility.h" />
-    <ClInclude Include="woodbox_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\switch_sprite_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\text_component.h" />
+    <ClInclude Include="Sources\Scene\title.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\tps_camera_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\train_behavior.h" />
+    <ClInclude Include="Sources\GameParts\Component\transform_component.h" />
+    <ClInclude Include="Sources\Core\type_id.h" />
+    <ClInclude Include="Utility\utility.h" />
+    <ClInclude Include="Sources\GameParts\Behavior\woodbox_behavior.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="shader_pixel.hlsl">
+    <FxCompile Include="Shaders\shader_pixel.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
@@ -254,7 +258,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="shader_pixel_font.hlsl">
+    <FxCompile Include="Shaders\shader_pixel_font.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -262,7 +266,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="shader_vertex.hlsl">
+    <FxCompile Include="Shaders\shader_vertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

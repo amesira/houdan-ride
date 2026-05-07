@@ -13,7 +13,7 @@
 #include <iostream>
 #include <vector>
 #include "scene_interface.h"
-#include "game_object.h"
+#include "Sources/Core/game_object.h"
 
 class SceneBase : public IScene {
 private:

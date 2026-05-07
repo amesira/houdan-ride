@@ -1,17 +1,17 @@
 //----------------------------------------------------
-// fade.h [ƒtƒF[ƒhƒNƒ‰ƒX]
+// fade.h [ï¿½tï¿½Fï¿½[ï¿½hï¿½Nï¿½ï¿½ï¿½X]
 // 
-// AuthorFMiu Kitamura
-// Date  F2025/09/08
+// Authorï¿½FMiu Kitamura
+// Date  ï¿½F2025/09/08
 //----------------------------------------------------
 #ifndef FADE_H
 #define FADE_H
 
 // directX
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 
-#include "sprite.h"
-#include "manager.h"
+#include "Sources/System/Graphic/sprite.h"
+#include "Sources/Manager/manager.h"
 
 enum FADE_STATE {
     FADE_NONE = 0,
@@ -27,7 +27,7 @@ struct FadeObject {
     SCENE       scene;
 };
 
-// ƒƒCƒ“ˆ—
+// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void Fade_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
 void Fade_Finalize();
 void Fade_Update();

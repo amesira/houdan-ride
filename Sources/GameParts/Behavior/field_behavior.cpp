@@ -1,12 +1,12 @@
 #include "field_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 
-#include "mi_fps.h"
-#include "mi_math.h"
+#include "Sources/System/mi_fps.h"
+#include "Utility/mi_math.h"
 
-#include "transform_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
 
 FieldBehavior::FieldBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<FieldBehavior>())

@@ -6,7 +6,7 @@
 //===================================================
 #include <d3d11.h>
 #include "direct3d.h"
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 
 // ComPtr用のスマートポインタ
 #include <wrl/client.h>

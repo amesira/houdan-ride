@@ -11,8 +11,8 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 using namespace DirectX;
-#include "direct3d.h"
-#include "debug_ostream.h"
+#include "Sources/System/direct3d.h"
+#include "Utility/debug_ostream.h"
 #include <fstream>
 
 // 頂点シェーダー

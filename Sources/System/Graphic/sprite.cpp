@@ -9,10 +9,10 @@
 //===================================================
 #include "sprite.h"
 
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 #include "shader.h"
 
-#include "particle_manager.h"
+#include "Sources/Manager/particle_manager.h"
 
 //===================================================
 // グローバル変数（Direct3Dデバイス／バッファ関連）

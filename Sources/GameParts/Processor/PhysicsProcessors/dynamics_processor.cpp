@@ -6,16 +6,16 @@
 //===================================================
 #include "dynamics_processor.h"
 
-#include "game_object.h"
-#include "scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Scene/scene_interface.h"
 
-#include "mi_math.h"
+#include "Utility/mi_math.h"
 
-#include "transform_component.h"
-#include "collider_component.h"
-#include "rigidbody_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/collider_component.h"
+#include "Sources/GameParts/Component/rigidbody_component.h"
 
-#include "mi_fps.h"
+#include "Sources/System/mi_fps.h"
 
 // 接地判定の閾値
 #define ON_GROUND_THRESHOLD (0.03f)

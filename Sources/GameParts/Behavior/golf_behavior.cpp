@@ -1,17 +1,17 @@
 #include "golf_behavior.h"
-#include "scene_interface.h"
-#include "game_object.h"
-#include "type_id.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
+#include "Sources/Core/type_id.h"
 
-#include "mi_math.h"
-#include "mi_fps.h"
+#include "Utility/mi_math.h"
+#include "Sources/System/mi_fps.h"
 
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 
-#include "transform_component.h"
-#include "collider_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/collider_component.h"
 
-#include "particle_manager.h"
+#include "Sources/Manager/particle_manager.h"
 
 GolfBehavior::GolfBehavior(GameObject* owner)
     : Behavior(BehaviorTypeID::getTypeID<GolfBehavior>())

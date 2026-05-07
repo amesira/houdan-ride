@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="リソース ファイル">
@@ -56,338 +56,338 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Sources\main.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="debug_ostream.cpp">
+    <ClCompile Include="Utility\debug_ostream.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="keyboard.cpp">
+    <ClCompile Include="Sources\System\Device\keyboard.cpp">
       <Filter>Sources\System\Device</Filter>
     </ClCompile>
-    <ClCompile Include="mouse.cpp">
+    <ClCompile Include="Sources\System\Device\mouse.cpp">
       <Filter>Sources\System\Device</Filter>
     </ClCompile>
-    <ClCompile Include="manager.cpp">
+    <ClCompile Include="Sources\Manager\manager.cpp">
       <Filter>Sources\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
+    <ClCompile Include="Sources\System\Device\Audio.cpp">
       <Filter>Sources\System\Device</Filter>
     </ClCompile>
-    <ClCompile Include="game_object.h">
+    <ClCompile Include="Sources\Core\game_object.h">
       <Filter>Sources\Core</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_3dcube_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\renderer_3dcube_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="factory.cpp">
+    <ClCompile Include="Sources\GameParts\factory.cpp">
       <Filter>Sources\GameParts</Filter>
     </ClCompile>
-    <ClCompile Include="processor_manager.cpp">
+    <ClCompile Include="Sources\Manager\processor_manager.cpp">
       <Filter>Sources\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="player_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\player_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="shader.cpp">
+    <ClCompile Include="Sources\System\Graphic\shader.cpp">
       <Filter>Sources\System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="sprite.cpp">
+    <ClCompile Include="Sources\System\Graphic\sprite.cpp">
       <Filter>Sources\System\Graphic</Filter>
     </ClCompile>
-    <ClCompile Include="direct3d.cpp">
+    <ClCompile Include="Sources\System\direct3d.cpp">
       <Filter>Sources\System</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="Sources\Scene\game.cpp">
       <Filter>Sources\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="title.cpp">
+    <ClCompile Include="Sources\Scene\title.cpp">
       <Filter>Sources\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="physics_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\physics_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="collision_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\collision_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="dynamics_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\PhysicsProcessors\dynamics_processor.cpp">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_image_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_image_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_font_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_font_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
     <ClCompile Include="stb_implementation.cpp">
       <Filter>リソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="mi_fps.cpp">
+    <ClCompile Include="Sources\System\mi_fps.cpp">
       <Filter>Sources\System</Filter>
     </ClCompile>
-    <ClCompile Include="fade.cpp">
+    <ClCompile Include="Sources\Content\fade.cpp">
       <Filter>Sources\Content</Filter>
     </ClCompile>
-    <ClCompile Include="debug_renderer.cpp">
+    <ClCompile Include="Utility\debug_renderer.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="model.cpp">
+    <ClCompile Include="Sources\Content\model.cpp">
       <Filter>Sources\Content</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_3dmodel_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\renderer_3dmodel_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="camera_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\camera_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="tps_camera_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\tps_camera_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="enemy_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\enemy_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="switch_sprite_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\switch_sprite_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="light_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\light_processor.cpp">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClCompile>
-    <ClCompile Include="level_manager.cpp">
+    <ClCompile Include="Sources\Manager\level_manager.cpp">
       <Filter>Sources\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="particle_manager.cpp">
+    <ClCompile Include="Sources\Manager\particle_manager.cpp">
       <Filter>Sources\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="ball_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\ball_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="woodbox_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\woodbox_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="train_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\train_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="liftup_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\liftup_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="renderer_slider_processor.cpp">
+    <ClCompile Include="Sources\GameParts\Processor\UiProcessors\renderer_slider_processor.cpp">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClCompile>
-    <ClCompile Include="pointer_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\pointer_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="field_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\field_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="button_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\button_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
-    <ClCompile Include="result.cpp">
+    <ClCompile Include="Sources\Scene\result.cpp">
       <Filter>Sources\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="golf_behavior.cpp">
+    <ClCompile Include="Sources\GameParts\Behavior\golf_behavior.cpp">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="debug_ostream.h">
+    <ClInclude Include="Utility\debug_ostream.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="keyboard.h">
+    <ClInclude Include="Sources\System\Device\keyboard.h">
       <Filter>Sources\System\Device</Filter>
     </ClInclude>
-    <ClInclude Include="mouse.h">
+    <ClInclude Include="Sources\System\Device\mouse.h">
       <Filter>Sources\System\Device</Filter>
     </ClInclude>
-    <ClInclude Include="manager.h">
+    <ClInclude Include="Sources\Manager\manager.h">
       <Filter>Sources\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Audio.h">
+    <ClInclude Include="Sources\System\Device\Audio.h">
       <Filter>Sources\System\Device</Filter>
     </ClInclude>
-    <ClInclude Include="component.h">
+    <ClInclude Include="Sources\Core\component.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="processor.h">
+    <ClInclude Include="Sources\Core\processor.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="behavior.h">
+    <ClInclude Include="Sources\Core\behavior.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_3dcube_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\renderer_3dcube_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="transform_component.h">
+    <ClInclude Include="Sources\GameParts\Component\transform_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="cubemesh_component.h">
+    <ClInclude Include="Sources\GameParts\Component\cubemesh_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="factory.h">
+    <ClInclude Include="Sources\GameParts\factory.h">
       <Filter>Sources\GameParts</Filter>
     </ClInclude>
-    <ClInclude Include="processor_manager.h">
+    <ClInclude Include="Sources\Manager\processor_manager.h">
       <Filter>Sources\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="player_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\player_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="shader.h">
+    <ClInclude Include="Sources\System\Graphic\shader.h">
       <Filter>Sources\System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
+    <ClInclude Include="Sources\System\Graphic\sprite.h">
       <Filter>Sources\System\Graphic</Filter>
     </ClInclude>
-    <ClInclude Include="direct3d.h">
+    <ClInclude Include="Sources\System\direct3d.h">
       <Filter>Sources\System</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="Sources\Scene\game.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="title.h">
+    <ClInclude Include="Sources\Scene\title.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="collider_component.h">
+    <ClInclude Include="Sources\GameParts\Component\collider_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="physics_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\physics_processor.h">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClInclude>
-    <ClInclude Include="collision_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\collision_processor.h">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClInclude>
-    <ClInclude Include="dynamics_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\PhysicsProcessors\dynamics_processor.h">
       <Filter>Sources\GameParts\Processor\PhysicsProcessors</Filter>
     </ClInclude>
-    <ClInclude Include="rigidbody_component.h">
+    <ClInclude Include="Sources\GameParts\Component\rigidbody_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="rect_transform_component.h">
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\rect_transform_component.h">
       <Filter>Sources\GameParts\Component\UiComponents</Filter>
     </ClInclude>
-    <ClInclude Include="image_component.h">
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\image_component.h">
       <Filter>Sources\GameParts\Component\UiComponents</Filter>
     </ClInclude>
-    <ClInclude Include="text_component.h">
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\text_component.h">
       <Filter>Sources\GameParts\Component\UiComponents</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_image_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_image_processor.h">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_font_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_font_processor.h">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClInclude>
     <ClInclude Include="stb_truetype.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="utility.h">
+    <ClInclude Include="Utility\utility.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="mi_fps.h">
+    <ClInclude Include="Sources\System\mi_fps.h">
       <Filter>Sources\System</Filter>
     </ClInclude>
-    <ClInclude Include="component_pool.h">
+    <ClInclude Include="Sources\Core\component_pool.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="scene_interface.h">
+    <ClInclude Include="Sources\Scene\scene_interface.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="fade.h">
+    <ClInclude Include="Sources\Content\fade.h">
       <Filter>Sources\Content</Filter>
     </ClInclude>
-    <ClInclude Include="scene_base.h">
+    <ClInclude Include="Sources\Scene\scene_base.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="component_pool_interface.h">
+    <ClInclude Include="Sources\Core\component_pool_interface.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="type_id.h">
+    <ClInclude Include="Sources\Core\type_id.h">
       <Filter>Sources\Core</Filter>
     </ClInclude>
-    <ClInclude Include="mi_math.h">
+    <ClInclude Include="Utility\mi_math.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="debug_renderer.h">
+    <ClInclude Include="Utility\debug_renderer.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_3dmodel_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\renderer_3dmodel_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="model_component.h">
+    <ClInclude Include="Sources\GameParts\Component\model_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="model.h">
+    <ClInclude Include="Sources\Content\model.h">
       <Filter>Sources\Content</Filter>
     </ClInclude>
-    <ClInclude Include="camera_component.h">
+    <ClInclude Include="Sources\GameParts\Component\camera_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="camera_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\camera_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="tps_camera_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\tps_camera_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="enemy_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\enemy_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="switch_sprite_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\switch_sprite_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="light_component.h">
+    <ClInclude Include="Sources\GameParts\Component\light_component.h">
       <Filter>Sources\GameParts\Component</Filter>
     </ClInclude>
-    <ClInclude Include="light_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\light_processor.h">
       <Filter>Sources\GameParts\Processor</Filter>
     </ClInclude>
-    <ClInclude Include="level_manager.h">
+    <ClInclude Include="Sources\Manager\level_manager.h">
       <Filter>Sources\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="particle_manager.h">
+    <ClInclude Include="Sources\Manager\particle_manager.h">
       <Filter>Sources\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="ball_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\ball_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="woodbox_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\woodbox_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="train_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\train_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="liftup_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\liftup_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="slider_component.h">
+    <ClInclude Include="Sources\GameParts\Component\UiComponents\slider_component.h">
       <Filter>Sources\GameParts\Component\UiComponents</Filter>
     </ClInclude>
-    <ClInclude Include="renderer_slider_processor.h">
+    <ClInclude Include="Sources\GameParts\Processor\UiProcessors\renderer_slider_processor.h">
       <Filter>Sources\GameParts\Processor\UiProcessors</Filter>
     </ClInclude>
-    <ClInclude Include="pointer_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\pointer_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="field_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\field_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="button_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\button_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
-    <ClInclude Include="result.h">
+    <ClInclude Include="Sources\Scene\result.h">
       <Filter>Sources\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="golf_behavior.h">
+    <ClInclude Include="Sources\GameParts\Behavior\golf_behavior.h">
       <Filter>Sources\GameParts\Behavior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="shader_pixel_font.hlsl">
+    <FxCompile Include="Shaders\shader_pixel_font.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="shader_pixel.hlsl">
+    <FxCompile Include="Shaders\shader_pixel.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="shader_vertex.hlsl">
+    <FxCompile Include="Shaders\shader_vertex.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

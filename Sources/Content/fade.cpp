@@ -6,7 +6,7 @@
 //===================================================
 #include "fade.h"
 
-#include "shader.h"
+#include "Sources/System/Graphic/shader.h"
 
 // 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;

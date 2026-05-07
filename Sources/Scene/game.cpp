@@ -6,21 +6,21 @@
 //===================================================
 #include "game.h"
 
-#include "Audio.h"
-#include "processor_manager.h"
+#include "Sources/System/Device/Audio.h"
+#include "Sources/Manager/processor_manager.h"
 
-#include "factory.h"
-#include "particle_manager.h"
-#include "keyboard.h"
-#include "level_manager.h"
-#include "button_behavior.h"
-#include "tps_camera_behavior.h"
-#include "text_component.h"
-#include "image_component.h"
-#include "camera_component.h"
+#include "Sources/GameParts/factory.h"
+#include "Sources/Manager/particle_manager.h"
+#include "Sources/System/Device/keyboard.h"
+#include "Sources/Manager/level_manager.h"
+#include "Sources/GameParts/Behavior/button_behavior.h"
+#include "Sources/GameParts/Behavior/tps_camera_behavior.h"
+#include "Sources/GameParts/Component/UiComponents/text_component.h"
+#include "Sources/GameParts/Component/UiComponents/image_component.h"
+#include "Sources/GameParts/Component/camera_component.h"
 
-#include "fade.h"
-#include "mi_fps.h"
+#include "Sources/Content/fade.h"
+#include "Sources/System/mi_fps.h"
 
 //===================================================
 // ゲームシーン初期化処理

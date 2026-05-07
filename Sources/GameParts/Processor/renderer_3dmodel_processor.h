@@ -7,7 +7,7 @@
 #ifndef RENDERER_3DMODEL_PROCESSOR_H
 #define RENDERER_3DMODEL_PROCESSOR_H
 
-#include "processor.h"
+#include "Sources/Core/processor.h"
 class IScene;
 
 class Renderer3DModelProcessor : public Processor {

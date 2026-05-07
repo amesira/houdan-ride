@@ -6,11 +6,11 @@
 //===================================================
 #include "manager.h"
 
-#include "title.h"
-#include "game.h"
-#include "result.h"
+#include "Sources/Scene/title.h"
+#include "Sources/Scene/game.h"
+#include "Sources/Scene/result.h"
 
-#include "fade.h"
+#include "Sources/Content/fade.h"
 
 // 注意！初期化で外部から設定されるもの。Release不要。
 static ID3D11Device* g_pDevice = nullptr;

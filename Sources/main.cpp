@@ -8,21 +8,21 @@
 #define WIN32_LEAN_AND_MEAN // 32bitアプリには不要な情報を抑止してコンパイル時間を短縮
 
 #include <windows.h>
-#include "debug_ostream.h"
+#include "Utility/debug_ostream.h"
 
 #include <algorithm>
-#include "direct3d.h"
-#include "shader.h"
-#include "sprite.h"
-#include "keyboard.h"
-#include "Audio.h"
-#include "mouse.h"
+#include "./System/direct3d.h"
+#include "./System/Graphic/shader.h"
+#include "./System/Graphic/sprite.h"
+#include "./System/Device/keyboard.h"
+#include "./System/Device/Audio.h"
+#include "./System/Device/mouse.h"
 
-#include "manager.h"
+#include "./Manager/manager.h"
 
-#include "mi_fps.h"
+#include "./System/mi_fps.h"
 
-#include "model.h"
+#include "./Content/model.h"
 
 //===================================================
 // マクロ定義

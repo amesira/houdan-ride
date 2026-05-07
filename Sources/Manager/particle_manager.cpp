@@ -5,14 +5,14 @@
 // Date  ：2026/01/06
 //===================================================
 #include "particle_manager.h"
-#include "sprite.h"
+#include "Sources/System/Graphic/sprite.h"
 
-#include "mi_math.h"
-#include "shader.h"
-#include "direct3d.h"
+#include "Utility/mi_math.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/direct3d.h"
 
-#include "transform_component.h"
-#include "player_behavior.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Behavior/player_behavior.h"
 
 static ID3D11ShaderResourceView* g_defaultTexture = nullptr;
 static std::vector<Emitter>  g_emitters;

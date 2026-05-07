@@ -10,12 +10,12 @@
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 using namespace DirectX;
 
 #include <algorithm> // std::clamp
 
-#include "component.h"
+#include "Sources/Core/component.h"
 
 class TransformComponent : public Component {
 private:

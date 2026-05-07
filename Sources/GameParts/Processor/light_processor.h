@@ -7,7 +7,7 @@
 #ifndef LIGHT_PROCESSOR_H
 #define LIGHT_PROCESSOR_H
 
-#include "processor.h"
+#include "Sources/Core/processor.h"
 
 class LightProcessor : public Processor {
 public:

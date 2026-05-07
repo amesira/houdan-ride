@@ -7,7 +7,7 @@
 #ifndef CAMERA_COMPONENT_H
 #define CAMERA_COMPONENT_H
 
-#include "component.h"
+#include "Sources/Core/component.h"
 
 #include <DirectXMath.h>
 using namespace DirectX;

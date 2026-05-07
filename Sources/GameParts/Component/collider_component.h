@@ -10,10 +10,10 @@
 // directX
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 using namespace DirectX;
 
-#include "component.h"
+#include "Sources/Core/component.h"
 
 class ColliderComponent :public Component {
 public:

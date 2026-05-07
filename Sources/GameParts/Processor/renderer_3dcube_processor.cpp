@@ -7,22 +7,22 @@
 #include "renderer_3dcube_processor.h"
 
 // directX
-#include "d3d11.h"
-#include "DirectXMath.h"
-#include "direct3d.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
+#include "Sources/System/direct3d.h"
 using namespace DirectX;
 
 // graphics, devices
-#include "shader.h"
-#include "sprite.h"
-#include "keyboard.h"
+#include "Sources/System/Graphic/shader.h"
+#include "Sources/System/Graphic/sprite.h"
+#include "Sources/System/Device/keyboard.h"
 
-#include "scene_interface.h"
-#include "game_object.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
 
 // component
-#include "transform_component.h"
-#include "cubemesh_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Component/cubemesh_component.h"
 
 static ID3D11ShaderResourceView* g_DefTexture = NULL;
 

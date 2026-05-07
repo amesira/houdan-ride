@@ -6,9 +6,9 @@
 //---------------------------------------------------
 #ifndef BALL_BEHAVIOR_H
 #define BALL_BEHAVIOR_H
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 
-#include "direct3d.h"
+#include "Sources/System/direct3d.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

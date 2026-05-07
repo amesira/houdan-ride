@@ -1,5 +1,5 @@
 #pragma once
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

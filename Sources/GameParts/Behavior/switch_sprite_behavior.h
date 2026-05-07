@@ -4,7 +4,7 @@
 #ifndef SWITCH_SPRITE_BEHAVIOR_H
 #define SWITCH_SPRITE_BEHAVIOR_H
 
-#include "behavior.h"
+#include "Sources/Core/behavior.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 

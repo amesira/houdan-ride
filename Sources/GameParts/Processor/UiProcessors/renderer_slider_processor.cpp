@@ -5,16 +5,16 @@
 // Date  ：2025/11/27
 //===================================================
 #include "renderer_slider_processor.h"
-#include "scene_interface.h"
-#include "game_object.h"
+#include "Sources/Scene/scene_interface.h"
+#include "Sources/Core/game_object.h"
 
-#include "direct3d.h"
-#include "sprite.h"
-#include "shader.h"
+#include "Sources/System/direct3d.h"
+#include "Sources/System/Graphic/sprite.h"
+#include "Sources/System/Graphic/shader.h"
 
-#include "rect_transform_component.h"
-#include "slider_component.h"
-#include "transform_component.h"
+#include "Sources/GameParts/Component/UiComponents/rect_transform_component.h"
+#include "Sources/GameParts/Component/UiComponents/slider_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
 
 static ID3D11Device* g_pDevice = nullptr;
 static ID3D11DeviceContext* g_pContext = nullptr;

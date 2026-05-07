@@ -11,10 +11,10 @@
 #include "assimp/matrix4x4.h"
 #pragma comment (lib, "assimp-vc143-mt.lib")
 
-#include	"d3d11.h"
-#include	"DirectXMath.h"
+#include	<d3d11.h>
+#include	<DirectXMath.h>
 using namespace DirectX;
-#include	"direct3d.h"
+#include	"Sources/System/direct3d.h"
 
 #define MODEL_MAX_INSTANCE (512)
 
