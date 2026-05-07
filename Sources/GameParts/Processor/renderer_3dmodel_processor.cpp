@@ -45,6 +45,8 @@ void Renderer3DModelProcessor::Process(IScene* pScene)
     auto* modelPool = pScene->GetComponentPool<ModelComponent>();
     if (!transformPool || !modelPool)return;
 
+    Shader_Begin();
+
     auto& modelPoolList = modelPool->GetList(); 
 
     for(ModelComponent& m : modelPoolList) {
