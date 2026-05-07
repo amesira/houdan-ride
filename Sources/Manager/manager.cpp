@@ -40,7 +40,7 @@ void Manager_Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     g_SceneInstance[SCENE::SCENE_RESULT] = g_pResultScene;
 
     Fade_Initialize(pDevice, pContext);
-    SetScene(SCENE::SCENE_TITLE);
+    SetScene(SCENE::SCENE_GAME);
 }
 
 //===================================================
