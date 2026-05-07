@@ -50,33 +50,35 @@ void GameScene::Initialize()
     Factory::CreatePlayer(player, { -2.0f,2.0f,-3.0f });
 
     // ui
-    GameObject* uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"集めた砂金: 0000000 G", 40.0f, { 1.0f,1.0f,1.0f,1.0f },false);
-    uiText->SetName("ScoreText");
+    {
+        // スコアテキスト
+        GameObject* uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"集めた砂金: 0000000 G", 40.0f, { 1.0f,1.0f,1.0f,1.0f },false);
+        uiText->SetName("ScoreText");
 
-    uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 10.0f, 100.0f, 0.0f }, u8"ノルマは 30000G !", 30.0f, { 1.0f,1.0f,0.0f,1.0f }, false);
+        uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 10.0f, 100.0f, 0.0f }, u8"ノルマは 30000G !", 30.0f, { 1.0f,1.0f,0.0f,1.0f }, false);
 
-    uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 350.0f, 50.0f, 0.0f }, u8"-500", 30.0f, { 1.0f,0.0f,0.0f,1.0f }, false);
-    uiText->SetName("PenaltyText");
+        uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 350.0f, 50.0f, 0.0f }, u8"-500", 30.0f, { 1.0f,0.0f,0.0f,1.0f }, false);
+        uiText->SetName("PenaltyText");
 
-    GameObject* uiSlider = this->CreateGameObject();
-    Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 0.0f, { 100.0f,20.0f });
-    uiSlider->SetName("ThrowPowerSlider");
+        // タイトルへ戻るボタン・ヘルプボタン
+        GameObject* uiButton = this->CreateGameObject();
+        Factory::CreateUiButton(uiButton, { 1280.0f - 50.0f, 720.0f - 50.0f }, { 60.0f,60.0f }, {1.0f,1.0f,1.0f,1.0f}, L"asset\\Texture\\door.png");
+        m_backTitleButton = uiButton->GetBehavior<ButtonBehavior>();
+        uiButton = this->CreateGameObject();
+        Factory::CreateUiButton(uiButton, { 1280.0f - 100.0f, 720.0f - 50.0f }, { 60.0f,60.0f }, { 1.0f,1.0f,1.0f,1.0f }, L"asset\\Texture\\help.png");
+        m_helpButton = uiButton->GetBehavior<ButtonBehavior>();
 
-    GameObject* uiButton = this->CreateGameObject();
-    Factory::CreateUiButton(uiButton, { 1280.0f - 50.0f, 50.0f }, { 60.0f,60.0f }, {1.0f,1.0f,1.0f,1.0f}, L"asset\\Texture\\door.png");
-    m_backTitleButton = uiButton->GetBehavior<ButtonBehavior>();
+        GameObject* uiSlider = this->CreateGameObject();
+        Factory::CreateUiSlider(uiSlider, { 400.0f, 500.0f, 0.0f }, 0.0f, { 100.0f,20.0f });
+        uiSlider->SetName("ThrowPowerSlider");
 
-    uiButton = this->CreateGameObject();
-    Factory::CreateUiButton(uiButton, { 1280.0f - 100.0f, 50.0f }, { 60.0f,60.0f }, { 1.0f,1.0f,1.0f,1.0f }, L"asset\\Texture\\help.png");
-    m_helpButton = uiButton->GetBehavior<ButtonBehavior>();
-
-    uiText = this->CreateGameObject();
-    Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 200.0f, 0.0f }, u8" ", 100.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
-    m_startText = uiText->GetComponent<TextComponent>();
-
+        uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 200.0f, 0.0f }, u8" ", 100.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+        m_startText = uiText->GetComponent<TextComponent>();
+    }
     LevelM_Initialize(this);
     LevelM_ChangeLevel(this, m_level);
 
