@@ -25,9 +25,12 @@
 #include "Sources/GameParts/Component/UiComponents/image_component.h"
 #include "Sources/Manager/level_manager.h"
 #include "Sources/GameParts/Behavior/tps_camera_behavior.h"
+#include "Sources/GameParts/Behavior/ball_behavior.h"
+#include "Sources/GameParts/Behavior/train_behavior.h"
 #include "Sources/GameParts/Behavior/button_behavior.h"
 #include "Sources/GameParts/Component/UiComponents/text_component.h"
 #include "Sources/GameParts/Component/camera_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
 
 #include "Sources/System/mi_fps.h"
 
@@ -43,6 +46,7 @@ void TitleScene::Initialize()
     m_isSelectScene = false;
     m_titleUiObjects.clear();
     m_selectUiObjects.clear();
+    m_levelManager = nullptr;
 
     // camera
     GameObject* camera = this->CreateGameObject();
@@ -108,9 +112,29 @@ void TitleScene::Initialize()
         ui->SetActive(false);
     }
 
-    LevelM_Initialize(this, true);
+    GameObject* water = this->CreateGameObject();
+    water->SetName("Water");
+    Factory::CreateUiImageWorld(water, XMFLOAT3(0.0f, -3.0f, 0.0f), XMFLOAT3(XMConvertToRadians(-90.0f), 0.0f, 0.0f), XMFLOAT3(100.0f, 200.0f, 1.0f));
+    ImageComponent* imageComp = water->GetComponent<ImageComponent>();
+    imageComp->Load(L"asset\\Texture\\water.png");
+    imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+
+    TrainBehavior* ship = LevelObjects::CreateMainShip(this, XMFLOAT3(0.0f, -5.0f, -2.0f));
+
+    GameObject* ball = this->CreateGameObject();
+    Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
+
+    GameObject* levelManagerObj = this->CreateGameObject();
+    levelManagerObj->SetName("LevelManager");
+    m_levelManager = levelManagerObj->AddBehavior<LevelManagerBehavior>();
+    m_levelManager->SetTitleMode(true);
+    m_levelManager->SetWater(water->GetComponent<TransformComponent>());
+    m_levelManager->SetMainShip(ship);
+    m_levelManager->SetMainBall(ball->GetBehavior<BallBehavior>());
 
     m_selectLevel = 1;
+    m_levelManager->SetLevelID(m_selectLevel);
+    m_levelManager->ResetProgress();
     m_isSelectScene = false;
 
     m_bgmHandle = LoadAudio("asset\\Audio\\title.wav");
@@ -130,7 +154,7 @@ void TitleScene::Finalize()
 
     UnloadAudio(m_bgmHandle);
 
-    LevelM_Finalize();
+    m_levelManager = nullptr;
 }
 
 void TitleScene::Update()
@@ -141,8 +165,6 @@ void TitleScene::Update()
     }
 
     ProcessorM_Update(this);
-
-    LevelM_Update(this);
 
     if (Mouse_IsButtonDownTrigger(Mouse_Button::LEFT)) {
         if(m_isSelectScene == false) {
@@ -174,7 +196,9 @@ void TitleScene::Update()
             if (m_selectLevel < 1) {
                 m_selectLevel = 2;
             }
-            LevelM_ChangeLevel(this, m_selectLevel);
+            if (m_levelManager) {
+                m_levelManager->SetLevelID(m_selectLevel);
+            }
             changedLevel = true;
             
             
@@ -184,7 +208,9 @@ void TitleScene::Update()
             if (m_selectLevel > 2) {
                 m_selectLevel = 1;
             }
-            LevelM_ChangeLevel(this, m_selectLevel);
+            if (m_levelManager) {
+                m_levelManager->SetLevelID(m_selectLevel);
+            }
             changedLevel = true;
            
         }

@@ -22,7 +22,7 @@ class RectTransformComponent;
 
 class RendererFontProcessor : public Processor {
 private:
-	const char* fontPath = "asset/Font/PixelMplus12-Regular.ttf";
+	const char* fontPath = "asset/Font/nagino.otf";
 
 	ID3D11Device* g_pDevice = nullptr;
 	ID3D11DeviceContext* g_pContext = nullptr;

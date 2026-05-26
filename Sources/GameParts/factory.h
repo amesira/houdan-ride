@@ -55,6 +55,8 @@ namespace Factory {
     void CreateResultBottle(GameObject*, XMFLOAT3 position, XMFLOAT3 rotation, XMFLOAT3 scale);
 
     void CreateGolfGameObject(GameObject* obj, XMFLOAT3 position, float angleY);
+
+    void CreateModel(GameObject* obj, const char* modelPath, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale);
 }
 
 #endif

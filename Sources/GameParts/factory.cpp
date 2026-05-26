@@ -489,3 +489,16 @@ void Factory::CreateGolfGameObject(GameObject* obj, XMFLOAT3 position, float ang
     GolfBehavior* golfBe = obj->AddBehavior<GolfBehavior>();
 
 }
+
+void Factory::CreateModel(GameObject* obj, const char* modelPath, XMFLOAT3 position, XMFLOAT3 euler, XMFLOAT3 scale)
+{
+    // component生成・登録
+    TransformComponent* transform = obj->AddComponent<TransformComponent>();
+    ModelComponent* modelComp = obj->AddComponent<ModelComponent>();
+
+    // component設定
+    transform->SetPosition(position);
+    transform->SetEulerRotation(euler);
+    transform->SetScaling(scale);
+    modelComp->LoadModel(modelPath);
+}

@@ -13,6 +13,7 @@
 class ButtonBehavior;
 class CameraComponent;
 class TextComponent;
+class LevelManagerBehavior;
 
 // ゲームシーン
 class TitleScene : public SceneBase {
@@ -28,6 +29,7 @@ private:
     ButtonBehavior* m_rightButtonBe = nullptr;
 
     CameraComponent* m_cameraComp = nullptr;
+    LevelManagerBehavior* m_levelManager = nullptr;
     TextComponent* m_levelTextComp = nullptr;
     TextComponent* m_levelDescTextComp = nullptr;
 

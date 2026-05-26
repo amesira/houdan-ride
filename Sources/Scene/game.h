@@ -13,6 +13,7 @@ class TextComponent;
 class ButtonBehavior;
 class TpsCameraBehavior;
 class ImageComponent;
+class LevelManagerBehavior;
 
 // ゲームシーン
 class GameScene : public SceneBase {
@@ -24,11 +25,14 @@ private:
     TextComponent* m_startText = nullptr;
     float m_startTimer = 0.0f;
 
+    // タイトルに戻るボタンとヘルプボタン
     ButtonBehavior* m_backTitleButton = nullptr;
     ButtonBehavior* m_helpButton = nullptr;
 
+    // TPSカメラ
     TpsCameraBehavior* m_tpsCamera = nullptr;
 
+    // チュートリアル
     int m_tutorialStep = 0;
     std::vector<GameObject*> m_tutorialPages;
     ImageComponent* m_tutorialImage = nullptr;

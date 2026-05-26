@@ -54,8 +54,8 @@ void TpsCameraBehavior::Update(IScene* pScene)
         // 初期位置設定
         m_cameraAnchor = m_targetTransform->GetPosition();
         m_cameraPos = {
-            m_cameraAnchor.x,
-            m_cameraAnchor.y,
+            m_cameraAnchor.x + m_distance,
+            m_cameraAnchor.y + m_distance,
             m_cameraAnchor.z - m_distance,
         };
         return;
@@ -110,9 +110,9 @@ void TpsCameraBehavior::Update(IScene* pScene)
     // カメラ位置設定
     //-------------------------------
     XMFLOAT3 offset = {
+        m_distance,
         0.0f,
-        0.0f,
-        -m_distance,
+        -m_distance / 2.0f,
     };
 
     // 回転

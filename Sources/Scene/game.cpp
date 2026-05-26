@@ -18,6 +18,9 @@
 #include "Sources/GameParts/Component/UiComponents/text_component.h"
 #include "Sources/GameParts/Component/UiComponents/image_component.h"
 #include "Sources/GameParts/Component/camera_component.h"
+#include "Sources/GameParts/Component/transform_component.h"
+#include "Sources/GameParts/Behavior/ball_behavior.h"
+#include "Sources/GameParts/Behavior/train_behavior.h"
 
 #include "Sources/Content/fade.h"
 #include "Sources/System/mi_fps.h"
@@ -29,8 +32,10 @@ void GameScene::Initialize()
 {
     this->Reset();
 
+    // Processor初期化
     ProcessorM_Initialize();
 
+    // TimeScaleをリセット
     FPS_SetTimeScale(1.0f);
 
     // camera
@@ -41,6 +46,10 @@ void GameScene::Initialize()
         CameraComponent* cameraComp = camera->GetComponent<CameraComponent>();
         cameraComp->SetClearColor({ 0.2f, 0.3f, 0.3f,1.0f });
     }
+
+    // skybox作成テスト
+    GameObject* skybox = this->CreateGameObject();
+    Factory::CreateModel(skybox, "asset\\Model\\skybox.fbx", { 0.0f,0.0f,0.0f }, { XMConvertToRadians(-90.0f),0.0f,0.0f}, {50.0f,50.0f,50.0f});
     
     // light
     GameObject* light = this->CreateGameObject();
@@ -51,13 +60,18 @@ void GameScene::Initialize()
 
     // ui
     {
+        GameObject* uiText = nullptr;
+
         // スコアテキスト
-        GameObject* uiText = this->CreateGameObject();
-        Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"集めた砂金: 0000000 G", 40.0f, { 1.0f,1.0f,1.0f,1.0f },false);
+        /*GameObject* uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 10.0f, 50.0f, 0.0f }, u8"集めた砂金: 0000000 G", 30.0f, { 1.0f,1.0f,1.0f,1.0f },false);
         uiText->SetName("ScoreText");
 
-        uiText = this->CreateGameObject();
-        Factory::CreateUiText(uiText, { 10.0f, 100.0f, 0.0f }, u8"ノルマは 30000G !", 30.0f, { 1.0f,1.0f,0.0f,1.0f }, false);
+        GameObject* scoreMeter = this->CreateGameObject();
+        Factory::CreateUiImage(scoreMeter, { 40.0f, 80.0f, 0.0f }, 0.0f, { 100.0f,80.0f }, L"asset\\Texture\\gold.png");*/
+
+        /*uiText = this->CreateGameObject();
+        Factory::CreateUiText(uiText, { 10.0f, 100.0f, 0.0f }, u8"ノルマは 30000G !", 20.0f, { 1.0f,1.0f,0.0f,1.0f }, false);*/
 
         uiText = this->CreateGameObject();
         Factory::CreateUiText(uiText, { 350.0f, 50.0f, 0.0f }, u8"-500", 30.0f, { 1.0f,0.0f,0.0f,1.0f }, false);
@@ -79,8 +93,40 @@ void GameScene::Initialize()
         Factory::CreateUiText(uiText, { 1280.0f / 2.0f, 200.0f, 0.0f }, u8" ", 100.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
         m_startText = uiText->GetComponent<TextComponent>();
     }
-    LevelM_Initialize(this);
-    LevelM_ChangeLevel(this, m_level);
+
+    GameObject* water = this->CreateGameObject();
+    water->SetName("Water");
+    Factory::CreateUiImageWorld(water, XMFLOAT3(0.0f, -3.0f, 0.0f), XMFLOAT3(XMConvertToRadians(-90.0f), 0.0f, 0.0f), XMFLOAT3(100.0f, 200.0f, 1.0f));
+    ImageComponent* imageComp = water->GetComponent<ImageComponent>();
+    imageComp->Load(L"asset\\Texture\\water.png");
+    imageComp->SetColor(XMFLOAT4(0.2f, 1.0f, 1.0f, 0.7f));
+
+    TrainBehavior* ship = LevelObjects::CreateMainShip(this, XMFLOAT3(0.0f, -5.0f, -2.0f));
+
+    GameObject* ball = this->CreateGameObject();
+    Factory::CreateBall(ball, { 0.0f,5.0f,0.0f });
+
+    GameObject* mapCamera = this->CreateGameObject();
+    Factory::CreateMapCamera(mapCamera, { 0.0f,20.0f,0.0f }, { 0.0f,0.0f,0.0f });
+
+    // Goal Meter
+    GameObject* goalMeter = this->CreateGameObject();
+    Factory::CreateUiText(goalMeter, { 1280.0f / 2.0f, 45.0f, 0.0f }, u8"帰還まで残り: 1000 m", 36.0f, { 1.0f,1.0f,1.0f,1.0f }, true);
+    GameObject* goalMeterSlider = this->CreateGameObject();
+    Factory::CreateUiSlider(goalMeterSlider, { 1280.0f / 2.0f, 65.0f, 0.0f }, 0.0f, { 600.0f,20.0f });
+    
+    // LevelManager
+    GameObject* levelManagerObj = this->CreateGameObject();
+    levelManagerObj->SetName("LevelManager");
+    LevelManagerBehavior* levelManager = levelManagerObj->AddBehavior<LevelManagerBehavior>();
+    levelManager->SetTitleMode(false);
+    levelManager->SetWater(water->GetComponent<TransformComponent>());
+    levelManager->SetMainShip(ship);
+    levelManager->SetMainBall(ball->GetBehavior<BallBehavior>());
+    levelManager->SetMapCamera(mapCamera->GetComponent<TransformComponent>(), mapCamera->GetComponent<CameraComponent>());
+    levelManager->SetGoalMeter(goalMeter->GetComponent<TextComponent>());
+    levelManager->SetLevelID(m_level);
+    levelManager->ResetProgress();
 
     // チュートリアル
     {
@@ -123,7 +169,6 @@ void GameScene::Initialize()
     GameObject* pointer = this->CreateGameObject();
     Factory::CreatePointer(pointer);
 
-
     m_startTimer = 4.0f;
     m_isPlaying = false;
 
@@ -141,7 +186,6 @@ void GameScene::Finalize()
     for (GameObject& obj : gameObjects) {
         obj.Destroy();
     }
-    LevelM_Finalize();
 
     UnloadAudio(m_bgmHandle);
 }
@@ -157,8 +201,6 @@ void GameScene::Update()
     }
 
     ProcessorM_Update(this);
-
-    LevelM_Update(this);
 
     // チュートリアル操作
     if(m_tutorialStep >= 0){
